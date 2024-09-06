@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/LogoCN.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
     <style>
         #Inputpassword {
@@ -35,8 +34,6 @@
                             <div class="card-body">
                                 <section class="logo-img text-center w-100">
                                     <h1 class="fw-bolder">
-                                        <img src="{{ asset('images/logos/LogoCN.png') }}" width="65"
-                                            alt="Logo SMK Citra Negara">
                                         Absensi
                                     </h1>
                                     <p>Silakan login terlebih dahulu untuk melanjutkan</p>
