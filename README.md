@@ -3,13 +3,11 @@
 ## Tech Stack
 - Laravel 10 (PHP 8.1)
 - Bootstrap 5 (Modernize admin template)
-- Mysql
 
 ## Plugin/Library
 - phpflasher
 - maatwebsite(for import excel file)
 - simpleqrcode (to make qrcode) [Require imagick]
-- laravel-ngrok
 
 ## Major Problems
 - Timeout while uploading excel file with 30 rows and above
