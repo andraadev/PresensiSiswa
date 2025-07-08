@@ -1,4 +1,4 @@
-# Absensi V1.0
+# Presensi V1.0
 
 ## Tech Stack
 - Laravel 10 (PHP 8.1)
