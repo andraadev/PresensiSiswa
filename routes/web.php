@@ -4,7 +4,6 @@
 use App\Http\Controllers\HalamanAdminController;
 use App\Http\Controllers\HalamanBKController;
 
-
 // Controller untuk Fitur CRUD pada aplikasi
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AbsensiController;
@@ -17,10 +16,14 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route khusus halaman login
+Route::get('/laravel', function(){
+    return view("welcome");
+});
+
 Route::get('/', [LoginController::class, 'login'])->name('login');
 // Route::get('/{slug-kelas}', [LoginController::class, 'get_class_slug'])->name('get_class_slug');
 Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('sign-out');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     // Route::get('/beranda', [HalamanAdminController::class, 'beranda'])->name('admin.beranda');
@@ -35,7 +38,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     // // Import Excel
     Route::post('/tambah-data-guru', [GuruController::class, 'import_excel'])->name('admin.data_guru.import_excel');
     Route::post('/tambah-data-siswa', [SiswaController::class, 'import_excel'])->name('admin.data_siswa.import_excel');
-    Route::post('/tambah-data-user', [UserController::class, 'import_excel'])->name('admin.data_user.import_excel');
+    // Route::post('/tambah-data-user', [UserController::class, 'import_excel'])->name('admin.data_user.import_excel');
 
     // Route yang menangani fungsi CRUD
     Route::resource('/data-guru', GuruController::class);

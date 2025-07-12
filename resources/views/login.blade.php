@@ -32,10 +32,10 @@
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0 border border-dark">
                             <div class="card-body">
-                                <section class="logo-img text-center w-100">
-                                    <h1 class="fw-bolder">
-                                        Absensi
-                                    </h1>
+                                <section class="text-center w-100">
+                                    <h2 class="fw-bolder">
+                                        {{ config('app.name') }}
+                                    </h2>
                                     <p>Silakan login terlebih dahulu untuk melanjutkan</p>
                                 </section>
                                 <section id="section-alert">
@@ -73,7 +73,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </section>
-                                        <i class="ti ti-eye" id="eye"></i>
+                                        {{-- <i class="ti ti-eye" id="eye"></i> --}}
                                     </div>
                                     <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
                                     <p class="fw-bold text-center"> -Jika kamu lupa password, silakan hubungi admin-

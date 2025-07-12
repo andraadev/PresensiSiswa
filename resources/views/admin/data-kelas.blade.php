@@ -19,7 +19,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('data-kelas.store') }}" method="post">
+                    <div class="alert alert-info">
+                        <div class="alert-message">Jika nama wali kelas tidak muncul dalam opsi input, pastikan anda telah menambahkan data guru sebelumnya.</div>
+                    </div>
+                    <form action="{{ route('data-kelas.store') }}" method="post" class="mt-2">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nama Kelas</label>
@@ -28,6 +31,7 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Wali Kelas</label>
                             <select name="guru_id" class="form-select">
+                                <option value="0">Pilih</option>
                                 @foreach ($guru as $data_guru)
                                     <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}</option>
                                 @endforeach
@@ -46,7 +50,6 @@
         <thead>
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Slug Kelas</th>
                 <th scope="col">Nama Kelas</th>
                 <th scope="col">Qr Code</th>
                 <th scope="col">Nama Wali Kelas</th>
@@ -57,7 +60,6 @@
             @foreach ($kelas as $data_kelas)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $data_kelas->slug_kelas }}</td>
                     <td>{{ $data_kelas->nama_kelas }}</td>
                     <td>
                         <img src="/storage{{ $data_kelas->qr_code }}" alt="QR Code Kelas {{ $data_kelas->nama_kelas }}">

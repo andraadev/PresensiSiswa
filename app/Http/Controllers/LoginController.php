@@ -31,7 +31,6 @@ class LoginController extends Controller
             if (Auth::user()->role == 'Admin') {
                 return redirect()->intended('admin/beranda');
             } elseif (Auth::user()->role == 'Guru') {
-              
                 return redirect()->intended('guru/absensi');
             } else {
                 return redirect()->intended('/bk/beranda');
@@ -49,7 +48,7 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 
     //     public function get_class_slug($class_slug)
