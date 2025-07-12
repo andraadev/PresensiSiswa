@@ -1,0 +1,62 @@
+# Konfigurasi Dependabot untuk memantau dan memperbarui dependensi secara otomatis
+version: 2
+
+# Daftar ekosistem yang akan dipantau
+updates:
+  # Konfigurasi untuk dependensi Composer (PHP)
+  - package-ecosystem: "composer"
+    # Direktori tempat file composer.json berada
+    directory: "/"
+    # Jadwal pemeriksaan dependensi
+    schedule:
+      # Interval pemeriksaan (daily, weekly, monthly)
+      interval: "weekly"
+      # Hari dalam seminggu untuk pemeriksaan (senin)
+      day: "monday"
+      # Waktu pemeriksaan (format 24 jam, timezone UTC)
+      time: "06:00"
+      # Timezone untuk jadwal
+      timezone: "Asia/Jakarta"
+
+    # Pengaturan pull request
+    open-pull-requests-limit: 5  # Maksimal 5 PR terbuka bersamaan
+
+    # Target branch untuk PR
+    target-branch: "main"
+
+    # Pengaturan reviewer otomatis
+    reviewers:
+      - "andraadev"
+
+    # Pengaturan assignee otomatis
+    assignees:
+      - "andraadev"
+
+    # Label yang akan ditambahkan ke PR
+    labels:
+      - "dependencies"
+      - "composer"
+      - "php"
+      - "laravel"
+
+    # Prefix untuk commit message
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+    # Pengaturan untuk mengabaikan dependensi tertentu
+    ignore:
+      # Abaikan major version updates untuk dependensi yang sensitif
+      - dependency-name: "laravel/framework"
+        update-types: ["version-update:semver-major"]
+
+    # Mengizinkan dependensi tertentu untuk update otomatis
+    allow:
+      # Hanya security updates
+      - dependency-type: "direct"
+        update-type: "security"
+      # Semua patch dan minor updates
+      - dependency-type: "all"
+        update-type: "patch"
+      - dependency-type: "all"
+        update-type: "minor"
