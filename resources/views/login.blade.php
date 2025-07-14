@@ -35,8 +35,6 @@
                             <div class="card-body">
                                 <section class="logo-img text-center w-100">
                                     <h1 class="fw-bolder">
-                                        <img src="{{ asset('images/logos/LogoCN.png') }}" width="65"
-                                            alt="Logo SMK Citra Negara">
                                         Absensi
                                     </h1>
                                     <p>Silakan login terlebih dahulu untuk melanjutkan</p>
