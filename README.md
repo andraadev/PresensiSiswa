@@ -3,7 +3,8 @@ A Laravel-based application to record student attendance in a school environment
 
 ![php](https://img.shields.io/badge/php-8.1-blue)
 ![laravel](https://img.shields.io/badge/laravel-10-red)
-![status](https://img.shields.io/badge/status-fix--bugs--only-orange)
+![major](https://img.shields.io/badge/fix-major-orange)
+![minor](https://img.shields.io/badge/fix-minor-yellow)
 ![maintenance](https://img.shields.io/badge/maintained-no-critical)
 
 ---
