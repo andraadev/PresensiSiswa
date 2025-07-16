@@ -42,9 +42,7 @@
                                     @session('Gagal')
                                         <div class="alert alert-danger alert-dismissible fade show">
                                             <i class="ti ti-alert-triangle" style="font-size: 18px"></i>
-                                            {{ $value }}.<a href="#"
-                                                onclick="alert('Jika kamu lupa password akunmu, maka kamu dapat menghubungi admin untuk mengganti password akunmu')">Lupa
-                                                password?</a>
+                                            {{ $value }}.
                                             <button type="button" class="btn-close" data-bs-dismiss="alert"
                                                 aria-label="Close"></button>
                                         </div>
