@@ -23,19 +23,14 @@ Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
-    // Route::get('/beranda', [HalamanAdminController::class, 'beranda'])->name('admin.beranda');
-    // Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
-    // Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi'])->name('admin.data_absensi');
-    // Route::post('/filter-data-absensi', [HalamanAdminController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter_data_absensi');
     Route::get('/beranda', [HalamanAdminController::class, 'beranda']);
     Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
     Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi']);
     Route::post('/filter-data-absensi', [HalamanAdminController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
 
-    // // Import Excel
+    //Import Excel
     Route::post('/tambah-data-guru', [GuruController::class, 'import_excel'])->name('admin.data_guru.import_excel');
     Route::post('/tambah-data-siswa', [SiswaController::class, 'import_excel'])->name('admin.data_siswa.import_excel');
-    Route::post('/tambah-data-user', [UserController::class, 'import_excel'])->name('admin.data_user.import_excel');
 
     // Route yang menangani fungsi CRUD
     Route::resource('/data-guru', GuruController::class);
