@@ -53,7 +53,7 @@
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" autofocus>
+                                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" autofocus required>
                                             <span class="input-group-text">
                                                 <i class="ti ti-user"></i>
                                             </span>
@@ -62,7 +62,7 @@
                                     <div class="mb-3" id="input-password">
                                         <label for="password" class="form-label">Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="Inputpassword" name="password" value="{{ old('password') }}">
+                                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="Inputpassword" name="password" value="{{ old('password') }}" required>
                                             <span class="input-group-text">
                                                 <i class="ti ti-eye" id="eye"></i>
                                             </span>
