@@ -1,10 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Kelas;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -31,7 +28,6 @@ class LoginController extends Controller
             if (Auth::user()->role == 'Admin') {
                 return redirect()->intended('admin/beranda');
             } elseif (Auth::user()->role == 'Guru') {
-              
                 return redirect()->intended('guru/absensi');
             } else {
                 return redirect()->intended('/bk/beranda');
@@ -44,29 +40,8 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
-
-    //     public function get_class_slug($class_slug)
-    //     {
-    //         $segments = explode('/', $class_slug);
-    //         $class_value = end($segments);
-    //         $class_value = trim($class_value, '{}');
-
-    //         $kelas = Kelas::all();
-
-    //         foreach ($kelas as $validasi_kelas) {
-    //             if ($validasi_kelas->slug_kelas === $class_value) {
-    //                 session()->put('slug_kelas', $class_slug);
-    //                 return redirect()->intended('guru/absensi');
-    //             }
-    //         }
-
-    //         return back();
-    // }
 }
