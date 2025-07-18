@@ -79,6 +79,10 @@
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.print.min.js') }}"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('js/logout-modal.js')}}"></script>
     <script>
         $(document).ready(function() {
             $('#table').DataTable({

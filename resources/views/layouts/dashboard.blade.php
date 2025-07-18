@@ -77,26 +77,8 @@
     <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     {{-- <script src="{{ asset('js/dashboard.js') }}"></script> --}}
     <script src="{{ asset('js/format-date.js')}}"></script>
+    <script src="{{ asset('js/logout-modal.js')}}"></script>
     @yield('additional_js')
-
-    <script>
-        function modal_logout() {
-            Swal.fire({
-                title: 'Peringatan',
-                text: 'Apakah kamu yakin ingin logout?',
-                icon: 'warning',
-                confirmButtonText: 'Iya',
-                cancelButtonText: 'Tidak',
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                showCancelButton: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location = "{{ route('logout') }}";
-                }
-            })
-        }
-    </script>
 </body>
 
 </html>
