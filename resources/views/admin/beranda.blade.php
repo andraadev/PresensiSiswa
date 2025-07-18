@@ -10,7 +10,7 @@
                     <div class="row align-items-start">
                         <div class="col-8">
                             <h5 class="mb-8 fw-bolder">Selamat Datang, {{ Auth::user()->nama_lengkap }}</h5>
-                            <h6 id="jam"></h6>
+                            <h6 id="jam" class="fw-semibold mb-0"></h6>
                         </div>
                         <div class="col-4">
                             <div class="d-flex justify-content-end">
@@ -179,10 +179,7 @@
                 }
             };
 
-            var chart = new ApexCharts(
-                document.querySelector("#statistik_siswa"),
-                options
-            );
+            var chart = new ApexCharts(document.querySelector("#statistik_siswa"), options);
             chart.render();
 
             var data_user = {
@@ -199,9 +196,7 @@
                 },
             }
 
-            var statistik_user = new ApexCharts(
-                document.querySelector("#statistik_user"),
-                data_user);
+            var statistik_user = new ApexCharts(document.querySelector("#statistik_user"), data_user);
             statistik_user.render();
         });
     </script>
