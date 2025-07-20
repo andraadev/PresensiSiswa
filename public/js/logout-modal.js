@@ -10,7 +10,7 @@ function modal_logout() {
         showCancelButton: true
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location = "{{ route('logout') }}";
+            document.getElementById('logout-form').submit();
         }
     })
 }

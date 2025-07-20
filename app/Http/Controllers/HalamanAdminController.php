@@ -73,9 +73,10 @@ class HalamanAdminController extends Controller
         // Siapkan data untuk grafik pie
         $pieLabels = array_keys($jumlah_user);
         $pieData = array_values($jumlah_user);
+        $header="Beranda";
 
         // Kirim data grafik ke tampilan
-        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData'));
+        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData', 'header'));
     }
 
     /**

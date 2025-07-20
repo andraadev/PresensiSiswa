@@ -53,24 +53,16 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-absensi' ? 'active' : '') }}" href="data-absensi">
+                    <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
                         <span>
                             <i class="ti ti-table"></i>
                         </span>
                         <span class="hide-menu">Data Absensi</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
-                        <span>
-                            <i class="ti ti-logout"></i>
-                        </span>
-                        <span class="hide-menu">Logout</span>
-                    </a>
-                </li>
             @elseif (Auth::user()->role == 'Guru')
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('absensi' ? 'active' : '') }}" href="absensi">
+                    <a class="sidebar-link {{ Request::is('absensi') ? 'active' : '' }}" href="absensi">
                         <span>
                             <i class="ti ti-home"></i>
                         </span>
@@ -78,24 +70,16 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-absensi' ? 'active' : '') }}" href="data-absensi">
+                    <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
                         <span>
                             <i class="ti ti-table"></i>
                         </span>
                         <span class="hide-menu">Data Absensi</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
-                        <span>
-                            <i class="ti ti-logout"></i>
-                        </span>
-                        <span class="hide-menu">Logout</span>
-                    </a>
-                </li>
             @else
                 <li class="sidebar-item">
-                    <a class="sidebar-link{{ Request::is('beranda' ? 'active' : '') }}" href="beranda">
+                    <a class="sidebar-link{{ Request::is('beranda') ? 'active' : '' }}" href="beranda">
                         <span>
                             <i class="ti ti-home"></i>
                         </span>
@@ -103,7 +87,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item ">
-                    <a class="sidebar-link {{ Request::is('data-absensi-siswa' ? 'active' : '') }}"
+                    <a class="sidebar-link {{ Request::is('data-absensi-siswa') ? 'active' : '' }}"
                         href="data-absensi-siswa">
                         <span>
                             <i class="ti ti-table"></i>
@@ -111,46 +95,23 @@
                         <span class="hide-menu">Data Absensi Siswa</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
-                        <span>
-                            <i class="ti ti-logout"></i>
-                        </span>
-                        <span class="hide-menu">Logout</span>
-                    </a>
-                </li>
             @endif
             {{-- berlaku di semua role --}}
-            {{-- <li class="sidebar-item">
+            <li class="sidebar-item">
                 <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
                     <span>
                         <i class="ti ti-logout"></i>
                     </span>
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
+                        @csrf
+                    </form>
                     <span class="hide-menu">Logout</span>
                 </a>
-            </li> --}}
+            </li>
         </ul>
     </nav>
     <!-- End Sidebar navigation -->
     </section>
     <!-- End Sidebar scroll-->
 </aside>
-
-<script>
-    function modal_logout() {
-        Swal.fire({
-            title: 'Peringatan',
-            text: 'Apakah kamu yakin ingin logout?',
-            icon: 'warning',
-            confirmButtonText: 'Iya',
-            cancelButtonText: 'Tidak',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            showCancelButton: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location = "{{ route('logout') }}";
-            }
-        })
-    }
-</script>

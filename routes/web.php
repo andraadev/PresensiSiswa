@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 // Route khusus halaman login
 Route::get('/', [LoginController::class, 'login'])->name('login');
-// Route::get('/{slug-kelas}', [LoginController::class, 'get_class_slug'])->name('get_class_slug');
 Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/beranda', [HalamanAdminController::class, 'beranda']);
