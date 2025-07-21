@@ -28,6 +28,7 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Wali Kelas</label>
                             <select name="guru_id" class="form-select">
+                                <option value="0">Pilih</option>
                                 @foreach ($guru as $data_guru)
                                     <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}</option>
                                 @endforeach
@@ -46,9 +47,7 @@
         <thead>
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Slug Kelas</th>
                 <th scope="col">Nama Kelas</th>
-                <th scope="col">Qr Code</th>
                 <th scope="col">Nama Wali Kelas</th>
                 <th scope="col">Aksi</th>
             </tr>
@@ -57,16 +56,9 @@
             @foreach ($kelas as $data_kelas)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $data_kelas->slug_kelas }}</td>
                     <td>{{ $data_kelas->nama_kelas }}</td>
-                    <td>
-                        <img src="/storage{{ $data_kelas->qr_code }}" alt="QR Code Kelas {{ $data_kelas->nama_kelas }}">
-                    </td>
                     <td>{{ $data_kelas->guru->nama_lengkap }}</td>
                     <td>
-                        <a href="{{ route('admin.data_kelas.download_qr', $data_kelas->id) }}" class="btn btn-success">
-                            Simpan QR
-                        </a>
                         <button class="btn btn-warning" data-bs-toggle="modal"
                             data-bs-target="#update_kelas{{ $data_kelas->id }}">
                             Edit

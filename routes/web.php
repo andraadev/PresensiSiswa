@@ -19,12 +19,10 @@ use Illuminate\Support\Facades\Route;
 // Route khusus halaman login
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
-// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/beranda', [HalamanAdminController::class, 'beranda']);
-    Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
     Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi']);
     Route::post('/filter-data-absensi', [HalamanAdminController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
 
