@@ -6,6 +6,7 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -22,9 +23,20 @@ class ImportDataSiswa implements ToCollection, WithHeadingRow, WithChunkReading,
      */
     public function collection(Collection $collection)
     {
+        // Cek waktu eksekusi dalam detik dan aktifkan log query
+        // DB::enableQueryLog();
+        // $start = microtime(true);
+        // $end = microtime(true);
+        // $executionTime = $end - $start;
+        // dd([
+        //     'Execution time (seconds)' => $executionTime,
+        //     'Total queries' => count(DB::getQueryLog()),
+        //     'Query log' => DB::getQueryLog()
+        // ]);
+        $daftarKelas = Kelas::all()->keyBy('nama_kelas');
         foreach ($collection as $row) {
             // Cari ID kelas berdasarkan nama kelas
-            $kelas = Kelas::where('nama_kelas', $row['Kelas'])->first();
+            $kelas = $daftarKelas[$row['Kelas']] ?? null;
 
             // Jika kelas ditemukan, buat entri siswa
             Siswa::create([
