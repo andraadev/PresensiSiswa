@@ -32,17 +32,16 @@
                         @csrf
                         <div class="mb-3">
                             <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap">
+                            <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" required>
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username">
+                            <input type="text" class="form-control" id="username" name="username" required>
                         </div>
                         <div class="mb-3">
                             <label for="Inputpassword" class="form-label">Password</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="InputPassTambah" name="password"
-                                    value="{{ old('password') }}" required>
+                                <input type="password" class="form-control" id="InputPassTambah" name="password" required>
                                 <span class="input-group-text">
                                     <i class="ti ti-eye toggle-password" id="eye" data-target="InputPassTambah"></i>
                                 </span>
@@ -176,6 +175,7 @@
             lengthChange: true,
         });
 
+        // Function to handle view password button
         $(document).on("click", ".toggle-password", function() {
             const $this = $(this);
             const targetId = $this.data("target");
@@ -188,35 +188,6 @@
 
             $this.toggleClass("ti-eye ti-eye-off");
         });
-
-
-        // fungsi untuk memunculkan/menyembunyikan password pada tambah data user
-        // const passwordTambah = $("#Inputpassword");
-        // const eyeTambah = $("#eye");
-
-        // eyeTambah.click(function() {
-        //     if (eyeTambah.hasClass("ti-eye")) {
-        //         passwordTambah.attr("type", "text");
-        //         eyeTambah.removeClass("ti-eye").addClass("ti-eye-off");
-        //     } else {
-        //         passwordTambah.attr("type", "password");
-        //         eyeTambah.removeClass("ti-eye-off").addClass("ti-eye");
-        //     }
-        // });
-
-        // fungsi untuk memunculkan/menyembunyikan password pada update data user
-        // const passwordUpdate = $("#InputPassUpdate");
-        // const eyeIconUpdate = $("#eyeIconUpdate");
-
-        // eyeIconUpdate.click(function() {
-        //     if (eyeIconUpdate.hasClass("ti-eye")) {
-        //         passwordUpdate.attr("type", "text");
-        //         eyeIconUpdate.removeClass("ti-eye").addClass("ti-eye-off");
-        //     } else {
-        //         passwordUpdate.attr("type", "password");
-        //         eyeIconUpdate.removeClass("ti-eye-off").addClass("ti-eye");
-        //     }
-        // });
     });
 </script>
 @endsection
