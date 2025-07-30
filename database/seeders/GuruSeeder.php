@@ -15,16 +15,18 @@ class GuruSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Guru::factory(20)->create();
-        // $faker = Faker::create();
+        // \App\Models\Guru::factory(20)->create();
+        $faker = Faker::create('id-ID');
 
-        // for ($i = 1; $i == 20; $i++) {
-        //     Guru::create([
-        //         'nip' => $faker->numberBetween(0000000000, 9999999999),
-        //         'nama_lengkap' => $faker->name(),
-        //         'jenis_kelamin' => $faker->randomElements(['Laki-laki', 'Perempuan']),
-        //         'no_telepon' => $faker->numberBetween(0000000000000, 9999999999999),
-        //     ]);
-        // }
+        for ($i = 1; $i <= 20; $i++) {
+            Guru::create([
+                // Generate 18 digits of nim, and unique
+                'nip' => $faker->unique()->numerify('##################'),
+                'nama_lengkap' => $faker->name(),
+                'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
+                // Generate 13 digits of random telephone number in indonesian
+                'no_telepon' => '08' . $faker->numerify('##########')
+            ]);
+        }
     }
 }
