@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('guru', function (Blueprint $table) {
             $table->id();
-            $table->char('nip');
-            $table->string('nama_lengkap');
+            $table->char('nip', 18);
+            $table->string('nama_lengkap', 100);
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
-            $table->char('no_telepon');
+            $table->char('no_telepon', 13);
             $table->timestamps();
         });
     }
