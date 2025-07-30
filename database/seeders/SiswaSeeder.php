@@ -21,10 +21,12 @@ class SiswaSeeder extends Seeder
 
         for ($i = 1; $i <= 20; $i++) {
             Siswa::create([
+                // Generate 10 digits of nisn, and unique
                 'nisn' => $faker->unique()->numerify('##########'),
                 'nama_lengkap' => $faker->name(),
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
                 'kelas_id' => $faker->randomElement($kelasIds),
+                // Generate 13 digits of random telephone number in indonesian
                 'no_telepon' => '08' . $faker->numerify('##########'),
             ]);
         }
