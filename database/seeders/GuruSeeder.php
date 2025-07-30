@@ -20,7 +20,7 @@ class GuruSeeder extends Seeder
 
         for ($i = 1; $i <= 20; $i++) {
             Guru::create([
-                // Generate 18 digits of nim, and unique
+                // Generate 18 digits of nip, and unique
                 'nip' => $faker->unique()->numerify('##################'),
                 'nama_lengkap' => $faker->name(),
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
