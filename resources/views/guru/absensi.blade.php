@@ -10,24 +10,18 @@
 @endsection
 
 @section('content')
-
-    {{-- <a href="" class="card">
-        John Doe
-    </a> --}}
-    {{-- <a href="{{ route('absensi.create') }}" class="btn btn-primary mb-3 {{ count($absensi) > 0 ? 'disabled' : '' }}">Absen</a> --}}
     <div class="row">
         @if (count($absensi) > 0)
             @foreach ($absensi as $data_absensi)
                 <div class="col-md-4 col-sm-12">
                     <div class="card shadow-md container">
                         <div class="card-body">
-                            <h1 class="text-center fw-bold">5</h1>
+                            <h1 class="text-center fw-bold">{{ $loop->iteration }}</h1>
                             <h3 class="text-center fw-bold">{{ $data_absensi->siswa->nama_lengkap }}</h3>
                             <h4 class="text-center">Status : {{ $data_absensi->status }}</h4>
                             <h4 class="text-center">Keterangan :
                                 {{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }}
                             </h4>
-                            {{-- <h4 class="text-center">ID GURU : {{ $data_absensi->user->username }}</h4> --}}
                             <form action="{{ route('absensi.update', $data_absensi->id) }}" method="post">
                                 @csrf
                                 @method('PUT')
