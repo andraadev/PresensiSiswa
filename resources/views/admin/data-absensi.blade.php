@@ -22,7 +22,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="{{ route('admin.data_absensi.filter')}}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Tanggal Mulai</label>
