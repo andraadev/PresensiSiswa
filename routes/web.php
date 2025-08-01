@@ -24,11 +24,11 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'name' => 'admin.'], function () {
     Route::get('/beranda', [HalamanAdminController::class, 'beranda']);
     Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi']);
-    Route::get('/data-absensi/filter', [HalamanAdminController::class, 'filter_data_absensi'])->name('data_absensi.filter');
+    Route::get('/data-absensi/filter', [HalamanAdminController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
 
     //Import Excel
-    Route::post('/data-guru/import', [GuruController::class, 'import_excel'])->name('data_guru.import_excel');
-    Route::post('/data-siswa/import', [SiswaController::class, 'import_excel'])->name('data_siswa.import_excel');
+    Route::post('/data-guru/import', [GuruController::class, 'import_excel'])->name('admin.data_guru.import_excel');
+    Route::post('/data-siswa/import', [SiswaController::class, 'import_excel'])->name('admin.data_siswa.import_excel');
 
     // Route yang menangani fungsi CRUD
     Route::resource('/data-guru', GuruController::class);
