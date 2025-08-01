@@ -13,6 +13,14 @@
     <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#filter">
         Filter
     </button>
+
+    @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
+        <a href="{{ route('admin.data_absensi') }}" class="btn btn-danger">
+            Reset Filter
+        </a>
+    @endif
+
+
     <!-- Modal Filter -->
     <div class="modal fade" id="filter" tabindex="-1">
         <div class="modal-dialog">
@@ -22,8 +30,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.data_absensi.filter')}}" method="post">
-                        @csrf
+                    <form action="{{ route('admin.data_absensi.filter') }}" method="get">
+                        {{-- @csrf --}}
                         <div class="mb-3">
                             <label class="form-label">Tanggal Mulai</label>
                             <input type="date" name="tanggal_mulai" class="form-control">
