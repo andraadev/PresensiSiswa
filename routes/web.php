@@ -21,9 +21,9 @@ Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'name' => 'admin.'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/beranda', [HalamanAdminController::class, 'beranda']);
-    Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi']);
+    Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi'])->name('data_absensi');
     Route::get('/data-absensi/filter', [HalamanAdminController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
 
     //Import Excel
@@ -39,12 +39,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'name' => 'admin.'], 
 
 Route::group(['middleware' => 'auth', 'prefix' => 'guru'], function () {
     Route::resource('/absensi', AbsensiController::class)->except('show', 'edit', 'destroy');
-    Route::get('/data-absensi', [AbsensiController::class, 'data_absensi'])->name('guru.data_absensi');
-    Route::post('/filter-data-absensi', [AbsensiController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
+    Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi'])->name('guru.data_absensi');
+    Route::get('/data-absensi/filter', [HalamanAdminController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'bk'], function () {
     Route::get('/beranda', [HalamanBKController::class, 'index'])->name('bk.beranda');
-    Route::get('/data-absensi-siswa', [HalamanBKController::class, 'data_absensi_siswa'])->name('bk.data_absensi');
-    Route::post('/filter-data-absensi', [HalamanBKController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
+    Route::get('/data-absensi', [HalamanAdminController::class, 'data_absensi'])->name('bk.data_absensi');
+    Route::get('/data-absensi/filter', [HalamanAdminController::class, 'filter_data_absensi'])->name('bk.data_absensi.filter');
 });

@@ -84,7 +84,7 @@ class HalamanAdminController extends Controller
      */
     public function data_absensi()
     {
-        return view('admin.data-absensi', [
+        return view('data-absensi', [
             'header' => 'Data Absensi',
             'absensi' => Absensi::all(),
             'siswa' => Siswa::all(),
@@ -108,6 +108,6 @@ class HalamanAdminController extends Controller
                 return $query->where('kelas_id', $kelas_id);
             })
             ->get();
-        return view('admin.data-absensi', compact('absensi', 'kelas', 'header'));
+        return view('data-absensi', compact('absensi', 'kelas', 'header'));
     }
 }

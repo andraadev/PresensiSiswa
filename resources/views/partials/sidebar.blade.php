@@ -52,14 +52,6 @@
                         <span class="hide-menu">Data User</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
-                        <span>
-                            <i class="ti ti-table"></i>
-                        </span>
-                        <span class="hide-menu">Data Absensi</span>
-                    </a>
-                </li>
             @elseif (Auth::user()->role == 'Guru')
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('absensi') ? 'active' : '' }}" href="absensi">
@@ -67,14 +59,6 @@
                             <i class="ti ti-home"></i>
                         </span>
                         <span class="hide-menu">Beranda</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
-                        <span>
-                            <i class="ti ti-table"></i>
-                        </span>
-                        <span class="hide-menu">Data Absensi</span>
                     </a>
                 </li>
             @else
@@ -86,17 +70,16 @@
                         <span class="hide-menu">Beranda</span>
                     </a>
                 </li>
-                <li class="sidebar-item ">
-                    <a class="sidebar-link {{ Request::is('data-absensi-siswa') ? 'active' : '' }}"
-                        href="data-absensi-siswa">
-                        <span>
-                            <i class="ti ti-table"></i>
-                        </span>
-                        <span class="hide-menu">Data Absensi Siswa</span>
-                    </a>
-                </li>
             @endif
-            {{-- berlaku di semua role --}}
+            {{-- berlaku di semua role selama user telah login --}}
+            <li class="sidebar-item">
+                <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
+                    <span>
+                        <i class="ti ti-table"></i>
+                    </span>
+                    <span class="hide-menu">Data Absensi</span>
+                </a>
+            </li>
             <li class="sidebar-item">
                 <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
                     <span>
