@@ -3,16 +3,14 @@
 namespace App\Imports;
 
 use App\Models\Guru;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class ImportDataGuru implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImportDataGuru implements ToCollection, WithHeadingRow
 {
     /**
      * @param Collection $collection
@@ -27,10 +25,5 @@ class ImportDataGuru implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'no_telepon' => $row['No Telepon']
             ]);
         }
-    }
-
-    public function chunkSize(): int
-    {
-        return 1000;
     }
 }

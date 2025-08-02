@@ -4,17 +4,14 @@ namespace App\Imports;
 
 use App\Models\Siswa;
 use App\Models\Kelas;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class ImportDataSiswa implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImportDataSiswa implements ToCollection, WithHeadingRow
 {
     /**
      * @param array $row
@@ -47,10 +44,5 @@ class ImportDataSiswa implements ToCollection, WithHeadingRow, WithChunkReading,
                 'no_telepon' => $row['No Telepon']
             ]);
         }
-    }
-
-    public function chunkSize(): int
-    {
-        return 1000;
     }
 }
