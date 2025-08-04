@@ -1,10 +1,4 @@
 <?php
-
-// Controller untuk manajemen halaman
-use App\Http\Controllers\HalamanAdminController;
-use App\Http\Controllers\HalamanBKController;
-
-
 // Controller untuk Fitur CRUD pada aplikasi
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AbsensiController;
@@ -16,7 +10,6 @@ use App\Http\Controllers\UserController;
 
 
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Route khusus halaman login
 Route::get('/', [LoginController::class, 'login'])->name('login');
