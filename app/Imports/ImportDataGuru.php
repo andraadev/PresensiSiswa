@@ -18,11 +18,13 @@ class ImportDataGuru implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         foreach ($collection as $row) {
+            // $sanitized = array_map('trim', $row->toArray());
+            // dd($sanitized);
             Guru::create([
-                'nip' => $row['NIP'],
-                'nama_lengkap' => $row['Nama Lengkap'],
-                'jenis_kelamin' => $row['Jenis Kelamin'],
-                'no_telepon' => $row['No Telepon']
+                'nip' => trim($row['NIP']),
+                'nama_lengkap' => trim($row['Nama Lengkap']),
+                'jenis_kelamin' => trim($row['Jenis Kelamin']),
+                'no_telepon' => trim($row['No Telepon'])
             ]);
         }
     }
