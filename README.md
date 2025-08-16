@@ -21,7 +21,7 @@ A Laravel-based application to record student attendance in a school environment
 -   PHP 8.1
 -   Laravel 10
 -   Bootstrap 5
--   [Modernize Admin Template](https://adminmart.com/template/modernize-free-bootstrap-admin-dashboard/) (Free Version)
+-   [Modernize Admin Template](https://adminmart.com/product/modernize-free-bootstrap-5-admin-template/) (Free Version)
 
 ---
 
