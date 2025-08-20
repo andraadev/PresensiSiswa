@@ -5,25 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/LogoCN.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
     <style>
-        #Inputpassword {
-            position: relative;
-            margin: 3px 0;
+        /* Change icon size */
+        .ti {
+            font-size: 22px;
         }
 
-        #eye {
-            position: absolute;
-            right: 2.3rem;
-            top: 16rem;
-            font-size: 22px;
-            cursor: pointer;
+        body{
+            background-color: rgb(31,54,46)
         }
     </style>
 </head>
 
-<body style="background-color: rgb(31,54,46)">
+<body>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
@@ -34,53 +29,47 @@
                         <div class="card mb-0 border border-dark">
                             <div class="card-body">
                                 <section class="logo-img text-center w-100">
-                                    <h1 class="fw-bolder">
-                                        <img src="{{ asset('images/logos/LogoCN.png') }}" width="65"
-                                            alt="Logo SMK Citra Negara">
-                                        Absensi
-                                    </h1>
+                                    <h1 class="fw-bolder">Absensi</h1>
                                     <p>Silakan login terlebih dahulu untuk melanjutkan</p>
                                 </section>
-                                <section id="section-alert">
-                                    @session('Gagal')
-                                        <div class="alert alert-danger alert-dismissible fade show">
-                                            <i class="ti ti-alert-triangle" style="font-size: 18px"></i>
-                                            {{ $value }}.<a href="#"
-                                                onclick="alert('Jika kamu lupa password akunmu, maka kamu dapat menghubungi admin untuk mengganti password akunmu')">Lupa
-                                                password?</a>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                aria-label="Close"></button>
-                                        </div>
-                                    @endsession
-                                </section>
+                                {{-- Error Detail: Validasi --}}
+                                @if ($errors->any() || session('Gagal'))
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        @if ($errors->any())
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        @if (session('Gagal'))
+                                            {{ session('Gagal') }}.
+                                        @endif
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
                                 <form action="{{ route('auth') }}" method="post" autocomplete="off">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
-                                        <input type="username"
-                                            class="form-control @error('username') is-invalid @enderror" id="username"
-                                            name="username" value="{{ old('username') }}" autofocus>
-                                        <section id="error-form">
-                                            @error('username')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </section>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" autofocus required>
+                                            <span class="input-group-text">
+                                                <i class="ti ti-user"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="mb-3" id="input-password">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="password"
-                                            class="form-control @error('password') is-invalid @enderror"
-                                            id="Inputpassword" name="password" value="{{ old('password') }}">
-                                        <section id="error-form">
-                                            @error('password')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </section>
-                                        <i class="ti ti-eye" id="eye"></i>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="Inputpassword" name="password" value="{{ old('password') }}" required>
+                                            <span class="input-group-text">
+                                                <i class="ti ti-eye" id="eye"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
-                                    <p class="fw-bold text-center"> -Jika kamu lupa password, silakan hubungi admin-
-                                    </p>
+                                    <p class="fw-bold text-center">-Jika kamu lupa password, silakan hubungi admin-</p>
                                 </form>
                             </div>
                         </div>

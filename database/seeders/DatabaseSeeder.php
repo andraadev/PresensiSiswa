@@ -14,7 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call(GuruSeeder::class);
+        $this->call([
+            GuruSeeder::class,
+            KelasSeeder::class,
+            SiswaSeeder::class,
+        ]);
+
         $DataDummyUser = [
             [
                 'nama_lengkap' => 'Admin',

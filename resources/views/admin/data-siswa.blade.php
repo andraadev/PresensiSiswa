@@ -84,9 +84,7 @@
                                 <b>Pastikan</b> jumlah kolom pada file excel yang kamu upload sama dengan yang ada di
                                 <i>database</i>
                             </li>
-                            <li><b>Pastikan</b> tabel kelas telah diisi</li>
-                            <li>Kolom kelas_id diisi dengan nama kelasnya, dan <b><i>bukan</i></b> id kelasnya </li>
-                            <li><b>Pastikan</b> tidak ada data duplikat</li>
+                            <li><b>Pastikan</b> tabel kelas telah diisi dan tidak ada data duplikat</li>
                             <li>
                                 Unduh Template Excel
                                 <a href="{{ asset('template_excel/data-siswa.xlsx') }}"> Disini</a>

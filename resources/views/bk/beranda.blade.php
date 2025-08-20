@@ -5,15 +5,13 @@
 
 @section('basic-statistics-section')
     <div class="row">
-        <div class="col-sm-12 col-6">
+        <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="card-body">
                     <div class="row align-items-start">
                         <div class="col-9">
-                            <h4 class="mb-8 fw-bolder">Selamat Datang, {{ Auth::user()->nama_lengkap }}
-                                </h5>
-                                <h6 class="fw-semibold mb-0">{{ date('l,d F Y') }}</h6>
-                            </h4>
+                            <h5 class="mb-8 fw-bolder">Selamat Datang, {{ Auth::user()->nama_lengkap }}</h4>
+                            <h6 id="jam" class="fw-semibold mb-0">{{ date('l,d F Y') }}</h6>
                         </div>
                         <div class="col-3">
                             <div class="d-flex justify-content-end">
@@ -27,15 +25,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-6">
+        <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="card-body">
                     <div class="row align-items-start">
                         <div class="col-9">
-                            <h4 class="mb-8 fw-bolder">Jumlah Siswa</h5>
-                                {{-- <h6 class="fw-semibold mb-0">Rabu,4 Oktober 2023</h6> --}}
-                                <h6 class="fw-semibold mb-0">{{ $siswa }} Siswa</h6>
-                            </h4>
+                            <h5 class="mb-8 fw-bolder">Jumlah Siswa</h5>
+                            <h6 class="fw-semibold mb-0">{{ $siswa }} Siswa</h6>
                         </div>
                         <div class="col-3">
                             <div class="d-flex justify-content-end">

@@ -99,7 +99,7 @@ class GuruController extends Controller
             'file.mimes' => 'File harus berupa file Excel dengan ekstensi xlsx atau xls'
         ]);
 
-        Excel::queueImport(new ImportDataGuru, $request->file('file'));
+        Excel::import(new ImportDataGuru, $request->file('file'));
 
         flash()->addSuccess('Tambah Data Guru Berhasil');
 

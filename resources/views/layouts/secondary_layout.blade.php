@@ -5,11 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/LogoCN.png') }}" />
-
     <!-- Main Stylesheet -->
-    {{-- <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
 
     <!-- DataTables CSS -->
@@ -83,6 +79,10 @@
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.print.min.js') }}"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('js/logout-modal.js')}}"></script>
     <script>
         $(document).ready(function() {
             $('#table').DataTable({

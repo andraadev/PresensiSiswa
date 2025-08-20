@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class HalamanAdminController extends Controller
+class DashboardController extends Controller
 {
     // public function beranda()
     // {
@@ -44,7 +44,7 @@ class HalamanAdminController extends Controller
     //     // Kirim data grafik ke tampilan
     //     return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'jumlah_user'));
     // }
-    public function beranda()
+    public function beranda_admin()
     {
         $user =  User::count('nama_lengkap');
         $guru = Guru::count('nama_lengkap');
@@ -73,9 +73,39 @@ class HalamanAdminController extends Controller
         // Siapkan data untuk grafik pie
         $pieLabels = array_keys($jumlah_user);
         $pieData = array_values($jumlah_user);
+        $header="Beranda";
 
         // Kirim data grafik ke tampilan
-        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData'));
+        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData', 'header'));
+    }
+
+    public function beranda_bk()
+    {
+        $header = "Beranda";
+        $siswa = Siswa::count('nama_lengkap');
+        $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
+            $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
+        })
+            ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
+            ->groupBy('year')
+            ->orderBy('year')
+            ->get()
+            ->toArray(); // Mengubah koleksi menjadi array PHP biasa
+
+        // Siapkan data untuk grafik
+        $labels = array_column($jumlah_siswa, 'year'); // Label sumbu X berdasarkan tahun
+        $data = array_map('intval', array_column($jumlah_siswa, 'count')); // Data jumlah siswa (konversi ke bilangan bulat)
+
+        // Hitung jumlah siswa yang hadir, sakit, izin, dan alpa
+        $statistik_siswa = Absensi::select(
+            DB::raw('COUNT(IF(status = "Hadir", 1, NULL)) as hadir'),
+            DB::raw('COUNT(IF(status = "Sakit", 1, NULL)) as sakit'),
+            DB::raw('COUNT(IF(status = "Izin", 1, NULL)) as izin'),
+            DB::raw('COUNT(IF(status = "Alpa", 1, NULL)) as alpa')
+        )->first();
+
+        // Kirim data grafik ke tampilan
+        return view('bk.beranda', compact('jumlah_siswa', 'header', 'labels', 'data', 'siswa', 'statistik_siswa'));
     }
 
     /**
@@ -83,7 +113,7 @@ class HalamanAdminController extends Controller
      */
     public function data_absensi()
     {
-        return view('admin.data-absensi', [
+        return view('data-absensi', [
             'header' => 'Data Absensi',
             'absensi' => Absensi::all(),
             'siswa' => Siswa::all(),
@@ -107,6 +137,6 @@ class HalamanAdminController extends Controller
                 return $query->where('kelas_id', $kelas_id);
             })
             ->get();
-        return view('admin.data-absensi', compact('absensi', 'kelas', 'header'));
+        return view('data-absensi', compact('absensi', 'kelas', 'header'));
     }
 }

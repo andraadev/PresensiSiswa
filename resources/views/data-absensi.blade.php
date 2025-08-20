@@ -1,5 +1,10 @@
 @extends('layouts.default_layout')
 
+@php
+    $prefix = request()->segment(1); // 'admin', 'guru', atau 'bk'
+    // dd($prefix);
+@endphp
+
 @section('title')
     Data Absensi
 @endsection
@@ -13,6 +18,14 @@
     <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#filter">
         Filter
     </button>
+
+    @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
+        <a href="{{ route('data_absensi') }}" class="btn btn-danger">
+            Reset Filter
+        </a>
+    @endif
+
+
     <!-- Modal Filter -->
     <div class="modal fade" id="filter" tabindex="-1">
         <div class="modal-dialog">
@@ -22,8 +35,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
-                        @csrf
+                    <form action="{{ route($prefix.'.data_absensi.filter') }}" method="get">
+                        {{-- @csrf --}}
                         <div class="mb-3">
                             <label class="form-label">Tanggal Mulai</label>
                             <input type="date" name="tanggal_mulai" class="form-control">
@@ -77,6 +90,7 @@
                 <td>{{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }} </td>
                 <td>{{ $data_absensi->user->nama_lengkap }}</td>
                 <td>{{ $data_absensi->created_at }}</td>
+                {{-- <td>{{ $data_absensi->created_at->format('d F Y') }}</td> --}}
             </tr>
         @endforeach
     </tbody>

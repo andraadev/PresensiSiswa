@@ -21,10 +21,14 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a href="#" class="dropdown-item" onclick="modal_logout()">
+                            <a href="javascript:void(0)" class="dropdown-item" onclick="modal_logout()">
                                 <i class="ti ti-logout" style="font-size: 22px"></i>
                                 Log out
                             </a>
+
+                            <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </li>

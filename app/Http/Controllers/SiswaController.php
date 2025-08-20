@@ -114,7 +114,7 @@ class SiswaController extends Controller
             'file.mimes' => 'File harus berupa file Excel dengan ekstensi xlsx atau xls'
         ]);
 
-        Excel::queueImport(new ImportDataSiswa, $request->file('file'));
+        Excel::import(new ImportDataSiswa, $request->file('file'));
 
         flash()->addSuccess('Tambah Data Siswa Berhasil');
 

@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
-            $table->char('slug_kelas');
             $table->string('nama_kelas', 20);
             $table->foreignId('guru_id')->references('id')->on('guru');
-            $table->string('qr_code');
             $table->timestamps();
         });
     }
