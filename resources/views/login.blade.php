@@ -29,7 +29,7 @@
                         <div class="card mb-0 border border-dark">
                             <div class="card-body">
                                 <section class="logo-img text-center w-100">
-                                    <h1 class="fw-bolder">Absensi</h1>
+                                    <h1 class="fw-bolder">PresensiSiswa</h1>
                                     <p>Silakan login terlebih dahulu untuk melanjutkan</p>
                                 </section>
                                 {{-- Error Detail: Validasi --}}
