@@ -1,12 +1,5 @@
 # 📚 Absensi  
 A Laravel-based application to record student attendance in a school environment.
-
-![php](https://img.shields.io/badge/php-8.1-blue)
-![laravel](https://img.shields.io/badge/laravel-10-red)
-![major](https://img.shields.io/badge/fix-major-orange)
-![minor](https://img.shields.io/badge/fix-minor-yellow)
-![maintenance](https://img.shields.io/badge/maintained-no-critical)
-
 ---
 
 ## ✨ Features
@@ -31,7 +24,7 @@ A Laravel-based application to record student attendance in a school environment
 
 ---
 
-## 🗑️ Removed / Deprecated Packages
+## 🗑️ Removed / Deprecated Packages (Deleted in v1.1.0)
 The following packages were previously used but have been removed due to maintenance considerations or unused features:
 - ❌ [simple-qrcode](https://github.com/SimpleSoftwareIO/simple-qrcode) — QR code generator *(required Imagick)*  
 - ❌ [laravel-ngrok](https://github.com/jn-jairo/laravel-ngrok) — No longer relevant for local development
@@ -39,7 +32,6 @@ The following packages were previously used but have been removed due to mainten
 ---
 
 ## ⚙️ How to Install
-> **Prerequisites:** Before you start, ensure you have a local development environment (like [XAMPP](https://www.apachefriends.org/index.html) or [Laragon](https://laragon.org/)), [Git](https://git-scm.com/downloads), and [Composer](https://getcomposer.org/download/) installed on your system. This project requires **PHP 8.1** or higher.
 1.  **Clone the repository**:
     ```bash
     git clone https://github.com/andraadev/PresensiSiswa.git
@@ -80,21 +72,20 @@ The following packages were previously used but have been removed due to mainten
     -   **Password:** `User678`
 
 
-## 🔥 Known Major Issues
--   **Import Timeout:** Importing Excel files containing more than 30 rows may result in a request timeout.
--   **Unreliable Absence ID:** The absence numbering logic relies on an auto-incrementing primary key, which is not a reliable method for generating sequential attendance numbers.
+## 🔥 Known Issues
+- Excel import >30 rows → timeout (fixed v1.1.0)
+- View password button layout inconsistent on certain screen sizes (fixed v1.1.0)
 
----
+To see what's new, please see [changelog](https://github.com/andraadev/PresensiSiswa/blob/main/CHANGELOG.md)
 
-## 🐞 Known Minor Bugs
--   **Password Visibility Toggle:** The "view password" button does not function as intended, and its icon alignment is inconsistent at certain screen resolutions.
+For dev, please see [commit log](https://github.com/andraadev/PresensiSiswa/commits/main/)
 
 ---
 
 ## 📌 Project Status
-> **Archived – No Longer Maintained**
+> **Maintained, but slowed**
 
-This project was developed for internal use during an academic assessment and has since been archived. The source code is provided for reference and educational purposes only. Due to the known issues and lack of further development, it is **not recommended for use in a production environment.**
+This project was initially developed for an academic assessment. While not actively developed with new features, it is still being maintained to address critical bugs and security issues. The source code is provided for reference and educational purposes. It is **not recommended for use in a production environment** due to its limited scope and known issues.
 
 ---
 
