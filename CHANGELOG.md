@@ -14,7 +14,7 @@
 
 [1.0.0]: https://github.com/andraadev/PresensiSiswa/releases/tag/v1.0.0
 
-[Unreleased]
+
 ## [1.1.0] - 20 August 2025
 ### Added
 - Added a reset filter button on the attendance data page.
@@ -32,4 +32,4 @@
 ### Security
 - Improved the security of the logout process to protect user sessions.
 
-Translated with DeepL.com (free version)
+[1.1.0]: https://github.com/andraadev/PresensiSiswa/releases/tag/1.1.0
