@@ -18,58 +18,36 @@ A Laravel-based application to record student attendance in a school environment
 
 ---
 
-## 📦 Core Packages
-- [phpflasher](https://github.com/php-flasher/php-flasher) — Flash message notifications  
-- [maatwebsite/excel](https://laravel-excel.com/) — Excel file importer
+## 📦 Packages
+| Package Name | Functions | Status |
+|------------- | ---------| --------|
+| [phpflasher](https://github.com/php-flasher/php-flasher) | Flash message notifications | Used ✅ |  
+| [maatwebsite/excel](https://laravel-excel.com/) | Excel file importer | Used ✅ |
+| [simple-qrcode](https://github.com/SimpleSoftwareIO/simple-qrcode) | QR code generator *(required Imagick)* | ❌ Deleted* |  
+| [laravel-ngrok](https://github.com/jn-jairo/laravel-ngrok) |  Expose app to public URL via ngrok (local tunneling) | ❌ Deleted* | 
+
+*Deleted because these packages are not used again in version 1.1.0
 
 ---
 
-## 🗑️ Removed / Deprecated Packages (Deleted in v1.1.0)
-The following packages were previously used but have been removed due to maintenance considerations or unused features:
-- ❌ [simple-qrcode](https://github.com/SimpleSoftwareIO/simple-qrcode) — QR code generator *(required Imagick)*  
-- ❌ [laravel-ngrok](https://github.com/jn-jairo/laravel-ngrok) — No longer relevant for local development
+## ⚙️ Quick Install
+```bash
+git clone https://github.com/andraadev/PresensiSiswa.git
+cd PresensiSiswa
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
 
----
-
-## ⚙️ How to Install
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/andraadev/PresensiSiswa.git
-    cd PresensiSiswa
-    ```
-2.  **Install dependencies**:
-    ```bash
-    composer install
-    ```
-3.  **Setup up the environment file**:
-    ```bash
-    cp .env.example .env
-    ```
-    > **Note:** Open the `.env` file and configure your database connection (`DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
-
-4.  **Generate the application key**:
-    ```bash
-    php artisan key:generate
-    ```
-5.  **Run database migrations and seeders**:
-    ```bash
-    php artisan migrate --seed
-    ```
-6.  **Run the development server**:
-    ```bash
-    php artisan serve
-    ```
-
-## 🔑 Default Login
+## 🔑 Default Login (For Development Only)
 -   **Admin**
-    -   **Username:** `Admin123`
-    -   **Password:** `Admin123`
+    -   **Username and Password:** `Admin123`
 -   **Guru**
-    -   **Username:** `User123`
-    -   **Password:** `User123`
+    -   **Username and Password:** `User123`
 -   **BK**
-    -   **Username:** `User678`
-    -   **Password:** `User678`
+    -   **Username and Password:** `User678`
 
 
 ## 🔥 Known Issues
