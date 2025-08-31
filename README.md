@@ -1,5 +1,6 @@
 # 📚 Absensi  
 A Laravel-based application to record student attendance in a school environment.
+
 ---
 
 ## ✨ Features
