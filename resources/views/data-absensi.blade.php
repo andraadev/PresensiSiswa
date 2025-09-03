@@ -35,8 +35,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route($prefix.'.data_absensi.filter') }}" method="get">
-                        {{-- @csrf --}}
+                    <div class="alert alert-info">
+                        Untuk memfilter data, isi minimal satu kolom di bawah.
+                    </div>
+                    <form action="{{ route($prefix . '.data_absensi.filter') }}" method="get" id="filterForm">
                         <div class="mb-3">
                             <label class="form-label">Tanggal Mulai</label>
                             <input type="date" name="tanggal_mulai" class="form-control">
@@ -48,6 +50,7 @@
                         <div class="mb-3">
                             <label class="form-label">Kelas</label>
                             <select name="kelas_id" class="form-select">
+                                <option value="">Pilih</option>
                                 @foreach ($kelas as $data_kelas)
                                     <option value="{{ $data_kelas->id }}">{{ $data_kelas->nama_kelas }}</option>
                                 @endforeach
@@ -56,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Simpan</button>
                 </div>
                 </form>
             </div>
@@ -95,4 +98,21 @@
         @endforeach
     </tbody>
 </table>
+@endsection
+
+@section('additional_js')
+<script>
+const form = document.querySelector("#filterForm");
+const submitBtn = document.querySelector("#filterBtn");
+
+form.addEventListener("change", () => {
+    // Check if there is an input in the form that has a value
+    let hasValue = Array.from(form.querySelectorAll("input, select"))
+                        .some(el => el.value.trim() !== "");
+
+    // The button will return to disabled if the value returns empty
+    submitBtn.disabled = !hasValue;
+});
+
+</script>
 @endsection
