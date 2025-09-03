@@ -125,18 +125,22 @@ class DashboardController extends Controller
     {
         $tanggal_mulai = $request->input('tanggal_mulai');
         $tanggal_selesai = $request->input('tanggal_selesai');
+        $kelas_id = $request->input('kelas_id');
         $kelas = Kelas::all();
         $header = "Data Absensi";
 
-        $kelas_id = $request->input('kelas_id');
-
         // Query untuk mengambil data absensi dengan filter tanggal mulai, tanggal selesai, dan kelas
-        $absensi = Absensi::whereDate('created_at', '>=', $tanggal_mulai)
-            ->whereDate('created_at', '<=', $tanggal_selesai)
-            ->when($kelas_id, function ($query) use ($kelas_id) {
+        // Update: menambahkan fallback jika tanggal tidak diisi, sistem tidak melempar error secara langsung
+        $absensi = Absensi::when($tanggal_mulai, function ($query) use ($tanggal_mulai){
+            return $query->where("created_at", $tanggal_mulai);
+        })
+        ->when($tanggal_selesai, function ($query) use ($tanggal_selesai){
+            return $query->where("created_at", $tanggal_selesai);
+        })
+        ->when($kelas_id, function ($query) use ($kelas_id) {
                 return $query->where('kelas_id', $kelas_id);
-            })
-            ->get();
+         })
+        ->get();
         return view('data-absensi', compact('absensi', 'kelas', 'header'));
     }
 }
