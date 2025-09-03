@@ -124,7 +124,11 @@
                     exportOptions: {
                         columns: ":visible:not(.noExport)"
                     }
-                }, ]
+                }, ],
+
+                language: {
+                    zeroRecords: "No data was found according to the selected filter."
+                },
             }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
         });
     </script>
