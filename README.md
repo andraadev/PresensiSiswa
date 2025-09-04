@@ -55,9 +55,9 @@ php artisan serve
 - Excel import >30 rows → timeout (fixed v1.1.0)
 - View password button layout inconsistent on certain screen sizes (fixed v1.1.0)
 
-To see what's new, please see [changelog](https://github.com/andraadev/PresensiSiswa/blob/main/CHANGELOG.md)
+To see what's new, please check the [changelog](https://github.com/andraadev/PresensiSiswa/blob/main/CHANGELOG.md)
 
-For dev, please see [commit log](https://github.com/andraadev/PresensiSiswa/commits/main/)
+For technical details, see the [commit log](https://github.com/andraadev/PresensiSiswa/commits/main/)
 
 ---
 
