@@ -95,6 +95,4 @@
         </ul>
     </nav>
     <!-- End Sidebar navigation -->
-    </section>
-    <!-- End Sidebar scroll-->
 </aside>
