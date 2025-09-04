@@ -23,6 +23,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>
+                                        <i class="ti ti-point-filled"></i> {{ $error }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form action="{{ route('data-guru.store') }}" method="post">
                         @csrf
                         <div class="row">
@@ -145,6 +156,17 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>
+                                                        <i class="ti ti-point-filled"></i> {{ $error }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <form action="{{ route('data-guru.update', $data_guru->id) }}" method="post">
                                         @csrf
                                         @method('PUT')
