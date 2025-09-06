@@ -7,9 +7,9 @@
                 </a>
             </li>
             <li class="nav-item d-none d-md-block d-lg-block d-xl-block d-xl-block">
-                <h1 class="ms-3 text-white">
-                    {{ $header }}
-                </h1>
+                <h3 class="ms-3 text-white">
+                    {{ $header ?? 'Default Page' }}
+                </h3>
             </li>
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav" style="background-color: rgb(31,54,46);">
