@@ -11,10 +11,6 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
 
-    <!-- Simplebar CSS-->
-    {{-- <link rel="stylesheet" href="{{ asset('libs/simplebar/dist/simplebar.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="../../../public/libs/simplebar/dist/simplebar.css"> --}}
-
     {{-- Set default size for class .ti <icon> --}}
     <style>
         .ti {
@@ -57,9 +53,6 @@
     <!-- Custom Scripts -->
     <script src="{{ asset('js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('js/app.min.js') }}"></script>
-
-    <!-- Simplebar JS -->
-    {{-- <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script> --}}
 
     @yield('additional_js')
 
