@@ -11,7 +11,7 @@
 @section('content')
 
 @section('action-buttons')
-    <a href="#" class="btn btn-primary">Tambah</a>
+    <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah</a>
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
 
     <!-- Modal Tambah Data Guru dengan File Excel -->
