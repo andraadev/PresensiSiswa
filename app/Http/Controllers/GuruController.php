@@ -50,7 +50,7 @@ class GuruController extends Controller
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
-        return back();
+        return redirect()->route('data-guru.index');
     }
 
     /**
