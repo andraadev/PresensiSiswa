@@ -53,18 +53,15 @@ class GuruController extends Controller
         return redirect()->route('data-guru.index');
     }
 
-    public function edit($id){
-        $guru = Guru::findOrFail($id);
+    public function edit(Guru $guru){
         return view('admin.data-guru.update', compact('guru'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Guru $guru)
     {
-        $guru = Guru::findOrFail($id);
-
         $validated_data = $request->validate([
             'nip' => 'required',
             'nama_lengkap' => 'required',
@@ -88,10 +85,8 @@ class GuruController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Guru $guru)
     {
-        $guru = Guru::findOrFail($id);
-
         $guru->delete();
 
         flash()->addSuccess('Hapus Data Guru Berhasil');
