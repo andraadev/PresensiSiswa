@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExcelImportRequest;
 use App\Http\Requests\GuruFormRequest;
 use App\Imports\ImportDataGuru;
 use App\Models\Guru;
@@ -66,15 +67,9 @@ class GuruController extends Controller
         return redirect()->route('data-guru.index');
     }
 
-    public function import_excel(Request $request)
+    public function import_excel(ExcelImportRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xlsx,xls',
-        ], [
-            'file.mimes' => 'File harus berupa file Excel dengan ekstensi xlsx atau xls'
-        ]);
-
-        Excel::import(new ImportDataGuru, $request->file('file'));
+        Excel::import(new ImportDataGuru, $request->validated()['file']);
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
