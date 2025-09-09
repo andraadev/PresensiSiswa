@@ -44,7 +44,7 @@
             @include('partials.navbar')
             {{-- Navbar End --}}
             <div class="container-fluid">
-                <h1 class="d-sm-block d-md-none">@yield('heading')</h1>
+                <h1>@yield('heading')</h1>
                 <div class="card shadow-md">
                     <div class="card-body p-3">
                         <section id="action-buttons" class="mb-2">
@@ -116,7 +116,7 @@
                 }, ],
 
                 language: {
-                    zeroRecords: "No data was found according to the selected filter."
+                    zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur."
                 },
             }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
         });
