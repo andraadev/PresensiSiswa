@@ -6,7 +6,6 @@ use App\Http\Requests\ExcelImportRequest;
 use App\Http\Requests\GuruFormRequest;
 use App\Imports\ImportDataGuru;
 use App\Models\Guru;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
