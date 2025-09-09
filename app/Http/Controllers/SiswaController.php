@@ -16,8 +16,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        return view('admin.data-siswa', [
-            'header' => 'Data Siswa',
+        return view('admin.data-siswa.index', [
             'siswa' => Siswa::orderBy('nama_lengkap', 'asc')->with('kelas')->get(),
             'kelas' => Kelas::all(),
         ]);
@@ -55,7 +54,7 @@ class SiswaController extends Controller
 
         flash()->addSuccess('Tambah Data Siswa Berhasil');
 
-        return back();
+        return redirect()->route('data-siswa.index');
     }
 
     /**
@@ -88,7 +87,7 @@ class SiswaController extends Controller
 
         flash()->addSuccess('Edit Data Siswa Berhasil');
 
-        return back();
+        return redirect()->route('data-siswa.index');
     }
 
     /**
@@ -100,7 +99,7 @@ class SiswaController extends Controller
 
         flash()->addSuccess('Hapus Data Siswa Berhasil');
 
-        return back();
+        return redirect()->route('data-siswa.index');
     }
 
     public function import_excel(Request $request)
