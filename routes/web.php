@@ -26,7 +26,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::post('/data-siswa/import', [SiswaController::class, 'import_excel'])->name('admin.data_siswa.import_excel');
 
     // Route yang menangani fungsi CRUD
-    Route::resource('/data-guru', GuruController::class);
+    Route::resource('/data-guru', GuruController::class)->parameters(['data-guru' => 'guru']);
     Route::resource('/data-siswa', SiswaController::class);
     Route::resource('/data-kelas', KelasController::class);
     Route::resource('/data-user', UserController::class);
