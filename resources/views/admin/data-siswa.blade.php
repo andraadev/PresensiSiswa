@@ -125,7 +125,7 @@
                 <td>{{ $datasiswa->nisn }}</td>
                 <td>{{ $datasiswa->nama_lengkap }}</td>
                 <td>{{ $datasiswa->jenis_kelamin }}</td>
-                <td>{{ $datasiswa->kelas?->nama_kelas !== null ? $datasiswa->kelas->nama_kelas : '-' }}</td>
+                <td>{{ $datasiswa->kelas->nama_kelas ?? '-' }}</td>
                 <td>{{ $datasiswa->no_telepon }}</td>
                 <td>
                     <button class="btn btn-warning" data-bs-toggle="modal"
