@@ -61,9 +61,8 @@ class SiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Siswa $siswa, $id)
+    public function update(Request $request, Siswa $siswa)
     {
-        $siswa = Siswa::findOrFail($id);
         $validatedData = $request->validate([
             'nisn' => 'required|max_digits:10|numeric',
             'nama_lengkap' => 'required|max:100',
@@ -95,10 +94,8 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Siswa $siswa, $id)
+    public function destroy(Siswa $siswa)
     {
-        $siswa = Siswa::findOrFail($id);
-
         $siswa->delete();
 
         flash()->addSuccess('Hapus Data Siswa Berhasil');
