@@ -61,7 +61,7 @@ class GuruController extends Controller
     {
         $guru->delete();
 
-        flash()->addSuccess('Hapus Data Guru Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Hapus Data Guru Berhasil');
 
         return redirect()->route('data-guru.index');
     }
@@ -76,7 +76,7 @@ class GuruController extends Controller
 
         Excel::import(new ImportDataGuru, $request->file('file'));
 
-        flash()->addSuccess('Tambah Data Guru Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
         return back();
     }
