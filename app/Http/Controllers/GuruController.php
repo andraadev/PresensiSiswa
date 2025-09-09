@@ -53,6 +53,11 @@ class GuruController extends Controller
         return redirect()->route('data-guru.index');
     }
 
+    public function edit($id){
+        $guru = Guru::findOrFail($id);
+        return view('admin.data-guru.update', compact('guru'));
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -77,7 +82,7 @@ class GuruController extends Controller
 
         flash()->option('timeout', 3000)->addSuccess('Edit Data Guru Berhasil');
 
-        return back();
+        return redirect()->route('data-guru.index');
     }
 
     /**
@@ -91,7 +96,7 @@ class GuruController extends Controller
 
         flash()->addSuccess('Hapus Data Guru Berhasil');
 
-        return back();
+        return redirect()->route('data-guru.index');
     }
 
     public function import_excel(Request $request)
