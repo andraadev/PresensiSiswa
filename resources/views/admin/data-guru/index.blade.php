@@ -13,7 +13,7 @@
 @section('action-buttons')
     <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah</a>
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
-
+    
     <!-- Modal Tambah Data Guru dengan File Excel -->
     <div class="modal fade" id="import_excel" tabindex="-1">
         <div class="modal-dialog">
@@ -35,25 +35,25 @@
                                 </p>
                             </li>
                         </ol>
-
+    
                         <label class="form-label">Pilih File Excel(.xlsx)</label>
                         <input type="file" name="file" class="form-control" accept=".xlsx, .xls">
-
+    
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
-
+    
                 </div>
             </div>
         </div>
     </div>
+    <!-- Akhir Dari Modal Form Tambah Guru-->
 @endsection
 
 
 
-{{-- Akhir Dari Modal Form Tambah Guru --}}
 <table class="table" id="table">
     <thead>
         <tr>
@@ -74,14 +74,13 @@
                 <td>{{ $data_guru->jenis_kelamin }}</td>
                 <td>{{ $data_guru->no_telepon }}</td>
                 <td>
-                    <a href="#" type="button" class="btn btn-warning btn-edit">Edit</a>
-                    <form action="{{ route('data-guru.destroy', $data_guru->id) }}" method="post"
-                        style="display: inline">
+                    <a href="{{ route('data-guru.edit', $data_guru->id) }}" type="button"
+                        class="btn btn-warning btn-edit">Edit</a>
+                    <form action="{{ route('data-guru.destroy', $data_guru->id) }}" method="POST" class="d-inline"
+                        onsubmit="return confirm('Apakah anda yakin ingin menghapus data dengan nama {{ $data_guru->nama_lengkap }} ini?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger show-alert-delete-box">
-                            Hapus
-                        </button>
+                        <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
                     </form>
                 </td>
             </tr>
