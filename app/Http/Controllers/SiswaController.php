@@ -52,7 +52,7 @@ class SiswaController extends Controller
 
         Siswa::create($validatedData);
 
-        flash()->addSuccess('Tambah Data Siswa Berhasil');
+        flash()->options('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
@@ -85,7 +85,7 @@ class SiswaController extends Controller
 
         $siswa->update($validatedData);
 
-        flash()->addSuccess('Edit Data Siswa Berhasil');
+        flash()->options('timeout', 3000)->addSuccess('Edit Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
@@ -97,7 +97,7 @@ class SiswaController extends Controller
     {
         $siswa->delete();
 
-        flash()->addSuccess('Hapus Data Siswa Berhasil');
+        flash()->options('timeout', 3000)->addSuccess('Hapus Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
@@ -112,7 +112,7 @@ class SiswaController extends Controller
 
         Excel::import(new ImportDataSiswa, $request->file('file'));
 
-        flash()->addSuccess('Tambah Data Siswa Berhasil');
+        flash()->options('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
         return back();
     }
