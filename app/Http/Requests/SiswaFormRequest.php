@@ -36,7 +36,7 @@ class SiswaFormRequest extends FormRequest
     public function messages(): array {
         return[
             'nisn.required' => 'NIP tidak boleh kosong.',
-            'nisn.digits' => 'NISN harus terdiri dari 18 digit angka.',
+            'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
             'nisn.unique' => 'NIP yang Anda masukkan sudah terdaftar.',
             'nama_lengkap.required' => 'Nama lengkap tidak boleh kosong.',
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
