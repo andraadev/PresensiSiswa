@@ -1,7 +1,4 @@
-# 📚 Absensi  
-A Laravel-based application to record student attendance in a school environment.
-
----
+<h1 align="center">📚 Absensi</h1>
 <p align="center">
   <img src="https://img.shields.io/badge/PHP-8.1-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
   <img src="https://img.shields.io/badge/Laravel-10-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/>
@@ -10,8 +7,9 @@ A Laravel-based application to record student attendance in a school environment
   <img src="https://img.shields.io/badge/Production-Not%20Recommended-critical?style=for-the-badge"/>
 </p>
 
--
+A Laravel-based application to record student attendance in a school environment.
 
+---
 ## 📋 Table of Contents
 - [✨ Features](#features)
 - [🧰 Tech Stack](#tech-stack)
@@ -22,6 +20,8 @@ A Laravel-based application to record student attendance in a school environment
 - [📌 Project Status](#project-status)
 - [⚠️ Disclaimer](#disclaimer)
 - [📝 Changelog](./CHANGELOG.md)
+
+---
 
 ## ✨ Features
 -   Role-based access control (Admin, Guru, BK).
@@ -75,9 +75,7 @@ php artisan serve
 - Excel import >30 rows → timeout (fixed v1.1.0)
 - View password button layout inconsistent on certain screen sizes (fixed v1.1.0)
 
-To see what's new, please check the [changelog](https://github.com/andraadev/PresensiSiswa/blob/main/CHANGELOG.md)
-
-For technical details, see the [commit log](https://github.com/andraadev/PresensiSiswa/commits/main/)
+Note: for technical details, see the [commit log](https://github.com/andraadev/PresensiSiswa/commits/main/)
 
 ---
 
