@@ -50,7 +50,7 @@ A Laravel-based application to record student attendance in a school environment
 *Deleted because these packages are not used again in version 1.1.0
 
 ---
-
+<a id="quick-install"></a>
 ## ⚙️ Quick Install
 ```bash
 git clone https://github.com/andraadev/PresensiSiswa.git
@@ -86,5 +86,6 @@ This project was initially developed for an academic assessment. While not activ
 
 ---
 
+<a id="disclaimer"></a>
 ## ⚠️ Disclaimer
 This software is provided "as is", without warranty of any kind, express or implied. The user assumes all responsibility and risk for the use of this software. No official support or maintenance will be provided.
