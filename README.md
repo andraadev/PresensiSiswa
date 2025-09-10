@@ -10,20 +10,20 @@
 A Laravel-based application to record student attendance in a school environment.
 
 ---
-## 📋 Table of Contents
-- [✨ Features](#-features)
-- [🧰 Tech Stack](#-tech-stack)
-- [⚙️ Quick Install](#-quick-install) 
-- [🔑 Default Login](#-default-login-for-development-only)
-- [📦 Packages](#-packages)
-- [🔥 Known Issues](#-known-issues)
-- [📌 Project Status](#-project-status)
-- [⚠️ Disclaimer](#-disclaimer)
-- [📝 Changelog](./CHANGELOG.md)
+## Table of Contents
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Packages](#-packages)
+- [Quick Install](#-quick-install)
+- [Default Login](#-default-login)
+- [Project Status](#-project-status)
+- [Disclaimer](#-disclaimer)
+- [What's New](./CHANGELOG.md)
+- [What's New (Dev)](https://github.com/andraadev/PresensiSiswa/commits/main/)
 
 ---
 
-## ✨ Features
+## Features
 -   Role-based access control (Admin, Guru, BK).
 -   CRUD operations for Teachers, Students, Classes, and Users.
 -   Record daily student attendance.
@@ -31,7 +31,7 @@ A Laravel-based application to record student attendance in a school environment
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 -   PHP 8.1
 -   Laravel 10
 -   Bootstrap 5
@@ -39,7 +39,7 @@ A Laravel-based application to record student attendance in a school environment
 
 ---
 
-## 📦 Packages
+## Packages
 | Package Name | Functions | Status |
 |------------- | ---------| --------|
 | [phpflasher](https://github.com/php-flasher/php-flasher) | Flash message notifications | Used ✅ |  
@@ -50,8 +50,8 @@ A Laravel-based application to record student attendance in a school environment
 *Deleted because these packages are not used again in version 1.1.0
 
 ---
-<a id="quick-install"></a>
-## ⚙️ Quick Install
+
+## Quick Install
 ```bash
 git clone https://github.com/andraadev/PresensiSiswa.git
 cd PresensiSiswa
@@ -61,31 +61,24 @@ php artisan key:generate
 php artisan migrate --seed
 php artisan serve
 ```
+---
 
-## 🔑 Default Login (For Development Only)
+## Default Login
+Note: for development or testing only.
 -   **Admin**
     -   **Username and Password:** `Admin123`
 -   **Guru**
     -   **Username and Password:** `User123`
 -   **BK**
     -   **Username and Password:** `User678`
-
-
-## 🔥 Known Issues
-- Excel import >30 rows → timeout (fixed v1.1.0)
-- View password button layout inconsistent on certain screen sizes (fixed v1.1.0)
-
-Note: for technical details, see the [commit log](https://github.com/andraadev/PresensiSiswa/commits/main/)
-
 ---
 
-## 📌 Project Status
+## Project Status
 > **Maintained, but slowed**
 
 This project was initially developed for an academic assessment. While not actively developed with new features, it is still being maintained to address critical bugs and security issues. The source code is provided for reference and educational purposes. It is **not recommended for use in a production environment** due to its limited scope and known issues.
 
 ---
 
-<a id="disclaimer"></a>
-## ⚠️ Disclaimer
+## Disclaimer
 This software is provided "as is", without warranty of any kind, express or implied. The user assumes all responsibility and risk for the use of this software. No official support or maintenance will be provided.
