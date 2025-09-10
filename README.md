@@ -11,14 +11,14 @@ A Laravel-based application to record student attendance in a school environment
 
 ---
 ## 📋 Table of Contents
-- [✨ Features](#features)
-- [🧰 Tech Stack](#tech-stack)
-- [⚙️ Quick Install](#quick-install) 
-- [🔑 Default Login](#default-login-for-development-only)
-- [📦 Packages](#packages)
-- [🔥 Known Issues](#known-issues)
-- [📌 Project Status](#project-status)
-- [⚠️ Disclaimer](#disclaimer)
+- [✨ Features](#-features)
+- [🧰 Tech Stack](#-tech-stack)
+- [⚙️ Quick Install](#-quick-install) 
+- [🔑 Default Login](#-default-login-for-development-only)
+- [📦 Packages](#-packages)
+- [🔥 Known Issues](#-known-issues)
+- [📌 Project Status](#-project-status)
+- [⚠️ Disclaimer](#-disclaimer)
 - [📝 Changelog](./CHANGELOG.md)
 
 ---
