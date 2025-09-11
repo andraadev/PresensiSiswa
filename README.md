@@ -11,13 +11,13 @@ A Laravel-based application to record student attendance in a school environment
 
 ---
 ## Table of Contents
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Packages](#-packages)
-- [Quick Install](#-quick-install)
-- [Default Login](#-default-login)
-- [Project Status](#-project-status)
-- [Disclaimer](#-disclaimer)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Packages](#packages)
+- [Quick Install](#quick-install)
+- [Default Login](#default-login)
+- [Project Status](#project-status)
+- [Disclaimer](#disclaimer)
 - [What's New](./CHANGELOG.md)
 - [What's New (Dev)](https://github.com/andraadev/PresensiSiswa/commits/main/)
 
