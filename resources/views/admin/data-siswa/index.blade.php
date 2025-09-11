@@ -35,11 +35,11 @@
                         <div class="mb-3">
                             <label class="form-label">Jenis Kelamin</label>
                             <br>
-                            <input type="radio" name="jenis_kelamin" id="checkbox_l" value="laki-laki"
+                            <input type="radio" name="jenis_kelamin" id="checkbox_l" value="Laki-laki"
                                 class="form-check-input" checked>
                             <label for="checkbox_l">Laki-laki</label> <br>
 
-                            <input type="radio" name="jenis_kelamin" id="checkbox_p" value="perempuan"
+                            <input type="radio" name="jenis_kelamin" id="checkbox_p" value="Perempuan"
                                 class="form-check-input">
                             <label for="checkbox_p">Perempuan</label>
                         </div>
