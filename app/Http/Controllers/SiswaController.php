@@ -19,12 +19,13 @@ class SiswaController extends Controller
     {
         return view('admin.data-siswa.index', [
             'siswa' => Siswa::latest()->with('kelas')->get(),
-            'kelas' => Kelas::all(),
         ]);
     }
 
     public function create() {
-        return view('admin.data-siswa.create');
+        return view('admin.data-siswa.create',[
+            'kelas' => Kelas::all(),
+        ]);
     }
 
     /**
