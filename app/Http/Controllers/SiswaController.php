@@ -23,6 +23,10 @@ class SiswaController extends Controller
         ]);
     }
 
+    public function create() {
+        return view('admin.data-siswa.create');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -35,6 +39,9 @@ class SiswaController extends Controller
         return redirect()->route('data-siswa.index');
     }
 
+    public function edit() {
+        return view('admin.data-siswa.update');
+    }
     /**
      * Update the specified resource in storage.
      */
