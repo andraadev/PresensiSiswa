@@ -41,9 +41,10 @@ class SiswaController extends Controller
         return redirect()->route('data-siswa.index');
     }
 
-    public function edit() {
-        return view('admin.data-siswa.update');
+    public function edit(Siswa $siswa) {
+        return view('admin.data-siswa.update', compact('siswa'));
     }
+    
     /**
      * Update the specified resource in storage.
      */
