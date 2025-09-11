@@ -10,63 +10,8 @@
 
 @section('content')
 @section('action-buttons')
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah_siswa">Tambah</button>
+    <a href="{{ route('data-siswa.create') }}" class="btn btn-primary">Tambah</a>
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
-    <!-- Modal Tambah Data Siswa -->
-    <div class="modal fade" id="tambah_siswa" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Tambah Data Siswa</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('data-siswa.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">NISN</label>
-                            <input type="number" class="form-control" name="nisn" value="{{ old('nisn') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nama Lengkap</label>
-                            <input type="nama_lengkap" class="form-control" name="nama_lengkap"
-                                value="{{ old('nama_lengkap') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Jenis Kelamin</label>
-                            <br>
-                            <input type="radio" name="jenis_kelamin" id="checkbox_l" value="Laki-laki"
-                                class="form-check-input" checked>
-                            <label for="checkbox_l">Laki-laki</label> <br>
-
-                            <input type="radio" name="jenis_kelamin" id="checkbox_p" value="Perempuan"
-                                class="form-check-input">
-                            <label for="checkbox_p">Perempuan</label>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kelas</label>
-                            <select name="kelas_id" class="form-select">
-                                @forelse ($kelas as $data_kelas)
-                                    <option value="{{ $data_kelas->id }}">{{ $data_kelas->nama_kelas }}</option>
-                                @empty
-                                    <option>Data Kelas Kosong</option>
-                                @endforelse
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nomor Telepon</label>
-                            <input type="tel" class="form-control" name="no_telepon" value="{{ old('no_telepon') }}">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal Tambah Data Guru dengan File Excel -->
     <div class="modal fade" id="import_excel" tabindex="-1">
         <div class="modal-dialog">
