@@ -18,7 +18,7 @@ class SiswaController extends Controller
     public function index()
     {
         return view('admin.data-siswa.index', [
-            'siswa' => Siswa::orderBy('nama_lengkap', 'asc')->with('kelas')->get(),
+            'siswa' => Siswa::latest()->with('kelas')->get(),
             'kelas' => Kelas::all(),
         ]);
     }
@@ -30,7 +30,7 @@ class SiswaController extends Controller
     {
         Siswa::create($request->validated());
 
-        flash()->options('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
@@ -42,7 +42,7 @@ class SiswaController extends Controller
     {
         $siswa->update($request->validated());
 
-        flash()->options('timeout', 3000)->addSuccess('Edit Data Siswa Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Edit Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
@@ -54,7 +54,7 @@ class SiswaController extends Controller
     {
         $siswa->delete();
 
-        flash()->options('timeout', 3000)->addSuccess('Hapus Data Siswa Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Hapus Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
