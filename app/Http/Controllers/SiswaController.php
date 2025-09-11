@@ -42,9 +42,12 @@ class SiswaController extends Controller
     }
 
     public function edit(Siswa $siswa) {
-        return view('admin.data-siswa.update', compact('siswa'));
+        return view('admin.data-siswa.update', [
+            'siswa' => $siswa,
+            'kelas' => Kelas::all()
+        ]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
