@@ -1,11 +1,17 @@
+<style>
+    .with-bullet {
+        list-style: disc;
+        padding-left: 1.5rem;
+    }
+</style>
+
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul class="with-bullet">
             @foreach ($errors->all() as $error)
-                <li>
-                    <i class="ti ti-point-filled"></i> {{ $error }}
-                </li>
+                <li>{{ $error }}</li>
             @endforeach
         </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 @endif
