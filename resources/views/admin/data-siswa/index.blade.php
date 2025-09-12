@@ -73,17 +73,12 @@
                 <td>{{ $datasiswa->kelas->nama_kelas ?? '-' }}</td>
                 <td>{{ $datasiswa->no_telepon }}</td>
                 <td>
-                    <button class="btn btn-warning" data-bs-toggle="modal"
-                        data-bs-target="#edit_siswa{{ $datasiswa->id }}">
-                        Edit
-                    </button>
-                    <form action="{{ route('data-siswa.destroy', $datasiswa->id) }}" method="post"
-                        style="display: inline">
+                    <a href="{{ route('data-siswa.edit', $datasiswa->id) }}" class="btn btn-warning">Edit</a>
+                   <form action="{{ route('data-siswa.destroy', $datasiswa->id) }}" method="POST" class="d-inline"
+                        onsubmit="return confirm('Apakah anda yakin ingin menghapus data dengan nama {{ $datasiswa->nama_lengkap }} ini?')">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger show-alert-delete-box">
-                            Hapus
-                        </button>
+                        <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
                     </form>
                 </td>
                 <!-- Modal -->
