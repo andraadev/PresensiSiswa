@@ -13,6 +13,7 @@
 @endsection
 
 @section('content')
+    <x-alert-error />
     <form action="{{ route('data-siswa.store') }}" method="POST">
         @csrf
         <div class="mb-3">
