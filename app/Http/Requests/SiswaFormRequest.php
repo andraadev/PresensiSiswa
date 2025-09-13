@@ -29,7 +29,7 @@ class SiswaFormRequest extends FormRequest
             'nama_lengkap' => 'required|max:100',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'kelas_id' => 'required',
-            'no_telepon' => 'required|max:13|unique:siswa,no_telepon,' . $siswaId,
+            'no_telepon' => 'required|digits_between:12,13|unique:siswa,no_telepon,' . $siswaId,
         ];
     }
 
@@ -44,7 +44,7 @@ class SiswaFormRequest extends FormRequest
             'jenis_kelamin.in' => 'Jenis kelamin tidak valid.',
             'no_telepon.required' => 'Nomor telepon tidak boleh kosong.',
             'no_telepon.unique' => 'Nomor telepon yang Anda masukkan sudah terdaftar.',
-            'no_telepon.max' => 'Nomor telepon tidak boleh lebih dari 13 digit.',
+            'no_telepon.digits_between' => 'Nomor telepon harus diantara 12-13 digit.',
         ];
     }
 }
