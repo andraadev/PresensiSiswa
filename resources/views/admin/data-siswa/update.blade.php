@@ -19,12 +19,15 @@
         @method('PUT')
         <div class="mb-3">
             <label class="form-label">NISN</label>
-            <input type="text" class="form-control" name="nisn" value="{{ old('nisn', $siswa->nisn) }}">
+            <input type="text" class="form-control" name="nisn" value="{{ old('nisn', $siswa->nisn) }}"
+                inputmode="numeric" pattern="[0-9]{10}" maxlength="10" id="nisn" data-counter="nisnCounter" required>
+            <small class="counter"></small>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" name="nama_lengkap"
-                value="{{ old('nama_lengkap', $siswa->nama_lengkap) }}">
+                value="{{ old('nama_lengkap', $siswa->nama_lengkap) }}" maxlength="100" data-counter="namaCounter" required>
+            <small class="counter"></small>
         </div>
         <div class="mb-3">
             <label class="form-label">Jenis Kelamin</label>
@@ -52,8 +55,26 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Nomor Telepon</label>
-            <input type="tel" class="form-control" name="no_telepon" value="{{ old('no_telepon', $siswa->no_telepon) }}">
+            <input type="tel" class="form-control" name="no_telepon" value="{{ old('no_telepon', $siswa->no_telepon) }}"
+                pattern="08[0-9]{10,11}$" maxlength="13" id="no_telepon" data-counter="telpCounter" required>
+            <small class="counter"></small>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
+    <script>
+        // Capture all inputs that have data counters
+        document.querySelectorAll("input[data-counter]").forEach(input => {
+            // Take the counter element (small) that is after the input
+            const counter = input.nextElementSibling;
+
+            // Update character count display
+            counter.textContent = `Panjang input: ${input.value.length}`;
+
+            // Add an event listener when the input is edited
+            input.addEventListener("input", () => {
+                // Update character count display
+                counter.textContent = `Panjang input: ${input.value.length}`;
+            });
+        });
+    </script>
 @endsection
