@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExcelImportRequest;
+use App\Http\Requests\GuruFormRequest;
 use App\Imports\ImportDataGuru;
 use App\Models\Guru;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
@@ -14,94 +15,62 @@ class GuruController extends Controller
      */
     public function index()
     {
-        return view('admin.data-guru', [
-            'header' => 'Data Guru',
+        return view('admin.data-guru.index', [
             'guru' => Guru::latest()->get(),
         ]);
+    }
+
+    public function create()
+    {
+        return view('admin.data-guru.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GuruFormRequest $request)
     {
-        $validated_data = $request->validate(
-            [
-                'nip' => 'required|unique:guru,nip',
-                'nama_lengkap' => 'required',
-                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'no_telepon' => 'required|unique:guru,no_telepon',
-            ],
-            [
-                'nip.required' => 'NIP Tidak Boleh Kosong!',
-                'nip.unique' => 'NIP yang Anda Masukkan Telah Ada!',
-                'nama_lengkap.required' => 'Nama Lengkap Tidak Boleh Kosong!',
-                'jenis_kelamin.required' => 'Jenis Kelamin Tidak Boleh Kosong!',
-                'jenis_kelamin.in' => 'Jenis Kelamin Tidak Valid!',
-                'no_telepon.required' => 'Nomor Telepon Tidak Boleh Kosong!',
-                'no_telepon.unique' => 'Nomor Telepon yang Anda Masukkan Telah Ada!',
-            ]
-        );
-
-        Guru::create($validated_data);
+        Guru::create($request->validated());
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
-        return back();
+        return redirect()->route('data-guru.index');
+    }
+
+    public function edit(Guru $guru)
+    {
+        return view('admin.data-guru.update', compact('guru'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(GuruFormRequest $request, Guru $guru)
     {
-        $guru = Guru::findOrFail($id);
-
-        $validated_data = $request->validate([
-            'nip' => 'required',
-            'nama_lengkap' => 'required',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'no_telepon' => 'required',
-        ], [
-            'nip.required' => 'NIP Tidak Boleh Kosong!',
-            'nama_lengkap.required' => 'Nama Lengkap Tidak Boleh Kosong!',
-            'jenis_kelamin.required' => 'Jenis Kelamin Tidak Boleh Kosong!',
-            'jenis_kelamin.in' => 'Jenis Kelamin Tidak Valid!',
-            'no_telepon.required' => 'Nomor Telepon Tidak Boleh Kosong!',
-        ]);
-
-        $guru->update($validated_data);
+        $guru->update($request->validated());
 
         flash()->option('timeout', 3000)->addSuccess('Edit Data Guru Berhasil');
 
-        return back();
+        return redirect()->route('data-guru.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Guru $guru)
     {
-        $guru = Guru::findOrFail($id);
-
         $guru->delete();
 
-        flash()->addSuccess('Hapus Data Guru Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Hapus Data Guru Berhasil');
 
-        return back();
+        return redirect()->route('data-guru.index');
     }
 
-    public function import_excel(Request $request)
+    public function import_excel(ExcelImportRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xlsx,xls',
-        ], [
-            'file.mimes' => 'File harus berupa file Excel dengan ekstensi xlsx atau xls'
-        ]);
+        Excel::import(new ImportDataGuru, $request->validated()['file']);
 
-        Excel::import(new ImportDataGuru, $request->file('file'));
-
-        flash()->addSuccess('Tambah Data Guru Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
         return back();
     }

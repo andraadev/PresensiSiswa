@@ -44,23 +44,12 @@
             @include('partials.navbar')
             {{-- Navbar End --}}
             <div class="container-fluid">
-                <h1 class="d-sm-block d-md-none d-lg-none">@yield('heading')</h1>
+                <h1>@yield('heading')</h1>
                 <div class="card shadow-md">
                     <div class="card-body p-3">
                         <section id="action-buttons" class="mb-2">
                             @yield('action-buttons')
                         </section>
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>
-                                            <i class="ti ti-point-filled"></i> {{ $error }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         @yield('content')
                     </div>
                 </div>
@@ -127,7 +116,7 @@
                 }, ],
 
                 language: {
-                    zeroRecords: "No data was found according to the selected filter."
+                    zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur."
                 },
             }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
         });
