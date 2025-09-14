@@ -61,20 +61,4 @@
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
-    <script>
-        // Capture all inputs that have data counters
-        document.querySelectorAll("input[data-counter]").forEach(input => {
-            // Take the counter element (small) that is after the input
-            const counter = input.nextElementSibling;
-
-            // Update character count display
-            counter.textContent = `Panjang input: ${input.value.length}`;
-
-            // Add an event listener when the input is edited
-            input.addEventListener("input", () => {
-                // Update character count display
-                counter.textContent = `Panjang input: ${input.value.length}`;
-            });
-        });
-    </script>
 @endsection
