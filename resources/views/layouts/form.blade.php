@@ -59,5 +59,23 @@
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/logout-modal.js')}}"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script>
+        // Capture all inputs that have data counters
+        document.querySelectorAll("input[data-counter]").forEach(input => {
+            // Take the counter element (small) that is after the input
+            const counter = input.nextElementSibling;
+
+            // Initialize counter display
+            counter.textContent = `Panjang input: ${input.value.length}`;
+
+            // Add an event listener when the input is filled or edited
+            input.addEventListener("input", () => {
+                // Update character count display
+                counter.textContent = `Panjang input: ${input.value.length}`;
+            });
+        });
+    </script>
 </body>
 </html>

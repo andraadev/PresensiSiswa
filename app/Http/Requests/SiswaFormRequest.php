@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GuruFormRequest extends FormRequest
+class SiswaFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,30 +21,30 @@ class GuruFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        // [For update data only: check if guru id is available or not]
-        $guruId = $this->guru->id ?? null;
+        // [For update data only: check if siswa id is available or not]
+        $siswaId = $this->siswa->id ?? null;
 
         return [
-            'nip' => 'required|digits:18|unique:guru,nip,' . $guruId,
+            'nisn' => 'required|digits:10|unique:siswa,nisn,' . $siswaId,
             'nama_lengkap' => 'required|max:100',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'no_telepon' => 'required|digits_between:12,13|unique:guru,no_telepon,' . $guruId,
+            'kelas_id' => 'required',
+            'no_telepon' => 'required|regex:/^08[0-9]{10,11}$/|unique:siswa,no_telepon,' . $siswaId,
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'nip.required' => 'NIP tidak boleh kosong.',
-            'nip.unique' => 'NIP yang Anda masukkan sudah terdaftar.',
-            'nip.digits' => 'NIP harus terdiri dari 18 digit angka.',
+    public function messages(): array {
+        return[
+            'nisn.required' => 'NISN tidak boleh kosong.',
+            'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
+            'nisn.unique' => 'NISN yang Anda masukkan sudah terdaftar.',
             'nama_lengkap.required' => 'Nama lengkap tidak boleh kosong.',
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong.',
             'jenis_kelamin.in' => 'Jenis kelamin tidak valid.',
             'no_telepon.required' => 'Nomor telepon tidak boleh kosong.',
             'no_telepon.unique' => 'Nomor telepon yang Anda masukkan sudah terdaftar.',
-            'no_telepon.digits_between' => 'Nomor telepon harus diantara 12-13 digit.',
+            'no_telepon.regex' => 'Nomor telepon harus diawali dengan 08 dan terdiri dari 12-13 digit.',
         ];
     }
 }
