@@ -17,7 +17,7 @@
         <ul class="mb-0">
             <li><strong>NISN</strong>: wajib 10 digit angka</li>
             <li><strong>Nama Lengkap</strong>: Maksimal 100 karakter</li>
-            <li><strong>Nomor Telepon</strong>: 12–13 digit, hanya angka tanpa simbol</li>
+            <li><strong>Nomor Telepon</strong>: wajib diawali dengan 08, hanya angka tanpa simbol</li>
         </ul>
     </div>
 
@@ -65,8 +65,8 @@
         <div class="mb-3">
             <label class="form-label">Nomor Telepon</label>
             <input type="tel" class="form-control" name="no_telepon" value="{{ old('no_telepon') }}"
-                pattern="[0-9]{12,13}" maxlength="13" id="no_telepon" data-counter="telpCounter"
-                placeholder="Contoh: 1234567890" required>
+                pattern="08[0-9]{10,11}$" maxlength="13" id="no_telepon" data-counter="telpCounter"
+                placeholder="Contoh: 08123456789" required>
             <small class="counter"></small>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
