@@ -13,6 +13,14 @@
 @endsection
 
 @section('content')
+    <div class="alert alert-info" role="alert">
+       <strong>Petunjuk Pengisian: </strong>
+        <ul class="mb-0 mt-2">
+            <li><strong>NIP</strong>: Wajib 18 digit angka (contoh: 123456789012345678)</li>
+            <li><strong>Nama Lengkap</strong>: Maksimal 100 karakter</li>
+            <li><strong>Nomor Telepon</strong>: Wajib diawali 08, total 12-13 digit (contoh: 08123456789)</li>
+        </ul>
+    </div>
     <x-alert-error />
     <form action="{{ route('data-guru.store') }}" method="POST">
         @csrf
