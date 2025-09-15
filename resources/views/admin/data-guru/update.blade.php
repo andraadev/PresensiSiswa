@@ -20,13 +20,13 @@
         <div class="mb-3">
             <label class="form-label">NIP</label>
             <input type="text" class="form-control" name="nip" value="{{ old('nip', $guru->nip) }}" maxlength="18"
-                pattern="[0-9]{18}" id="nip" data-counter="nipCounter">
+                pattern="[0-9]{18}" id="nip" data-counter="nipCounter" required>
             <small class="counter"></small>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" name="nama_lengkap" value="{{ old('nama_lengkap', $guru->nama_lengkap) }}" 
-            maxlength="100" id="nama_lengkap" data-counter="namaCounter">
+            maxlength="100" id="nama_lengkap" data-counter="namaCounter" required>
             <small class="counter"></small>
         </div>
         <div class="mb-3">
@@ -49,7 +49,7 @@
         <div class="mb-3">
             <label class="form-label">Nomor Telepon</label>
             <input type="tel" name="no_telepon" class="form-control" value="{{ old('no_telepon', $guru->no_telepon) }}" maxlength="13" 
-            pattern="08[0-9]{10,11}$" id="no_telepon" data-counter="telpCounter">
+            pattern="08[0-9]{10,11}$" id="no_telepon" data-counter="telpCounter" required>
             <small class="counter"></small>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>

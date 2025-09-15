@@ -22,19 +22,19 @@
         </ul>
     </div>
     <x-alert-error />
-    <form action="{{ route('data-guru.store') }}" method="POST">
+    <form action="{{ route('data-guru.store') }}" method="POST" class="add-guru-form">
         @csrf
         <div class="row">
             <div class="mb-3">
                 <label class="form-label">NIP</label>
                 <input type="text" class="form-control" name="nip" value="{{ old('nip') }}" maxlength="18"
-                    pattern="[0-9]{18}" placeholder="Contoh: 123456789012345678" id="nip" data-counter="nipCounter">
+                    pattern="[0-9]{18}" placeholder="Contoh: 123456789012345678" id="nip" data-counter="nipCounter" required>
                 <small class="counter"></small>
             </div>
             <div class="mb-3">
                 <label class="form-label">Nama Lengkap</label>
                 <input type="text" class="form-control" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                    maxlength="100" placeholder="Contoh: John Doe" id="nama_lengkap" data-counter="namaCounter">
+                    maxlength="100" placeholder="Contoh: John Doe" id="nama_lengkap" data-counter="namaCounter" required>
                 <small class="counter"></small>
             </div>
         </div>
@@ -55,7 +55,7 @@
             <div class="mb-3">
                 <label class="form-label">Nomor Telepon</label>
                 <input type="tel" name="no_telepon" class="form-control" maxlength="13" pattern="08[0-9]{10,11}$"
-                    placeholder="Contoh: 08123456789" id="no_telepon" data-counter="telpCounter">
+                    placeholder="Contoh: 08123456789" id="no_telepon" data-counter="telpCounter" required>
                 <small class="counter"></small>
             </div>
         </div>
