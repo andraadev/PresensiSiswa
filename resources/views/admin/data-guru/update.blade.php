@@ -13,27 +13,21 @@
 @endsection
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>
-                        <i class="ti ti-point-filled"></i> {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <x-alert-error/>
     <form action="{{ route('data-guru.update', $guru->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">
             <label class="form-label">NIP</label>
-            <input type="text" class="form-control" name="nip" value="{{ $guru->nip }}">
+            <input type="text" class="form-control" name="nip" value="{{ $guru->nip }}" maxlength="18"
+                pattern="[0-9]{18}" id="nip" data-counter="nipCounter">
+            <small class="counter"></small>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-control" name="nama_lengkap" value="{{ $guru->nama_lengkap }}">
+            <input type="text" class="form-control" name="nama_lengkap" value="{{ $guru->nama_lengkap }}" 
+            maxlength="100" id="nama_lengkap" data-counter="namaCounter">
+            <small class="counter"></small>
         </div>
         <div class="mb-3">
             <label class="form-label">Jenis Kelamin</label>
@@ -54,7 +48,9 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Nomor Telepon</label>
-            <input type="tel" name="no_telepon" class="form-control" value="{{ $guru->no_telepon }}">
+            <input type="tel" name="no_telepon" class="form-control" value="{{ $guru->no_telepon }}" maxlength="13" 
+            pattern="08[0-9]{10,11}$" id="no_telepon" data-counter="telpCounter">
+            <small class="counter"></small>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
