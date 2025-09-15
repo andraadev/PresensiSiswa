@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <label class="form-label">Nama Lengkap</label>
                 <input type="text" class="form-control" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                    maxlength="100" placeholder="Contoh: John Doe" id="nip" data-counter="namaCounter">
+                    maxlength="100" placeholder="Contoh: John Doe" id="nama_lengkap" data-counter="namaCounter">
                 <small class="counter"></small>
             </div>
         </div>
