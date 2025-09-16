@@ -43,7 +43,7 @@
                 <label class="form-label">Jenis Kelamin</label>
                 <div class="form-check">
                     <input type="radio" name="jenis_kelamin" id="checkbox_l" value="Laki-laki" class="form-check-input"
-                        {{ old('jenis_kelamin', 'Laki-laki') == 'Laki-laki' ? 'checked' : '' }} checked>
+                        {{ old('jenis_kelamin') == 'Laki-laki' ? 'checked' : '' }}>
                     <label for="checkbox_l">Laki-laki</label>
                 </div>
                 <div class="form-check">
