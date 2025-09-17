@@ -82,12 +82,9 @@
     <script src="{{ asset('libs/DataTables/responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/responsive/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/buttons/js/buttons.print.min.js') }}"></script>
 
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
