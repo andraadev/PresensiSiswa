@@ -1,4 +1,4 @@
-@extends('layouts.secondary_layout')
+@extends('layouts.form')
 
 @section('title')
     Tambah Data Absensi
