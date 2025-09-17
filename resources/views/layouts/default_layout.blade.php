@@ -7,7 +7,7 @@
     <title>@yield('title')</title>
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
 
     <!-- DataTables CSS -->
     <link href="{{ asset('libs/DataTables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
