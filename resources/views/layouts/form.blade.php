@@ -10,9 +10,9 @@
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
-    
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('css/custom.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     @yield('additional_css')
 </head>
@@ -26,6 +26,8 @@
         <div class="body-wrapper">
             @include('partials.navbar')
             <div class="container-fluid">
+                {{-- This header use yield as same as title tag --}}
+                <h1>@yield('title')</h1>
                 <section id="action-buttons" class="mb-2">
                     @yield('action-buttons')
                 </section>
@@ -53,7 +55,7 @@
 
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/logout-modal.js')}}"></script>
+    <script src="{{ asset('js/logout-modal.js') }}"></script>
 
     <!-- SweetAlert2 JS -->
     <script>
@@ -73,4 +75,5 @@
         });
     </script>
 </body>
+
 </html>

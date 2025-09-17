@@ -40,6 +40,8 @@
             @include('partials.navbar')
             {{-- Navbar End --}}
             <div class="container-fluid">
+                {{-- This header use yield as same as title tag --}}
+                <h1>@yield('title')</h1>
                 <div class="card shadow-md">
                     <div class="card-body p-3">
                         <section id="action-buttons" class="mb-2">
