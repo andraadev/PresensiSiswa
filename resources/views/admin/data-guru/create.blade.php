@@ -22,7 +22,7 @@
         </ul>
     </div>
     <x-alert-error />
-    <form action="{{ route('data-guru.store') }}" method="POST" class="add-guru-form">
+    <form action="{{ route('data-guru.store') }}" method="POST" class="add-data-form">
         @csrf
         <div class="row">
             <div class="mb-3">
@@ -61,4 +61,17 @@
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
+
+<script>
+    const form = document.querySelector(".add-data-form");
+    const submitBtn = document.querySelector('button[type="submit"]');
+
+    // Set initial state on first loading
+    submitBtn.disabled = true;
+
+    // Submit button will be disabled if form doesn't meet requirements
+    form.addEventListener("input", () => {
+       submitBtn.disabled = !form.checkValidity();
+    });
+</script>
 @endsection
