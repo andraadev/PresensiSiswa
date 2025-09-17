@@ -21,12 +21,8 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
 
-    {{-- Set default size for class .ti <icon> --}}
-    <style>
-        .ti {
-            font-size: 20px;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css')}}">
 
     @yield('additional_css')
 </head>
@@ -44,7 +40,6 @@
             @include('partials.navbar')
             {{-- Navbar End --}}
             <div class="container-fluid">
-                <h1>@yield('heading')</h1>
                 <div class="card shadow-md">
                     <div class="card-body p-3">
                         <section id="action-buttons" class="mb-2">
