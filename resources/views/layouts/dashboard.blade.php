@@ -23,7 +23,7 @@
             @include('partials.navbar')
             <!--  Navbar End -->
             <div class="container-fluid">
-                <h1 class="d-sm-block d-md-none">@yield('header')</h1>
+                <h1>@yield('header')</h1>
                 @yield('basic-statistics-section')
                 @yield('charts-section')
 
