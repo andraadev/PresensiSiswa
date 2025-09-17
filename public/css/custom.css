@@ -1,0 +1,16 @@
+/* Custom style for navbar.blade.php file */
+.btn-profile{
+    background-color: #caeb73;
+}
+
+.btn-profile:hover{
+    background-color: #caeb73;
+}
+
+.ti{
+    font-size: 20px;
+}
+
+.app-header{
+    background-color: rgb(31,54,46);
+}
