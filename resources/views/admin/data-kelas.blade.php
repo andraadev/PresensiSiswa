@@ -4,10 +4,6 @@
     Data Kelas
 @endsection
 
-@section('heading')
-    Data Kelas
-@endsection
-
 @section('content')
     <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#tambah_kelas">Tambah</button>
     <!-- Modal -->
