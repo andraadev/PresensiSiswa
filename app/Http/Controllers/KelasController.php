@@ -16,7 +16,6 @@ class KelasController extends Controller
     public function index()
     {
         return view('admin.data-kelas', [
-            'header' => 'Data Kelas',
             'kelas' => Kelas::latest()->get(),
             'guru' => Guru::all(),
         ]);
