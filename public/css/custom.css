@@ -36,3 +36,8 @@
     background-color: rgba(202, 235, 115, 0.5) !important;
     border-radius: 8px;
 }
+
+/* Custom CSS for eye icon(view password) */
+.ti-eye{
+    cursor: pointer;
+}

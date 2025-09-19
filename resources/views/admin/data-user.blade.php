@@ -4,14 +4,6 @@
     Data User
 @endsection
 
-@section('additional_css')
-    <style>
-        #eye {
-            cursor: pointer;
-        }
-    </style>
-@endsection
-
 @section('content')
 @section('action-buttons')
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah_user">Tambah</button>
@@ -39,7 +31,7 @@
                             <div class="input-group">
                                 <input type="password" class="form-control" id="InputPassTambah" name="password" required>
                                 <span class="input-group-text">
-                                    <i class="ti ti-eye toggle-password" id="eye" data-target="InputPassTambah"></i>
+                                    <i class="ti ti-eye toggle-password" data-target="InputPassTambah"></i>
                                 </span>
                             </div>
                         </div>
@@ -125,7 +117,7 @@
                                                 placeholder="Jika input ini diisi lagi, maka password akan diupdate"
                                                 required>
                                             <span class="input-group-text">
-                                                <i class="ti ti-eye toggle-password" id="eye"
+                                                <i class="ti ti-eye toggle-password"
                                                     data-target="InputPassUpdate"></i>
                                             </span>
                                         </div>
