@@ -4,10 +4,6 @@
     Edit Data Guru
 @endsection
 
-@section('heading')
-    Edit Data Guru
-@endsection
-
 @section('action-buttons')
     <a href="{{ route('data-guru.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
 @endsection
