@@ -1,9 +1,7 @@
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
-    <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="javascript:void(0)" class="text-nowrap h1 p-2">
-            <span class="h2 fw-bolder text-white">PresensiSiswa</span>
-        </a>
+    <div class="brand-logo d-flex justify-content-center align-items-center">
+        <h2 class="text-white fw-bolder">PresensiSiswa</h2>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
         </div>
