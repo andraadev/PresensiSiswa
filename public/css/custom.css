@@ -11,6 +11,28 @@
     font-size: 20px;
 }
 
-.app-header{
+/* Custom style for sidebar.blade.php file */
+.app-header, .left-sidebar{
     background-color: rgb(31,54,46);
+    border-color: black;
+}
+
+.sidebar-link, .hide-menu, .sidebar-icon{
+    color: #fff;
+}
+
+.sidebar-link.active{
+    background-color: #caeb73 !important;
+    color: #000 !important;
+    border-radius: 8px;
+}
+
+.sidebar-link.active .sidebar-icon,
+.sidebar-link.active .hide-menu {
+    color: #000 !important;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(202, 235, 115, 0.5) !important;
+    border-radius: 8px;
 }
