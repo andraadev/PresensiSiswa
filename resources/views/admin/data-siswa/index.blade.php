@@ -4,10 +4,6 @@
     Data Siswa
 @endsection
 
-@section('heading')
-    Data Siswa
-@endsection
-
 @section('content')
 @section('action-buttons')
     <a href="{{ route('data-siswa.create') }}" class="btn btn-primary">Tambah</a>
