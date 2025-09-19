@@ -12,10 +12,6 @@
     </style>
 @endsection
 
-@section('heading')
-    Data User
-@endsection
-
 @section('content')
 @section('action-buttons')
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah_user">Tambah</button>
