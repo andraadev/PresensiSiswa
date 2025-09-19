@@ -1,4 +1,4 @@
-<aside class="left-sidebar" style="background-color: rgb(31,54,46); border-color:black">
+<aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div class="brand-logo d-flex align-items-center justify-content-between">
         <a href="javascript:void(0)" class="text-nowrap h1 p-2">
@@ -13,59 +13,59 @@
         <ul id="sidebarnav">
             @if (Auth::user()->role == 'Admin')
                 <li class="sidebar-item">
-                    <a class="sidebar-link{{ Request::is('beranda') ? 'active' : '' }}" href="beranda">
+                    <a class="sidebar-link {{ Request::is('beranda') ? ' active' : '' }}" href="beranda">
                         <span>
-                            <i class="ti ti-home"></i>
+                            <i class="ti ti-home sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Beranda</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-guru') ? 'active' : '' }}" href="data-guru">
+                    <a class="sidebar-link {{ Request::is('data-guru') ? ' active' : '' }}" href="data-guru">
                         <span>
-                            <i class="ti ti-chalkboard"></i>
+                            <i class="ti ti-chalkboard sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Data Guru</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" {{ Request::is('data-siswa') ? 'active' : '' }} href="data-siswa">
+                    <a class="sidebar-link" {{ Request::is('data-siswa') ? ' active' : '' }} href="data-siswa">
                         <span>
-                            <i class="ti ti-school"></i>
+                            <i class="ti ti-school sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Data Siswa</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-kelas') ? 'active' : '' }}" href="data-kelas">
+                    <a class="sidebar-link {{ Request::is('data-kelas') ? ' active' : '' }}" href="data-kelas">
                         <span>
-                            <i class="ti ti-building"></i>
+                            <i class="ti ti-building sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Data Kelas</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-user') ? 'active' : '' }}" href="data-user">
+                    <a class="sidebar-link {{ Request::is('data-user') ? ' active' : '' }}" href="data-user">
                         <span>
-                            <i class="ti ti-user-check"></i>
+                            <i class="ti ti-user-check sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Data User</span>
                     </a>
                 </li>
             @elseif (Auth::user()->role == 'Guru')
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('absensi') ? 'active' : '' }}" href="absensi">
+                    <a class="sidebar-link {{ Request::is('absensi') ? ' active' : '' }}" href="absensi">
                         <span>
-                            <i class="ti ti-home"></i>
+                            <i class="ti ti-home sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Beranda</span>
                     </a>
                 </li>
             @else
                 <li class="sidebar-item">
-                    <a class="sidebar-link{{ Request::is('beranda') ? 'active' : '' }}" href="beranda">
+                    <a class="sidebar-link{{ Request::is('beranda') ? ' active' : '' }}" href="beranda">
                         <span>
-                            <i class="ti ti-home"></i>
+                            <i class="ti ti-home sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Beranda</span>
                     </a>
@@ -73,9 +73,9 @@
             @endif
             {{-- berlaku di semua role selama user telah login --}}
             <li class="sidebar-item">
-                <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
+                <a class="sidebar-link {{ Request::is('data-absensi') ? ' active' : '' }}" href="data-absensi">
                     <span>
-                        <i class="ti ti-table"></i>
+                        <i class="ti ti-table sidebar-icon"></i>
                     </span>
                     <span class="hide-menu">Data Absensi</span>
                 </a>
@@ -83,7 +83,7 @@
             <li class="sidebar-item">
                 <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
                     <span>
-                        <i class="ti ti-logout"></i>
+                        <i class="ti ti-logout sidebar-icon"></i>
                     </span>
 
                     <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
