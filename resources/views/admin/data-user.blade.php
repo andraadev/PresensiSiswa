@@ -36,16 +36,19 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label">Role</label><br>
-                            <input type="radio" name="role" id="admin" value="admin" class="form-check-input"
-                                checked>
-                            <label for="admin">Admin</label>
-                            <br>
-                            <input type="radio" name="role" id="guru_walas" value="guru" class="form-check-input">
-                            <label for="guru_walas">Guru atau Wali Kelas</label>
-                            <br>
-                            <input type="radio" name="role" id="bk" value="bk" class="form-check-input">
-                            <label for="bk">BK</label>
+                            <label for="role" class="form-label">Role</label>
+                            <div class="form-check">
+                                <input type="radio" name="role" id="admin" value="admin" class="form-check-input" checked>
+                                <label for="admin">Admin</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="role" id="guru_walas" value="guru" class="form-check-input">
+                                <label for="guru_walas">Guru atau Wali Kelas</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="role" id="bk" value="bk" class="form-check-input">
+                                <label for="bk">BK</label>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -123,20 +126,24 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="role" class="form-label">Role</label><br>
-                                        <input type="radio" name="role" id="admin" value="Admin"
-                                            class="form-check-input"
-                                            {{ $data_user->role == 'Admin' ? 'checked' : '' }}>
-                                        <label for="admin">Admin</label>
-                                        <br>
-                                        <input type="radio" name="role" id="guru_walas" value="Guru"
-                                            class="form-check-input"
-                                            {{ $data_user->role == 'Guru' ? 'checked' : '' }}>
-                                        <label for="guru_walas">Guru atau Wali Kelas</label>
-                                        <br>
-                                        <input type="radio" name="role" id="bk" value="BK"
-                                            class="form-check-input" {{ $data_user->role == 'BK' ? 'checked' : '' }}>
-                                        <label for="bk">BK</label>
+                                        <label for="role" class="form-label">Role</label>
+                                        <div class="form-check">
+                                            <input type="radio" name="role" id="admin" value="Admin"
+                                                class="form-check-input"
+                                                {{ $data_user->role == 'Admin' ? 'checked' : '' }}>
+                                            <label for="admin">Admin</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" name="role" id="guru_walas" value="Guru"
+                                                class="form-check-input"
+                                                {{ $data_user->role == 'Guru' ? 'checked' : '' }}>
+                                            <label for="guru_walas">Guru atau Wali Kelas</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" name="role" id="bk" value="BK"
+                                                class="form-check-input" {{ $data_user->role == 'BK' ? 'checked' : '' }}>
+                                            <label for="bk">BK</label>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
