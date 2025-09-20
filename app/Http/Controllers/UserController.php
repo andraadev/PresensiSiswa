@@ -51,7 +51,7 @@ class UserController extends Controller
 
         User::create($validated_data);
 
-        flash()->addSuccess('Tambah Data user berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data User berhasil');
 
         return back();
     }
@@ -88,7 +88,7 @@ class UserController extends Controller
 
         $user->update($validated_data);
 
-        flash()->addSuccess('Edit Data User Berhasil!');
+        flash()->option('timeout', 3000)->addSuccess('Edit Data User Berhasil!');
 
         return back();
     }
@@ -102,7 +102,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        flash()->addSuccess('Hapus Data User Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Hapus Data User Berhasil');
 
         return back();
     }
