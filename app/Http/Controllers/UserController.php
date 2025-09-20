@@ -53,7 +53,7 @@ class UserController extends Controller
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data User berhasil');
 
-        return back();
+        return redirect()->route('data-user.index');
     }
 
     public function edit() {
@@ -90,7 +90,7 @@ class UserController extends Controller
 
         flash()->option('timeout', 3000)->addSuccess('Edit Data User Berhasil!');
 
-        return back();
+        return redirect()->route('data-user.index');
     }
 
     /**
