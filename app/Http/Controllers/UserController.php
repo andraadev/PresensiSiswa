@@ -18,6 +18,10 @@ class UserController extends Controller
         ]);
     }
 
+    public function create() {
+        return view('admin.data-user.create');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -50,6 +54,10 @@ class UserController extends Controller
         flash()->addSuccess('Tambah Data user berhasil');
 
         return back();
+    }
+
+    public function edit() {
+        return view('admin.data-user.update');
     }
 
     /**
