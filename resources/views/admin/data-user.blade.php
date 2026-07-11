@@ -37,14 +37,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label><br>
-                            <input type="radio" name="role" id="admin" value="admin" class="form-check-input"
+                            <input type="radio" name="role" id="admin" value="Admin" class="form-check-input"
                                 checked>
                             <label for="admin">Admin</label>
                             <br>
-                            <input type="radio" name="role" id="guru_walas" value="guru" class="form-check-input">
+                            <input type="radio" name="role" id="guru_walas" value="Guru" class="form-check-input">
                             <label for="guru_walas">Guru atau Wali Kelas</label>
                             <br>
-                            <input type="radio" name="role" id="bk" value="bk" class="form-check-input">
+                            <input type="radio" name="role" id="bk" value="BK" class="form-check-input">
                             <label for="bk">BK</label>
                         </div>
                         <div class="modal-footer">

@@ -27,7 +27,7 @@ class UserController extends Controller
             'nama_lengkap' => 'required|max:100',
             'username' => 'required|unique:user',
             'password' => 'required',
-            'role' => 'required|in:admin,guru,bk'
+            'role' => 'required|in:Admin,Guru,BK'
         ], [
             'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
             'nama_lengkap.max' => 'Nama lengkap yang anda masukkan terlalu panjang!',
@@ -63,7 +63,7 @@ class UserController extends Controller
             'nama_lengkap' => 'required|max:100',
             'username' => 'required',
             'password' => 'required',
-            'role' => 'required|in:admin,guru,bk'
+            'role' => 'required|in:Admin,Guru,BK'
         ], [
             'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
             'nama_lengkap.max' => 'Nama lengkap yang anda masukkan terlalu panjang!',
