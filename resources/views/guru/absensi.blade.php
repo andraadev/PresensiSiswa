@@ -18,9 +18,21 @@
                         <div class="card-body">
                             <h1 class="text-center fw-bold">{{ $loop->iteration }}</h1>
                             <h3 class="text-center fw-bold">{{ $data_absensi->siswa->nama_lengkap }}</h3>
-                            <h4 class="text-center">Status : {{ $data_absensi->status }}</h4>
-                            <h4 class="text-center">Keterangan :
-                                {{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }}
+                            @php
+                                $statusClasses = [
+                                    'Hadir' => 'text-bg-success',
+                                    'Izin' => 'text-bg-warning',
+                                    'Sakit' => 'text-bg-info',
+                                    'Alpa' => 'text-bg-danger',
+                                ];
+                                $class = $statusClasses[$data_absensi->status] ?? 'text-bg-secondary';
+                            @endphp
+                            <span
+                                class="d-flex justify-content-center align-items-center badge {{ $class }} fs-4 mb-3">
+                                {{ $data_absensi->status }}
+                            </span>
+                            <h4 class="{{ $data_absensi->keterangan ? '' : 'd-none' }}">Keterangan :
+                                {{ $data_absensi->keterangan }}
                             </h4>
                             <form action="{{ route('absensi.update', $data_absensi->id) }}" method="post">
                                 @csrf
