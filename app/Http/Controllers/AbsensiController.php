@@ -89,21 +89,31 @@ class AbsensiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        $siswa_id = $request->siswa_id;
+        $siswa_ids = $request->siswa_id;
         $hari_ini = date('Y-m-d');
-        foreach ($siswa_id as $id) {
+        foreach ($siswa_ids as $siswa_id) {
             $absensi = Absensi::where('siswa_id', $siswa_id)
                 ->where('created_at', '>=', $hari_ini . ' 00:00:00')
                 ->where('created_at', '<=', $hari_ini . ' 23:59:59')
                 ->firstOrFail();;
 
-            // Lakukan update data absensi
-            $absensi->status = $request->status[$id];
-            $absensi->keterangan = $request->keterangan[$id];
+            $absensi->status = $request->status[$siswa_id];
+            $absensi->keterangan = $request->keterangan[$siswa_id] ?? null;
             $absensi->save();
         }
+
+        // $siswa_id = $request->siswa_id;
+        // foreach ($siswa_id as $id) {
+        //     // Temukan data absensi berdasarkan siswa_id
+        //     $absensi = Absensi::where('siswa_id', $id)->firstOrFail();
+
+        //     // Lakukan update data absensi
+        //     $absensi->status = $request->status[$id];
+        //     $absensi->keterangan = $request->keterangan[$id];
+        //     $absensi->save();
+        // }
 
         flash()->addSuccess('Edit Status Absensi Berhasil!');
 
