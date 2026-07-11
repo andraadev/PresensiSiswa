@@ -79,7 +79,7 @@ class SiswaController extends Controller
     {
         Excel::import(new ImportDataSiswa, $request->validated()['file']);
 
-        flash()->options('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
         return back();
     }
