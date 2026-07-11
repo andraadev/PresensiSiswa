@@ -36,8 +36,10 @@
                         <div class="col-md-4 col-sm-12 mb-3">
                             <div class="card shadow-md h-100">
                                 <div class="card-body">
-                                    <h1 class="text-center fw-bold text-muted fs-5 mb-2">#{{ $loop->iteration }}</h1>
-                                    <h3 class="text-center fw-bold fs-5 mb-3">{{ $data_absensi->siswa->nama_lengkap }}</h3>
+                                    <div class="text-center text-muted small mb-1">#{{ $loop->iteration }}</div>
+                                    <h3 class="text-center fw-bold fs-5 mb-3 text-dark">
+                                        {{ $data_absensi->siswa->nama_lengkap }}
+                                    </h3>
 
                                     @php
                                         $statusClasses = [
@@ -54,7 +56,7 @@
                                         {{ $data_absensi->status }}
                                     </span>
 
-                                    <h5 class="fs-6 text-muted {{ $data_absensi->keterangan ? '' : 'd-none' }}">
+                                    <h5 class="fs-6 text-muted text-center {{ $data_absensi->keterangan ? '' : 'd-none' }}">
                                         <strong>Keterangan:</strong> {{ $data_absensi->keterangan }}
                                     </h5>
                                 </div>
@@ -69,7 +71,6 @@
                         </div>
                     </div>
 
-                    {{-- FAB Kuning/Hijau (Tambah) di Kanan Bawah --}}
                     @section('action-buttons')
                         <a href="{{ route('absensi.create', $kelas->id) }}"
                             class="btn btn-success position-fixed bottom-0 end-0 m-4 shadow rounded-circle d-flex align-items-center justify-content-center"
@@ -81,8 +82,6 @@
             </div>
 
         @empty
-
-
             <div class="row">
                 <div class="col-12 mb-3">
                     <h1 class="fw-bold text-dark">Silakan Pilih Kelas untuk Mulai Presensi:</h1>
