@@ -92,9 +92,12 @@ class AbsensiController extends Controller
     public function update(Request $request, string $id)
     {
         $siswa_id = $request->siswa_id;
+        $hari_ini = date('Y-m-d');
         foreach ($siswa_id as $id) {
-            // Temukan data absensi berdasarkan siswa_id
-            $absensi = Absensi::where('siswa_id', $id)->firstOrFail();
+            $absensi = Absensi::where('siswa_id', $siswa_id)
+                ->where('created_at', '>=', $hari_ini . ' 00:00:00')
+                ->where('created_at', '<=', $hari_ini . ' 23:59:59')
+                ->firstOrFail();;
 
             // Lakukan update data absensi
             $absensi->status = $request->status[$id];
