@@ -58,7 +58,7 @@ class AbsensiController extends Controller
             'kelas_id' => 'required',
             'siswa_id' => 'required',
             'status' => 'required|array',
-            'status*' => 'required|in:Hadir,Sakit,Izin,Alpa',
+            'status.*' => 'required|in:Hadir,Sakit,Izin,Alpa',
             'keterangan' => 'nullable|max:50'
         ]);
 
