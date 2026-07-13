@@ -17,7 +17,7 @@
     @yield('additional_css')
 </head>
 
-<body style="background-color: rgb(128 128 128 / 10%);">
+<body style="background-color: rgb(128 128 128 / 5%);">
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
