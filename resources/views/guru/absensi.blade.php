@@ -1,17 +1,17 @@
 @extends('layouts.form')
-
-@section('title')
-    Absensi
-@endsection
-
-@section('heading')
-    Absensi
-    <div id="spacer" class="mb-3"></div>
-@endsection
+{{-- {{ dd($absensi->first()?->siswa?->kelas_id ?? 'Aman, datanya gak ada yang cocok!') }} --}}
+@section('title', 'Data Absensi')
 
 @section('content')
     <div class="row">
         @if (count($absensi) > 0)
+            @section('action-buttons')
+                <a href="{{ route('absensi.edit', $absensi->first()->kelas_id) }}"
+                    class="btn btn-success position-fixed bottom-0 end-0 m-4 shadow rounded-circle d-flex align-items-center justify-content-center"
+                    type="button" style="z-index: 1050; width: 56px; height: 56px;">
+                    <i class="ti ti-pencil" style="font-size: 30px"></i>
+                </a>
+            @endsection
             @foreach ($absensi as $data_absensi)
                 <div class="col-md-4 col-sm-12">
                     <div class="card shadow-md container">
@@ -34,50 +34,20 @@
                             <h4 class="{{ $data_absensi->keterangan ? '' : 'd-none' }}">Keterangan :
                                 {{ $data_absensi->keterangan }}
                             </h4>
-                            <form action="{{ route('absensi.update', $data_absensi->id) }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="siswa_id[]" value="{{ $data_absensi->id }}">
-                                <details class="text-center">
-                                    <summary>Ubah Status</summary>
-                                    <div class="btn-group btn-group-toggle d-flex justify-content-center mb-2"
-                                        data-bs-toggle="buttons">
-                                        <label class="btn btn-success">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Hadir"
-                                                {{ $data_absensi->status == 'Hadir' ? 'checked' : '' }}> Hadir
-                                        </label>
-                                        <label class="btn btn-secondary">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Sakit"
-                                                {{ $data_absensi->status == 'Sakit' ? 'checked' : '' }}> Sakit
-                                        </label>
-                                        <label class="btn btn-warning">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Izin"
-                                                {{ $data_absensi->status == 'Izin' ? 'checked' : '' }}> Izin
-                                        </label>
-                                        <label class="btn btn-danger">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Alpa"
-                                                {{ $data_absensi->status == 'Alpa' ? 'checked' : '' }}> Alpa
-                                        </label>
-                                    </div>
-                                    <label class="form-label keterangan-label">Keterangan...</label>
-                                    <input type="text" name="keterangan[{{ $data_absensi->id }}]"
-                                        class="form-control keterangan-input" value="{{ $data_absensi->keterangan }}">
-                                </details>
                         </div>
                     </div>
                 </div>
             @endforeach
-            <div class="row">
-                <button type="submit" class="btn btn-primary col-2">Simpan</button>
-            </div>
-            </form>
         @else
             <div class="alert alert-warning">
                 Data Absensi Kosong, Silakan Isi Formulir Absensi Terlebih Dahulu dengan Menekan Tombol "Absen" dibawah ini.
             </div>
+
+            <a href="{{ route('absensi.create') }}"
+                class="btn btn-success position-fixed bottom-0 end-0 m-4 shadow rounded-circle d-flex align-items-center justify-content-center"
+                type="button" style="z-index: 1050; width: 56px; height: 56px;">
+                <i class="ti ti-plus" style="font-size: 30px"></i>
+            </a>
         @endif
-        <div class="{{ count($absensi) > 0 ? 'd-none' : 'd-block' }}">
-            <a href="{{ route('absensi.create') }}" class="btn btn-primary d-grid p-3" style="font-size: 30px">Absen</a>
-        </div>
     </div>
 @endsection
