@@ -24,28 +24,43 @@ class AbsensiController extends Controller
      * Display a listing of the resource.
      * Fungsi CRUD Absensi
      */
-    public function index()
+    public function index(?string $id_kelas = null)
     {
+        $hari_ini = date('Y-m-d');
+        $kelasSaya = collect();
+
+        $relations = ['siswa.absensi' => function ($query) use ($hari_ini) {
+            $query->whereBetween('created_at', [$hari_ini . ' 00:00:00', $hari_ini . ' 23:59:59']);
+        }];
+
+        if ($id_kelas) {
+            $kelasSaya = Kelas::with($relations)->where('id', $id_kelas)->get();
+        } else {
+            $guruIdLogin = auth()->user()->guru?->id;
+            if ($guruIdLogin) {
+                $kelasSaya = Kelas::with($relations)->where('guru_id', $guruIdLogin)->get();
+            }
+        }
+
+        // Semua kelas untuk jaring pengaman fallback (tetap di-load relasinya biar aman)
+        $semuaKelas = Kelas::with($relations)->get();
+
         return view('guru.absensi', [
-            'absensi' => Absensi::all(),
-            'siswa' => Siswa::all(),
-            'header' => 'Absensi',
-            // 'siswa' => Siswa::join('kelas', 'siswa.kelas_id', '=', 'kelas.id')
-            // ->where('kelas.slug', $slug_kelas)
-            // ->get()
+            'kelas_saya'  => $kelasSaya,
+            'semua_kelas' => $semuaKelas,
+            'header'      => 'Dashboard Presensi Siswa'
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(?string $id_kelas = null)
     {
-        return view('guru.tambah-data-absensi', [
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all(),
-            'header' => 'Tambah Data Absensi',
-        ]);
+        $kelas = Kelas::findOrFail($id_kelas);
+        $siswa = Siswa::where('kelas_id', $id_kelas)->get();
+
+        return view('guru.tambah-data-absensi', compact('kelas', 'siswa'));
     }
 
     /**
@@ -86,6 +101,22 @@ class AbsensiController extends Controller
         return redirect()->route('absensi.index');
     }
 
+    public function edit(string $id)
+    {
+        $hari_ini = date('Y-m-d');
+        $dataSiswa = Siswa::where('kelas_id', $id)
+            ->with(['absensi' => function ($query) use ($hari_ini) {
+                $query->whereBetween('created_at', [$hari_ini . ' 00:00:00', $hari_ini . ' 23:59:59']);
+            }])
+            ->get();
+        $kelas = Kelas::findOrFail($id);
+
+        return view('guru.edit-data-absensi', [
+            'daftar_siswa' => $dataSiswa,
+            'kelas' => $kelas
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -103,17 +134,6 @@ class AbsensiController extends Controller
             $absensi->keterangan = $request->keterangan[$siswa_id] ?? null;
             $absensi->save();
         }
-
-        // $siswa_id = $request->siswa_id;
-        // foreach ($siswa_id as $id) {
-        //     // Temukan data absensi berdasarkan siswa_id
-        //     $absensi = Absensi::where('siswa_id', $id)->firstOrFail();
-
-        //     // Lakukan update data absensi
-        //     $absensi->status = $request->status[$id];
-        //     $absensi->keterangan = $request->keterangan[$id];
-        //     $absensi->save();
-        // }
 
         flash()->addSuccess('Edit Status Absensi Berhasil!');
 
