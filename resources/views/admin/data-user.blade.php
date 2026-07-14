@@ -29,7 +29,7 @@
                         <div class="mb-3">
                             <label for="Inputpassword" class="form-label">Password</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="InputPassTambah" name="password" required>
+                                <input type="password" class="form-control" id="InputPassTambah" name="password">
                                 <span class="input-group-text">
                                     <i class="ti ti-eye toggle-password" data-target="InputPassTambah"></i>
                                 </span>
