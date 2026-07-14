@@ -139,8 +139,15 @@ class AbsensiController extends Controller
                 ->where('created_at', '<=', $hari_ini . ' 23:59:59')
                 ->firstOrFail();;
 
-            $absensi->status = $request->status[$siswa_id];
-            $absensi->keterangan = $request->keterangan[$siswa_id] ?? null;
+            $statusBaru = $request->status[$siswa_id];
+            $absensi->status = $statusBaru;
+
+            if ($statusBaru == 'Sakit' || $statusBaru == 'Izin') {
+                $absensi->keterangan = $request->keterangan[$siswa_id] ?? null;
+            } else {
+                $absensi->keterangan = null;
+            }
+
             $absensi->save();
         }
 
