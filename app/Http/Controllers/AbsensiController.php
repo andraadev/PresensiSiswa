@@ -74,7 +74,8 @@ class AbsensiController extends Controller
             'siswa_id' => 'required',
             'status' => 'required|array',
             'status.*' => 'required|in:Hadir,Sakit,Izin,Alpa',
-            'keterangan' => 'nullable|max:50'
+            'keterangan' => 'nullable|array',
+            'keterangan.*' => 'nullable|max:50'
         ]);
 
         foreach ($request->status as $siswa_id => $status) {
@@ -122,6 +123,14 @@ class AbsensiController extends Controller
      */
     public function update(Request $request)
     {
+        $this->validate($request, [
+            'siswa_id' => 'required|array',
+            'status' => 'required|array',
+            'status.*' => 'required|in:Hadir,Sakit,Izin,Alpa',
+            'keterangan' => 'nullable|array',
+            'keterangan.*' => 'nullable|max:50'
+        ]);
+
         $siswa_ids = $request->siswa_id;
         $hari_ini = date('Y-m-d');
         foreach ($siswa_ids as $siswa_id) {
