@@ -26,7 +26,7 @@ class UserController extends Controller
         $validated_data = $request->validate([
             'nama_lengkap' => 'required|max:100',
             'username' => 'required|unique:user',
-            'password' => 'required',
+            'password' => 'required|min:8',
             'role' => 'required|in:Admin,Guru,BK'
         ], [
             'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
@@ -36,6 +36,7 @@ class UserController extends Controller
             'username.unique' => 'Username tidak boleh sama!',
 
             'password.required' => 'Password wajib diisi!',
+            'password.min' => 'Password minimal 8 karakter',
 
             'role.required' => 'Role wajib diisi!',
         ]);
