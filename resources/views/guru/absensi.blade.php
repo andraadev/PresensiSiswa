@@ -36,8 +36,8 @@
                         <div class="col-md-4 col-sm-12 mb-3">
                             <div class="card shadow-md h-100">
                                 <div class="card-body">
-                                    <div class="text-center text-muted small mb-1">#{{ $loop->iteration }}</div>
-                                    <h3 class="text-center fw-bold fs-5 mb-3 text-dark">
+                                    <h1 class="text-center fw-bolder">#{{ $loop->iteration }}</h1>
+                                    <h3 class="text-center fw-bold">
                                         {{ $data_absensi->siswa->nama_lengkap }}
                                     </h3>
 

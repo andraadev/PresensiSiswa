@@ -21,8 +21,8 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="card mb-3 shadow-sm container">
                         <div class="card-body">
-                            <h1 class="text-center fw-bold text-muted fs-5 mb-2">#{{ $loop->iteration }}</h1>
-                            <h3 class="text-center fw-bold fs-5 mb-3">{{ $siswa->nama_lengkap }}</h3>
+                            <h1 class="text-center fw-bolder">#{{ $loop->iteration }}</h1>
+                            <h3 class="text-center fw-bold">{{ $siswa->nama_lengkap }}</h3>
                             <input type="hidden" name="siswa_id[]" value="{{ $siswa->id }}">
 
                             @php
