@@ -4,10 +4,6 @@
     Data Guru
 @endsection
 
-@section('heading')
-    Data Guru
-@endsection
-
 @section('content')
 
 @section('action-buttons')

@@ -4,18 +4,6 @@
     Data User
 @endsection
 
-@section('additional_css')
-    <style>
-        #eye {
-            cursor: pointer;
-        }
-    </style>
-@endsection
-
-@section('heading')
-    Data User
-@endsection
-
 @section('content')
 @section('action-buttons')
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah_user">Tambah</button>
@@ -41,22 +29,22 @@
                         <div class="mb-3">
                             <label for="Inputpassword" class="form-label">Password</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="InputPassTambah" name="password" required>
+                                <input type="password" class="form-control" id="InputPassTambah" name="password">
                                 <span class="input-group-text">
-                                    <i class="ti ti-eye toggle-password" id="eye" data-target="InputPassTambah"></i>
+                                    <i class="ti ti-eye toggle-password" data-target="InputPassTambah"></i>
                                 </span>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label><br>
-                            <input type="radio" name="role" id="admin" value="admin" class="form-check-input"
+                            <input type="radio" name="role" id="admin" value="Admin" class="form-check-input"
                                 checked>
                             <label for="admin">Admin</label>
                             <br>
-                            <input type="radio" name="role" id="guru_walas" value="guru" class="form-check-input">
+                            <input type="radio" name="role" id="guru_walas" value="Guru" class="form-check-input">
                             <label for="guru_walas">Guru atau Wali Kelas</label>
                             <br>
-                            <input type="radio" name="role" id="bk" value="bk" class="form-check-input">
+                            <input type="radio" name="role" id="bk" value="BK" class="form-check-input">
                             <label for="bk">BK</label>
                         </div>
                         <div class="modal-footer">
@@ -129,7 +117,7 @@
                                                 placeholder="Jika input ini diisi lagi, maka password akan diupdate"
                                                 required>
                                             <span class="input-group-text">
-                                                <i class="ti ti-eye toggle-password" id="eye"
+                                                <i class="ti ti-eye toggle-password"
                                                     data-target="InputPassUpdate"></i>
                                             </span>
                                         </div>

@@ -4,10 +4,6 @@
     Edit Data Siswa
 @endsection
 
-@section('heading')
-    Edit Data Siswa
-@endsection
-
 @section('action-buttons')
     <a href="{{ route('data-siswa.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
 @endsection

@@ -104,3 +104,5 @@
             }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
         });
     </script>
+</body>
+</html>

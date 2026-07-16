@@ -4,20 +4,17 @@
     Tambah Data Siswa
 @endsection
 
-@section('heading')
-    Tambah Data Siswa
-@endsection
-
 @section('action-buttons')
     <a href="{{ route('data-siswa.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
 @endsection
 
 @section('content')
     <div class="alert alert-info" role="alert">
-        <ul class="mb-0">
-            <li><strong>NISN</strong>: wajib 10 digit angka</li>
+        <strong>Petunjuk Pengisian: </strong>
+        <ul class="mb-0 mt-2">
+            <li><strong>NISN</strong>: Wajib 10 digit angka (contoh: 1234567890)</li>
             <li><strong>Nama Lengkap</strong>: Maksimal 100 karakter</li>
-            <li><strong>Nomor Telepon</strong>: wajib diawali dengan 08, hanya angka tanpa simbol</li>
+            <li><strong>Nomor Telepon</strong>: Wajib diawali 08, total 12-13 digit (contoh: 08123456789)</li>
         </ul>
     </div>
 

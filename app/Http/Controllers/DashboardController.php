@@ -73,7 +73,7 @@ class DashboardController extends Controller
         // Siapkan data untuk grafik pie
         $pieLabels = array_keys($jumlah_user);
         $pieData = array_values($jumlah_user);
-        $header="Beranda";
+        $header = "Beranda";
 
         // Kirim data grafik ke tampilan
         return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData', 'header'));
@@ -131,16 +131,10 @@ class DashboardController extends Controller
 
         // Query untuk mengambil data absensi dengan filter tanggal mulai, tanggal selesai, dan kelas
         // Update: menambahkan fallback jika tanggal tidak diisi, sistem tidak melempar error secara langsung
-        $absensi = Absensi::when($tanggal_mulai, function ($query) use ($tanggal_mulai){
-            return $query->where("created_at", $tanggal_mulai);
-        })
-        ->when($tanggal_selesai, function ($query) use ($tanggal_selesai){
-            return $query->where("created_at", $tanggal_selesai);
-        })
-        ->when($kelas_id, function ($query) use ($kelas_id) {
-                return $query->where('kelas_id', $kelas_id);
-         })
-        ->get();
+        $absensi = Absensi::when($tanggal_mulai, fn($q) => $q->where("created_at", ">=", $tanggal_mulai . " 00:00:00"))
+            ->when($tanggal_selesai, fn($q) => $q->where("created_at", "<=", $tanggal_selesai . " 23:59:59"))
+            ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->get();
         return view('data-absensi', compact('absensi', 'kelas', 'header'));
     }
 }

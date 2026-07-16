@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Beranda</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css')}}">
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
 </head>
@@ -23,7 +25,7 @@
             @include('partials.navbar')
             <!--  Navbar End -->
             <div class="container-fluid">
-                <h1 class="d-sm-block d-md-none">@yield('header')</h1>
+                <h1>@yield('header')</h1>
                 @yield('basic-statistics-section')
                 @yield('charts-section')
 

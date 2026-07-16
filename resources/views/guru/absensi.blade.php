@@ -1,71 +1,117 @@
-@extends('layouts.secondary_layout')
+    @extends('layouts.page')
+    @section('title', 'Data Absensi')
 
-@section('title')
-    Absensi
-@endsection
+    @section('content')
+        @forelse ($kelas_saya as $kelas)
+            @php
+                $hariIni = date('Y-m-d');
 
-@section('heading')
-    Absensi
-    <div id="spacer" class="mb-3"></div>
-@endsection
+                $absensiHariIni = $kelas->siswa->flatMap(function ($siswa) use ($hariIni) {
+                    return $siswa->absensi->filter(function ($absen) use ($hariIni) {
+                        return date('Y-m-d', strtotime($absen->created_at)) === $hariIni;
+                    });
+                });
 
-@section('content')
-    <div class="row">
-        @if (count($absensi) > 0)
-            @foreach ($absensi as $data_absensi)
-                <div class="col-md-4 col-sm-12">
-                    <div class="card shadow-md container">
-                        <div class="card-body">
-                            <h1 class="text-center fw-bold">{{ $loop->iteration }}</h1>
-                            <h3 class="text-center fw-bold">{{ $data_absensi->siswa->nama_lengkap }}</h3>
-                            <h4 class="text-center">Status : {{ $data_absensi->status }}</h4>
-                            <h4 class="text-center">Keterangan :
-                                {{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }}
-                            </h4>
-                            <form action="{{ route('absensi.update', $data_absensi->id) }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="siswa_id[]" value="{{ $data_absensi->id }}">
-                                <details class="text-center">
-                                    <summary>Ubah Status</summary>
-                                    <div class="btn-group btn-group-toggle d-flex justify-content-center mb-2"
-                                        data-bs-toggle="buttons">
-                                        <label class="btn btn-success">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Hadir"
-                                                {{ $data_absensi->status == 'Hadir' ? 'checked' : '' }}> Hadir
-                                        </label>
-                                        <label class="btn btn-secondary">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Sakit"
-                                                {{ $data_absensi->status == 'Sakit' ? 'checked' : '' }}> Sakit
-                                        </label>
-                                        <label class="btn btn-warning">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Izin"
-                                                {{ $data_absensi->status == 'Izin' ? 'checked' : '' }}> Izin
-                                        </label>
-                                        <label class="btn btn-danger">
-                                            <input type="radio" name="status[{{ $data_absensi->id }}]" value="Alpa"
-                                                {{ $data_absensi->status == 'Alpa' ? 'checked' : '' }}> Alpa
-                                        </label>
-                                    </div>
-                                    <label class="form-label keterangan-label">Keterangan...</label>
-                                    <input type="text" name="keterangan[{{ $data_absensi->id }}]"
-                                        class="form-control keterangan-input" value="{{ $data_absensi->keterangan }}">
-                                </details>
+                $sudahAbsenHariIni = $absensiHariIni->isNotEmpty();
+            @endphp
+
+            @section('heading')
+                <div class="py-3 mb-3">
+                    <h1 class="fw-bold text-dark mb-0">Data Absensi {{ $kelas->nama_kelas }}</h1>
+                </div>
+            @endsection
+
+
+            <div class="row">
+                @if ($sudahAbsenHariIni)
+                    @section('action-buttons')
+                        <a href="{{ route('absensi.edit', $kelas->id) }}"
+                            class="btn btn-success position-fixed bottom-0 end-0 m-4 shadow rounded-circle d-flex align-items-center justify-content-center"
+                            type="button" style="z-index: 1050; width: 56px; height: 56px;">
+                            <i class="ti ti-pencil" style="font-size: 30px"></i>
+                        </a>
+                    @endsection
+
+                    @foreach ($absensiHariIni as $data_absensi)
+                        <div class="col-md-4 col-sm-12 mb-3">
+                            <div class="card shadow-md h-100">
+                                <div class="card-body">
+                                    <h1 class="text-center fw-bolder">#{{ $loop->iteration }}</h1>
+                                    <h3 class="text-center fw-bold">
+                                        {{ $data_absensi->siswa->nama_lengkap }}
+                                    </h3>
+
+                                    @php
+                                        $statusClasses = [
+                                            'Hadir' => 'text-bg-success',
+                                            'Izin' => 'text-bg-warning',
+                                            'Sakit' => 'text-bg-info',
+                                            'Alpa' => 'text-bg-danger',
+                                        ];
+                                        $class = $statusClasses[$data_absensi->status] ?? 'text-bg-secondary';
+                                    @endphp
+
+                                    <span
+                                        class="d-flex justify-content-center align-items-center badge {{ $class }} fs-5 py-2 mb-3">
+                                        {{ $data_absensi->status }}
+                                    </span>
+
+                                    <h5 class="fs-6 text-muted text-center {{ $data_absensi->keterangan ? '' : 'd-none' }}">
+                                        <strong>Keterangan:</strong> {{ $data_absensi->keterangan }}
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="col-12">
+                        <div class="alert alert-warning shadow-sm py-4 fs-4 text-center">
+                            <strong>Data Absensi Kosong!</strong> Silakan isi formulir absensi terlebih dahulu dengan
+                            menekan tombol "+" di bawah.
                         </div>
                     </div>
-                </div>
-            @endforeach
+
+                    @section('action-buttons')
+                        <a href="{{ route('absensi.create', $kelas->id) }}"
+                            class="btn btn-success position-fixed bottom-0 end-0 m-4 shadow rounded-circle d-flex align-items-center justify-content-center"
+                            type="button" style="z-index: 1050; width: 56px; height: 56px;">
+                            <i class="ti ti-plus" style="font-size: 30px"></i>
+                        </a>
+                    @endsection
+                @endif
+            </div>
+
+        @empty
             <div class="row">
-                <button type="submit" class="btn btn-primary col-2">Simpan</button>
+                <div class="col-12 mb-3">
+                    <h1 class="fw-bold text-dark">Silakan Pilih Kelas untuk Mulai Presensi:</h1>
+                    <h6 class="text-muted fw-light">Klik salah satu kelas di bawah ini untuk membuka lembar absensi.</h6>
+                </div>
+
+                @foreach ($semua_kelas as $k)
+                    @php
+                        $hariIni = date('Y-m-d');
+                        $sudahAbsenFallback = $k->siswa
+                            ->flatMap(function ($s) use ($hariIni) {
+                                return $s->absensi->filter(function ($a) use ($hariIni) {
+                                    return date('Y-m-d', strtotime($a->created_at)) === $hariIni;
+                                });
+                            })
+                            ->isNotEmpty();
+                    @endphp
+
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm border-light">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="fw-bold mb-0">{{ $k->nama_kelas }}</h4>
+                                </div>
+                                <a href="{{ route('absensi.index', $k->id) }}"
+                                    class="btn btn-outline-primary btn-xs">Pilih</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-            </form>
-        @else
-            <div class="alert alert-warning">
-                Data Absensi Kosong, Silakan Isi Formulir Absensi Terlebih Dahulu dengan Menekan Tombol "Absen" dibawah ini.
-            </div>
-        @endif
-        <div class="{{ count($absensi) > 0 ? 'd-none' : 'd-block' }}">
-            <a href="{{ route('absensi.create') }}" class="btn btn-primary d-grid p-3" style="font-size: 30px">Absen</a>
-        </div>
-    </div>
-@endsection
+        @endforelse
+    @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExcelImportRequest;
 use App\Http\Requests\SiswaFormRequest;
 use App\Imports\ImportDataSiswa;
 use App\Models\Kelas;
@@ -23,8 +24,9 @@ class SiswaController extends Controller
         ]);
     }
 
-    public function create() {
-        return view('admin.data-siswa.create',[
+    public function create()
+    {
+        return view('admin.data-siswa.create', [
             'kelas' => Kelas::all(),
         ]);
     }
@@ -41,7 +43,8 @@ class SiswaController extends Controller
         return redirect()->route('data-siswa.index');
     }
 
-    public function edit(Siswa $siswa) {
+    public function edit(Siswa $siswa)
+    {
         return view('admin.data-siswa.update', [
             'siswa' => $siswa,
             'kelas' => Kelas::all()
@@ -72,11 +75,11 @@ class SiswaController extends Controller
         return redirect()->route('data-siswa.index');
     }
 
-    public function import_excel(Request $request)
+    public function import_excel(ExcelImportRequest $request)
     {
         Excel::import(new ImportDataSiswa, $request->validated()['file']);
 
-        flash()->options('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
         return back();
     }

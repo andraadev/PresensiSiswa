@@ -7,7 +7,7 @@
     <title>@yield('title')</title>
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
 
     <!-- DataTables CSS -->
     <link href="{{ asset('libs/DataTables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
@@ -21,12 +21,8 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
 
-    {{-- Set default size for class .ti <icon> --}}
-    <style>
-        .ti {
-            font-size: 20px;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css')}}">
 
     @yield('additional_css')
 </head>
@@ -44,7 +40,8 @@
             @include('partials.navbar')
             {{-- Navbar End --}}
             <div class="container-fluid">
-                <h1>@yield('heading')</h1>
+                {{-- This header use yield as same as title tag --}}
+                <h1>@yield('title')</h1>
                 <div class="card shadow-md">
                     <div class="card-body p-3">
                         <section id="action-buttons" class="mb-2">
@@ -82,12 +79,9 @@
     <script src="{{ asset('libs/DataTables/responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/responsive/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('libs/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/buttons/js/buttons.print.min.js') }}"></script>
 
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>

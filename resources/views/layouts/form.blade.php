@@ -6,17 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
 
-    {{-- Set default size for class .ti <icon> --}}
-    <style>
-        .ti {
-            font-size: 20px;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     @yield('additional_css')
 </head>
@@ -30,7 +26,8 @@
         <div class="body-wrapper">
             @include('partials.navbar')
             <div class="container-fluid">
-                <h1>@yield('heading')</h1>
+                {{-- This header use yield as same as title tag --}}
+                <h1>@yield('title')</h1>
                 <section id="action-buttons" class="mb-2">
                     @yield('action-buttons')
                 </section>
@@ -58,7 +55,7 @@
 
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/logout-modal.js')}}"></script>
+    <script src="{{ asset('js/logout-modal.js') }}"></script>
 
     <!-- SweetAlert2 JS -->
     <script>
@@ -78,4 +75,5 @@
         });
     </script>
 </body>
+
 </html>

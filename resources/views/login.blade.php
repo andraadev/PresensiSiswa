@@ -12,8 +12,8 @@
             font-size: 22px;
         }
 
-        body{
-            background-color: rgb(31,54,46)
+        body {
+            background-color: rgb(31, 54, 46)
         }
     </style>
 </head>
@@ -45,7 +45,8 @@
                                         @if (session('Gagal'))
                                             {{ session('Gagal') }}.
                                         @endif
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
                                     </div>
                                 @endif
                                 <form action="{{ route('auth') }}" method="post" autocomplete="off">
@@ -53,7 +54,10 @@
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" autofocus required>
+                                            <input type="text"
+                                                class="form-control @error('username') is-invalid @enderror"
+                                                id="username" name="username" value="{{ old('username') }}" autofocus
+                                                required>
                                             <span class="input-group-text">
                                                 <i class="ti ti-user"></i>
                                             </span>
@@ -62,7 +66,9 @@
                                     <div class="mb-3" id="input-password">
                                         <label for="password" class="form-label">Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="Inputpassword" name="password" value="{{ old('password') }}" required>
+                                            <input type="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                id="Inputpassword" name="password" required>
                                             <span class="input-group-text">
                                                 <i class="ti ti-eye" id="eye"></i>
                                             </span>
