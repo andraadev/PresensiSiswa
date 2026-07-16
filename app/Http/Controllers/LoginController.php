@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,7 @@ class LoginController extends Controller
                 return redirect()->intended('/bk/beranda');
             }
         } else {
-            return redirect('/')->with('Gagal', 'Username atau password yang kamu masukkan salah')->withInput();
+            return redirect('/')->with('Gagal', 'Username atau password yang kamu masukkan salah')->withInput($request->only('username'));
         }
     }
 
