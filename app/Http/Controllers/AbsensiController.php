@@ -12,7 +12,7 @@ class AbsensiController extends Controller
 {
     public function data_absensi()
     {
-        return view('guru.data-absensi', [
+        return view('data-absensi', [
             'absensi' => Absensi::all(),
             'siswa' => Siswa::all(),
             'kelas' => Kelas::all(),
@@ -121,7 +121,7 @@ class AbsensiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, string $kelas_id)
     {
         $this->validate($request, [
             'siswa_id' => 'required|array',
@@ -153,6 +153,6 @@ class AbsensiController extends Controller
 
         flash()->addSuccess('Edit Status Absensi Berhasil!');
 
-        return redirect()->route('absensi.index');
+        return redirect()->route('absensi.index', $kelas_id);
     }
 }
