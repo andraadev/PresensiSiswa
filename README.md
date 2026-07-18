@@ -6,7 +6,6 @@
 
 <p align="center">A Laravel-based application to record student attendance in a school environment.</p>
 
----
 ## Table of Contents
 - [Features](#features)
 - [Tech Stack](#tech-stack)
