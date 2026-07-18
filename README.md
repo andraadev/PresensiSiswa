@@ -1,13 +1,10 @@
 <h1 align="center">📚 Absensi</h1>
 <p align="center">
-  <img src="https://img.shields.io/badge/PHP-8.1-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
   <img src="https://img.shields.io/badge/Laravel-10-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/>
   <img src="https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Maintained-Slowed-yellow?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Production-Not%20Recommended-critical?style=for-the-badge"/>
 </p>
 
-A Laravel-based application to record student attendance in a school environment.
+<p align="center">A Laravel-based application to record student attendance in a school environment.</p>
 
 ---
 ## Table of Contents
