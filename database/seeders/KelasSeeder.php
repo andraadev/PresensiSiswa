@@ -21,6 +21,8 @@ class KelasSeeder extends Seeder
         foreach (['X IPA', 'X IPS', 'XI IPA', 'XI IPS', 'XII IPA'] as $kelasNama) {
             Kelas::create([
                 'nama_kelas' => $kelasNama,
+                'slug_kelas' => str_replace(' ', '-', $kelasNama),
+                'qr_code' => '-',
                 'guru_id' => $faker->randomElement($guruIds),
             ]);
         }
