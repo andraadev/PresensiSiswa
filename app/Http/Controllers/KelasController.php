@@ -44,7 +44,7 @@ class KelasController extends Controller
             ->margin(2)
             ->generate('http://localhost:8000/' . $slug_kelas);
 
-        $output_file = '/qr_code_kelas/qr-' . $slug_kelas . '.png';
+        $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
 
         Storage::disk('public')->put($output_file, $qr_code_kelas);
 
@@ -82,7 +82,7 @@ class KelasController extends Controller
             $slug_kelas = Str::slug($request->nama_kelas);
             $qr_code_kelas = QRCode::format('png')->generate('http://localhost:8000/' . $slug_kelas);
 
-            $output_file = '/qr_code_kelas/qr-' . $slug_kelas . '.png';
+            $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
 
             Storage::disk('public')->delete($kelas->qr_code);
 
@@ -119,6 +119,13 @@ class KelasController extends Controller
 
     public function download_qr(Kelas $kelas)
     {
-        return Storage::download($kelas->qr_code);
+        $fullPath = storage_path('app/public/' . $kelas->qr_code);
+
+        if (!$kelas->qr_code || !file_exists($fullPath) || !is_readable($fullPath)) {
+            flash()->option('timeout', 3000)->addError('File QR tidak ditemukan atau tidak dapat diakses.');
+            return back();
+        }
+
+        return response()->download($fullPath);
     }
 }
