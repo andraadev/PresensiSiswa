@@ -26,7 +26,7 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Wali Kelas</label>
                             <select name="guru_id" class="form-select">
-                                <option value="0">Pilih</option>
+                                <option value="" selected disabled>Pilih</option>
                                 @foreach ($guru as $data_guru)
                                     <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}</option>
                                 @endforeach

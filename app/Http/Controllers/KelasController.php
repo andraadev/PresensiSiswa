@@ -30,11 +30,12 @@ class KelasController extends Controller
     {
         $validated_data = $request->validate([
             'nama_kelas' => 'required|max:20',
-            'guru_id' => 'required|numeric'
+            'guru_id' => 'required|integer|exists:guru,id'
         ], [
             'nama_kelas.required' => 'Nama kelas wajib diisi!',
             'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 20 karakter',
-            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!'
+            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!',
+            'guru_id.exists' => 'Silakan pilih wali kelas yang tersedia.'
         ]);
 
         $slug_kelas = Str::slug($request->nama_kelas);
@@ -69,11 +70,12 @@ class KelasController extends Controller
 
         $validated_data = $request->validate([
             'nama_kelas' => 'required|max:20',
-            'guru_id' => 'required|numeric'
+            'guru_id' => 'required|integer|exists:guru,id'
         ], [
             'nama_kelas.required' => 'Nama kelas wajib diisi!',
             'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 20 karakter',
-            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!'
+            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!',
+            'guru_id.exists' => 'Silakan pilih wali kelas yang tersedia.'
         ]);
 
         // jika nama kelas yang dimasukkan tidak sama dengan nama kelas yang ada di database
