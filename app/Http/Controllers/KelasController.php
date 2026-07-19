@@ -6,6 +6,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class KelasController extends Controller
@@ -28,14 +29,15 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $validated_data = $request->validate([
-            'nama_kelas' => 'required|max:15',
+            'nama_kelas' => 'required|max:20',
             'guru_id' => 'required|numeric'
         ], [
             'nama_kelas.required' => 'Nama kelas wajib diisi!',
-            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 15',
+            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 20 karakter',
+            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!'
         ]);
 
-        $slug_kelas = str_replace(' ', '-', $request->nama_kelas);
+        $slug_kelas = Str::slug($request->nama_kelas);
 
         $qr_code_kelas = QRCode::format('png')
             ->size(500)
@@ -66,17 +68,18 @@ class KelasController extends Controller
         $kelas = Kelas::findOrFail($id);
 
         $validated_data = $request->validate([
-            'nama_kelas' => 'required|max:15',
+            'nama_kelas' => 'required|max:20',
             'guru_id' => 'required|numeric'
         ], [
             'nama_kelas.required' => 'Nama kelas wajib diisi!',
-            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 15',
+            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 20 karakter',
+            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!'
         ]);
 
         // jika nama kelas yang dimasukkan tidak sama dengan nama kelas yang ada di database
         if ($validated_data['nama_kelas'] !== $kelas->nama_kelas) {
 
-            $slug_kelas = str_replace(' ', '-', $request->nama_kelas);
+            $slug_kelas = Str::slug($request->nama_kelas);
             $qr_code_kelas = QRCode::format('png')->generate('http://localhost:8000/' . $slug_kelas);
 
             $output_file = '/qr_code_kelas/qr-' . $slug_kelas . '.png';
