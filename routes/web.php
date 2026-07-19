@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_admin']);
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('data_absensi');
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
+    Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
+
 
     //Import Excel
     Route::post('/data-guru/import', [GuruController::class, 'import_excel'])->name('admin.data_guru.import_excel');
