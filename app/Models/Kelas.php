@@ -10,7 +10,12 @@ class Kelas extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'nama_kelas',
+        'slug_kelas',
+        'guru_id',
+        'qr_code',
+    ];
 
     protected $table = "kelas";
 
@@ -24,7 +29,8 @@ class Kelas extends Model
         return $this->belongsTo(Guru::class);
     }
 
-    public function absensi() {
+    public function absensi()
+    {
         return $this->hasMany(Absensi::class);
     }
 }
