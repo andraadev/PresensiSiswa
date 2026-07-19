@@ -37,10 +37,20 @@ class KelasController extends Controller
 
         $slug_kelas = str_replace(' ', '-', $request->nama_kelas);
 
+        $qr_code_kelas = QRCode::format('png')
+            ->size(500)
+            ->margin(2)
+            ->generate('http://localhost:8000/' . $slug_kelas);
+
+        $output_file = '/qr_code_kelas/qr-' . $slug_kelas . '.png';
+
+        Storage::disk('public')->put($output_file, $qr_code_kelas);
+
         Kelas::create([
             'slug_kelas' => $slug_kelas,
             'nama_kelas' => $validated_data['nama_kelas'],
             'guru_id' => $validated_data['guru_id'],
+            'qr_code' => $output_file,
         ]);
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Kelas Berhasil');
@@ -67,11 +77,19 @@ class KelasController extends Controller
         if ($validated_data['nama_kelas'] !== $kelas->nama_kelas) {
 
             $slug_kelas = str_replace(' ', '-', $request->nama_kelas);
+            $qr_code_kelas = QRCode::format('png')->generate('http://localhost:8000/' . $slug_kelas);
+
+            $output_file = '/qr_code_kelas/qr-' . $slug_kelas . '.png';
+
+            Storage::disk('public')->delete($kelas->qr_code);
+
+            Storage::disk('public')->put($output_file, $qr_code_kelas);
 
             $kelas->update([
                 'slug_kelas' => $slug_kelas,
                 'nama_kelas' => $validated_data['nama_kelas'],
                 'guru_id' => $validated_data['guru_id'],
+                'qr_code' => $output_file,
             ]);
         }
 
@@ -89,9 +107,15 @@ class KelasController extends Controller
 
         $kelas->delete();
 
-        // flash message jika datanya berhasil dihapus
+        Storage::disk('public')->delete($kelas->qr_code);
+
         flash()->option('timeout', 3000)->addSuccess('Hapus Data Kelas Berhasil');
 
         return back();
+    }
+
+    public function download_qr(Kelas $kelas)
+    {
+        return Storage::download($kelas->qr_code);
     }
 }
