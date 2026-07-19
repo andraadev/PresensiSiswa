@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+    <x-alert-error />
+
     <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#tambah_kelas">Tambah</button>
     <!-- Modal -->
     <div class="modal fade" id="tambah_kelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -55,6 +57,9 @@
                     <td>{{ $data_kelas->nama_kelas }}</td>
                     <td>{{ $data_kelas->guru->nama_lengkap }}</td>
                     <td>
+                        <a href="{{ route('admin.data_kelas.download_qr', $data_kelas->id) }}" class="btn btn-success">
+                            Simpan QR
+                        </a>
                         <button class="btn btn-warning" data-bs-toggle="modal"
                             data-bs-target="#update_kelas{{ $data_kelas->id }}">
                             Edit
