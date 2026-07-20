@@ -1,7 +1,33 @@
     @extends('layouts.page')
-    @section('title', 'Data Absensi')
+    @section('title', 'Presensi Hari Ini')
 
     @section('content')
+        <div class="card mb-3">
+            <div class="card-body py-3 px-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                    <div class="d-flex align-items-center">
+                        <h5 class="fw-bold">Total: {{ $total_siswa }} Siswa</h5>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span
+                            class="badge bg-success-subtle text-success fw-semibold border border-success-subtle px-2 py-2 fs-6">
+                            H: {{ $siswa_hadir }}
+                        </span>
+                        <span
+                            class="badge bg-warning-subtle text-warning fw-semibold border border-warning-subtle px-2 py-2 fs-6">
+                            S/I: {{ $siswa_sakit }}
+                        </span>
+                        <span
+                            class="badge bg-danger-subtle text-danger fw-semibold border border-danger-subtle px-2 py-2 fs-6">
+                            A: {{ $siswa_alpa }}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         @forelse ($kelas_saya as $kelas)
             @php
                 $hariIni = date('Y-m-d');
@@ -17,7 +43,7 @@
 
             @section('heading')
                 <div class="py-3 mb-3">
-                    <h1 class="fw-bold text-dark mb-0">Data Absensi {{ $kelas->nama_kelas }}</h1>
+                    <h1 class="fw-bold text-dark mb-0">Presensi Hari Ini {{ $kelas->nama_kelas }}</h1>
                 </div>
             @endsection
 
@@ -56,7 +82,8 @@
                                         {{ $data_absensi->status }}
                                     </span>
 
-                                    <h5 class="fs-6 text-muted text-center {{ $data_absensi->keterangan ? '' : 'd-none' }}">
+                                    <h5
+                                        class="fs-6 text-muted text-center {{ $data_absensi->keterangan ? '' : 'd-none' }}">
                                         <strong>Keterangan:</strong> {{ $data_absensi->keterangan }}
                                     </h5>
                                 </div>
