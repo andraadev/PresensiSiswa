@@ -24,26 +24,37 @@ class AbsensiController extends Controller
      * Display a listing of the resource.
      * Fungsi CRUD Absensi
      */
-    public function index(?string $id_kelas = null)
+    public function index(Request $request)
     {
         $hari_ini = date('Y-m-d');
         $kelasSaya = collect();
+
+        $slug_kelas = $request->query('kelas');
+
+        if (!$slug_kelas) {
+            $slug_kelas = session('active_kelas_slug');
+        }
 
         $relations = ['siswa.absensi' => function ($query) use ($hari_ini) {
             $query->whereBetween('created_at', [$hari_ini . ' 00:00:00', $hari_ini . ' 23:59:59']);
         }];
 
-        if ($id_kelas) {
-            $kelasSaya = Kelas::with($relations)->where('id', $id_kelas)->get();
+        if ($slug_kelas) {
+            $kelasSaya = Kelas::with($relations)->where('slug_kelas', $slug_kelas)->get();
+            session(['active_kelas_slug' => $slug_kelas]);
         } else {
             $guruIdLogin = auth()->user()->guru?->id;
             if ($guruIdLogin) {
                 $kelasSaya = Kelas::with($relations)->where('guru_id', $guruIdLogin)->get();
             }
+            session()->forget('active_kelas_slug');
         }
-
+        // dd('Sesi yang aktif sekarang: ' . $slug_kelas);
         // Semua kelas untuk jaring pengaman fallback (tetap di-load relasinya biar aman)
         $semuaKelas = Kelas::with($relations)->get();
+
+        // session(['active_kelas_slug' => $slug_kelas]);
+
 
         return view('guru.absensi', [
             'kelas_saya'  => $kelasSaya,
@@ -55,11 +66,16 @@ class AbsensiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(?string $id_kelas = null)
+    public function create()
     {
-        $kelas = Kelas::findOrFail($id_kelas);
-        $siswa = Siswa::where('kelas_id', $id_kelas)->get();
+        $slug = session('active_kelas_slug');
+        $kelas = Kelas::where('slug_kelas', $slug)->first();
+        if (!$kelas) {
+            flash()->option('timeout', 3000)->addError('Sesi kelas tidak valid atau tidak ditemukan.');
+            return redirect()->route('absensi.index');
+        }
 
+        $siswa = Siswa::where('kelas_id', $kelas->id)->get();
         return view('guru.tambah-data-absensi', compact('kelas', 'siswa'));
     }
 
@@ -69,9 +85,9 @@ class AbsensiController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'guru_id' => 'required',
-            'kelas_id' => 'required',
-            'siswa_id' => 'required',
+            'guru_id' => 'required|exists:guru,id',
+            'kelas_id' => 'required|exists:kelas,id',
+            'siswa_id' => 'required|exists:siswa,id',
             'status' => 'required|array',
             'status.*' => 'required|in:Hadir,Sakit,Izin,Alpa',
             'keterangan' => 'nullable|array',
@@ -121,7 +137,7 @@ class AbsensiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $kelas_id)
+    public function update(Request $request)
     {
         $this->validate($request, [
             'siswa_id' => 'required|array',
@@ -153,6 +169,6 @@ class AbsensiController extends Controller
 
         flash()->addSuccess('Edit Status Absensi Berhasil!');
 
-        return redirect()->route('absensi.index', $kelas_id);
+        return redirect()->route('absensi.index');
     }
 }
