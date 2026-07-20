@@ -51,14 +51,30 @@
                     </a>
                 </li>
             @elseif (Auth::user()->role == 'Guru')
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('absensi') ? ' active' : '' }}" href="absensi">
+                {{-- <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('*absensi*') ? ' active' : '' }}" href="absensi/">
                         <span>
                             <i class="ti ti-home sidebar-icon"></i>
                         </span>
                         <span class="hide-menu">Beranda</span>
                     </a>
+                </li> --}}
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs('guru.absensi*') ? 'active' : '' }}"
+                        href="{{ route('absensi.index') }}">
+                        <span>
+                            <i class="ti ti-clipboard-check sidebar-icon"></i>
+                        </span>
+                        <span class="hide-menu">Presensi</span>
+                    </a>
                 </li>
+                {{-- <a class="sidebar-link {{ request()->routeIs('guru.absensi*') ? 'active' : '' }}"
+                    href="{{ route('absensi.index') }}">
+                    <span>
+                        <i class="ti ti-clipboard-check sidebar-icon"></i>
+                    </span>
+                    <span class="hide-menu">Presensi</span>
+                </a> --}}
             @else
                 <li class="sidebar-item">
                     <a class="sidebar-link{{ Request::is('beranda') ? ' active' : '' }}" href="beranda">
