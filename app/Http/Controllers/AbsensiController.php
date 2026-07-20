@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -57,9 +58,21 @@ class AbsensiController extends Controller
 
         $semuaKelas = Kelas::with($relations)->get();
 
+        $kelas = Kelas::where('slug_kelas', $slug_kelas)->firstOrFail();
+        $totalSiswa = $kelas->siswa()->count();
+        $stats = $kelas->absensi()
+            ->whereDate('created_at', today())
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
         return view('guru.absensi', [
             'kelas_saya'  => $kelasSaya,
             'semua_kelas' => $semuaKelas,
+            'total_siswa' => $totalSiswa,
+            'siswa_hadir' => $stats['Hadir'] ?? 0,
+            'siswa_sakit' => ($stats['Sakit'] ?? 0) + ($stats['Izin'] ?? 0),
+            'siswa_alpa'  => $stats['Alpa'] ?? 0,
             'header'      => 'Dashboard Presensi Siswa'
         ]);
     }
