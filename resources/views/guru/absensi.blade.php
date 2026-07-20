@@ -72,7 +72,7 @@
                     </div>
 
                     @section('action-buttons')
-                        <a href="{{ route('absensi.create', $kelas->id) }}"
+                        <a href="{{ route('absensi.create') }}"
                             class="btn btn-success position-fixed bottom-0 end-0 m-4 shadow rounded-circle d-flex align-items-center justify-content-center"
                             type="button" style="z-index: 1050; width: 56px; height: 56px;">
                             <i class="ti ti-plus" style="font-size: 30px"></i>
@@ -106,7 +106,7 @@
                                 <div>
                                     <h4 class="fw-bold mb-0">{{ $k->nama_kelas }}</h4>
                                 </div>
-                                <a href="{{ route('absensi.index', $k->id) }}"
+                                <a href="{{ route('absensi.index', ['kelas' => $k->slug_kelas]) }}"
                                     class="btn btn-outline-primary btn-xs">Pilih</a>
                             </div>
                         </div>
