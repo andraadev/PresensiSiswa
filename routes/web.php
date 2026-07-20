@@ -16,7 +16,7 @@ Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_admin']);
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('data_absensi');
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::resource('/data-user', UserController::class)->parameters(['data-user' => 'user']);
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'guru'], function () {
+Route::group(['middleware' => ['auth', 'checkrole:Guru'], 'prefix' => 'guru'], function () {
     // Route::resource('/absensi', AbsensiController::class)->except('show', 'destroy');
     // // Route::get('/absensi/{slug_kelas}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
     // Route::get('/absensi/{id_kelas}', [AbsensiController::class, 'index'])->name('absensi.index');
@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'guru'], function () {
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'bk'], function () {
+Route::group(['middleware' => ['auth', 'checkrole:BK'], 'prefix' => 'bk'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_bk'])->name('bk.beranda');
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('bk.data_absensi');
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('bk.data_absensi.filter');
