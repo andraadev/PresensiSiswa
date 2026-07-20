@@ -35,15 +35,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'guru'], function () {
-    // Route::resource('/absensi', AbsensiController::class)->except('show', 'destroy');
-    // // Route::get('/absensi/{slug_kelas}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
-    // Route::get('/absensi/{id_kelas}', [AbsensiController::class, 'index'])->name('absensi.index');
-    // Temporary route
-    Route::get('/absensi/{id_kelas?}', [AbsensiController::class, 'index'])->name('absensi.index');
-    Route::get('/absensi/create/{id_kelas}', [AbsensiController::class, 'create'])->name('absensi.create');
-    Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
-    Route::get('/absensi/{id_kelas}/edit', [AbsensiController::class, 'edit'])->name('absensi.edit');
-    Route::put('/absensi/{id_kelas}', [AbsensiController::class, 'update'])->name('absensi.update');
+    Route::resource('absensi', AbsensiController::class)->except('show', 'destroy');
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('guru.data_absensi');
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
 });
