@@ -29,6 +29,11 @@ class AbsensiController extends Controller
         $hari_ini = date('Y-m-d');
         $kelasSaya = collect();
 
+        // fallback jika url tidak membawa slug kelas
+        if ($request->has('kelas')) {
+            session(['active_kelas_slug' => $request->kelas]);
+        }
+
         $slug_kelas = $request->query('kelas');
 
         if (!$slug_kelas) {
@@ -49,12 +54,8 @@ class AbsensiController extends Controller
             }
             session()->forget('active_kelas_slug');
         }
-        // dd('Sesi yang aktif sekarang: ' . $slug_kelas);
-        // Semua kelas untuk jaring pengaman fallback (tetap di-load relasinya biar aman)
+
         $semuaKelas = Kelas::with($relations)->get();
-
-        // session(['active_kelas_slug' => $slug_kelas]);
-
 
         return view('guru.absensi', [
             'kelas_saya'  => $kelasSaya,
