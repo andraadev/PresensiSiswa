@@ -26,16 +26,14 @@
             <input type="date" name="tanggal_selesai" class="form-control">
         </div>
         <div class="align-self-end">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Reset</button>
+            @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai'))
+                <a href="{{ route('data_absensi') }}" class="btn btn-danger">
+                    Reset Filter
+                </a>
+            @endif
             <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Terapkan</button>
         </div>
     </form>
-
-    @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
-        <a href="{{ route('data_absensi') }}" class="btn btn-danger">
-            Reset Filter
-        </a>
-    @endif
 
 
     <!-- Modal Filter -->
