@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('css/custom.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     @yield('additional_css')
 </head>
@@ -85,7 +85,7 @@
 
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/logout-modal.js')}}"></script>
+    <script src="{{ asset('js/logout-modal.js') }}"></script>
 
     <script>
         //Datatables Default Configuration
@@ -102,8 +102,14 @@
                     className: 'noExport'
                 }],
 
+                layout: {
+                    topStart: 'buttons'
+                },
+
                 buttons: [{
                     extend: 'excelHtml5',
+                    text: 'Export to Excel',
+                    className: 'btn btn-success',
                     exportOptions: {
                         columns: ":visible:not(.noExport)"
                     }
