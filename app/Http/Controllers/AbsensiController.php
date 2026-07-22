@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
-    public function data_absensi()
-    {
-        return view('data-absensi', [
-            'absensi' => Absensi::all(),
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all(),
-            'user' => User::all(),
-            'header' => 'Data Absensi'
-        ]);
-    }
     /**
      * Display a listing of the resource.
      * Fungsi CRUD Absensi
@@ -184,5 +174,49 @@ class AbsensiController extends Controller
         flash()->addSuccess('Edit Status Absensi Berhasil!');
 
         return redirect()->route('absensi.index');
+    }
+
+    public function data_absensi(Request $request)
+    {
+        $slug = session('active_kelas_slug');
+        $kelas = Kelas::where('slug_kelas', $slug)->first();
+
+        if (!$kelas) {
+            flash()->option('timeout', 3000)->addError('Sesi kelas tidak valid atau tidak ditemukan.');
+            return redirect()->route('absensi.index');
+        }
+
+        $bulan = $request->bulan ?? date('Y-m');
+        [$tahun, $bulan] = explode('-', $bulan);
+
+        $siswa = Siswa::where('kelas_id', $kelas->id)->withRekapBulan($tahun, $bulan)->get();
+
+        return view('guru.data-absensi', [
+            'siswa' => $siswa,
+            'header' => 'Data Absensi'
+        ]);
+    }
+
+    public function detailSiswa(string $siswa_id, Request $request)
+    {
+        $siswa = Siswa::findOrFail($siswa_id);
+
+        $tanggalMulai = $request->tanggal_mulai;
+        $tanggalSelesai = $request->tanggal_selesai;
+
+        $riwayatAbsensi = Absensi::where('siswa_id', $siswa->id)
+            ->when($tanggalMulai, function ($query, $mulai) {
+                $query->whereDate('created_at', '>=', $mulai . ' 00:00:00');
+            })
+            ->when($tanggalSelesai, function ($query, $selesai) {
+                $query->whereDate('created_at', '<=', $selesai . ' 23:59:59');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('guru.data-absensi-detail', [
+            'siswa' => $siswa,
+            'riwayat_absensi' => $riwayatAbsensi
+        ]);
     }
 }
