@@ -35,4 +35,20 @@ class Siswa extends Model
 
         return round(($this->total_hadir / $totalPertemuan) * 100, 1);
     }
+
+    public function scopeWithRekapBulan($query, $tahun, $bulan)
+    {
+        $statuses = ['hadir', 'sakit', 'izin', 'alpa'];
+        $withCountQuery = [];
+
+        foreach ($statuses as $status) {
+            $withCountQuery["absensi as total_{$status}"] = function ($q) use ($status, $tahun, $bulan) {
+                $q->where('status', ucfirst($status))
+                    ->whereYear('created_at', $tahun)
+                    ->whereMonth('created_at', $bulan);
+            };
+        }
+
+        return $query->withCount($withCountQuery);
+    }
 }
