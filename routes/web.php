@@ -35,9 +35,9 @@ Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'],
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:Guru'], 'prefix' => 'guru'], function () {
-    Route::resource('absensi', AbsensiController::class)->except('show', 'destroy');
-    Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('guru.data_absensi');
-    Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
+    Route::resource('/absensi', AbsensiController::class)->except('show', 'destroy');
+    Route::get('/data-absensi', [AbsensiController::class, 'data_absensi'])->name('guru.data_absensi');
+    Route::get('/data-absensi/siswa/{siswa_id}', [AbsensiController::class, 'detailSiswa'])->name('data_absensi.detail');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:BK'], 'prefix' => 'bk'], function () {
