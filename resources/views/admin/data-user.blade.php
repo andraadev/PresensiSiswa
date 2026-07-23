@@ -33,6 +33,8 @@
                                 <span class="input-group-text">
                                     <i class="ti ti-eye toggle-password" data-target="InputPassTambah"></i>
                                 </span>
+                                <button class="btn btn-outline-secondary generate-password" type="button"
+                                    data-target="InputPassTambah">Generate</button>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -112,14 +114,16 @@
                                     <div class="mb-3">
                                         <label for="Inputpassword" class="form-label">Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" id="InputPassUpdate"
-                                                name="password"
+                                            <input type="password" class="form-control"
+                                                id="InputPassUpdate{{ $data_user->id }}" name="password"
                                                 placeholder="Jika input ini diisi lagi, maka password akan diupdate"
                                                 required>
                                             <span class="input-group-text">
                                                 <i class="ti ti-eye toggle-password"
-                                                    data-target="InputPassUpdate"></i>
+                                                    data-target="InputPassUpdate{{ $data_user->id }}"></i>
                                             </span>
+                                            <button class="btn btn-outline-secondary generate-password" type="button"
+                                                data-target="InputPassUpdate{{ $data_user->id }}">Generate</button>
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -155,6 +159,21 @@
 @endsection
 @section('additional_js')
 <script>
+    function generatePassword(targetId) {
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let pass = "";
+
+        for (let i = 0; i < 8; i++) {
+            pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        const input = document.getElementById(targetId);
+
+        if (input) {
+            input.value = pass;
+        }
+    }
+
     $(document).ready(function() {
         $('#table-private').DataTable({
             ordering: true,
@@ -175,6 +194,11 @@
             $input.attr("type", isHidden ? "text" : "password");
 
             $this.toggleClass("ti-eye ti-eye-off");
+        });
+
+        $(document).on("click", ".generate-password", function() {
+            const targetId = $(this).data("target");
+            generatePassword(targetId);
         });
     });
 </script>
