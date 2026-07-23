@@ -17,4 +17,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Absensi::class);
     }
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class);
+    }
 }

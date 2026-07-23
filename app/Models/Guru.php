@@ -20,4 +20,8 @@ class Guru extends Model
         return $this->hasOne(Kelas::class);
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }
