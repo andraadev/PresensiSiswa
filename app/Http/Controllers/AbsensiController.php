@@ -28,7 +28,7 @@ class AbsensiController extends Controller
 
         $kelasAktif = $slug_kelas ? Kelas::with($relations)->where('slug_kelas', $slug_kelas)->first() : null;
         if ($kelasAktif) {
-            session(['active_kelas_slug' => $kelasSaya->slug_kelas]);
+            session(['active_kelas_slug' => $kelasAktif->slug_kelas]);
 
             $kelasSaya = collect([$kelasAktif]);
             $totalSiswa = $kelasAktif->siswa()->count();
