@@ -20,41 +20,31 @@ class AbsensiController extends Controller
         $hari_ini = date('Y-m-d');
         $kelasSaya = collect();
 
-        // fallback jika url tidak membawa slug kelas
-        if ($request->has('kelas')) {
-            session(['active_kelas_slug' => $request->kelas]);
-        }
-
-        $slug_kelas = $request->query('kelas');
-
-        if (!$slug_kelas) {
-            $slug_kelas = session('active_kelas_slug');
-        }
+        $slug_kelas = $request->query('kelas') ?? session('active_kelas_slug');
 
         $relations = ['siswa.absensi' => function ($query) use ($hari_ini) {
             $query->whereBetween('created_at', [$hari_ini . ' 00:00:00', $hari_ini . ' 23:59:59']);
         }];
 
-        if ($slug_kelas) {
-            $kelasSaya = Kelas::with($relations)->where('slug_kelas', $slug_kelas)->get();
-            session(['active_kelas_slug' => $slug_kelas]);
+        $kelasAktif = $slug_kelas ? Kelas::with($relations)->where('slug_kelas', $slug_kelas)->first() : null;
+        if ($kelasAktif) {
+            session(['active_kelas_slug' => $kelas->slug_kelas]);
+
+            $kelasSaya = collect([$kelasAktif]);
+            $totalSiswa = $kelasAktif->siswa()->count();
+            $stats = $kelasAktif->absensi()
+                ->whereDate('created_at', today())
+                ->select('status', DB::raw('count(*) as total'))
+                ->groupBy('status')
+                ->pluck('total', 'status');
         } else {
-            $guruIdLogin = auth()->user()->guru?->id;
-            if ($guruIdLogin) {
-                $kelasSaya = Kelas::with($relations)->where('guru_id', $guruIdLogin)->get();
-            }
             session()->forget('active_kelas_slug');
+            $kelasSaya = collect();
+            $totalSiswa = 0;
+            $stats = collect();
         }
 
         $semuaKelas = Kelas::with($relations)->get();
-
-        $kelas = Kelas::where('slug_kelas', $slug_kelas)->firstOrFail();
-        $totalSiswa = $kelas->siswa()->count();
-        $stats = $kelas->absensi()
-            ->whereDate('created_at', today())
-            ->select('status', DB::raw('count(*) as total'))
-            ->groupBy('status')
-            ->pluck('total', 'status');
 
         return view('guru.absensi', [
             'kelas_saya'  => $kelasSaya,
