@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,9 +14,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.data-user', [
+        return view('admin.data-user.index', [
             'header' => 'Data User',
             'user' => User::orderBy('nama_lengkap', 'ASC')->get(),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('admin.data-user.create', [
+            'header' => 'Tambah Data User',
+            'data_guru' => Guru::all()
         ]);
     }
 
@@ -23,34 +33,62 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validated_data = $request->validate([
-            'nama_lengkap' => 'required|max:100',
-            'username' => 'required|unique:user',
+        $request->validate([
+            'role' => 'required|in:Admin,Guru,BK',
+            'guru_id' => 'nullable|required_if:role,Guru|exists:guru,id|unique:user,guru_id',
+            'nama_lengkap' => 'nullable|required_if:role,Admin,BK|string|max:100',
+            'username' => 'nullable|required_if:role,Admin,BK|string|max:50|unique:user,username',
             'password' => 'required|min:8',
-            'role' => 'required|in:Admin,Guru,BK'
         ], [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
-            'nama_lengkap.max' => 'Nama lengkap yang anda masukkan terlalu panjang!',
+            'role.required' => 'Role wajib dipilih!',
+            'role.in' => 'Pilihan role tidak valid!',
 
-            'username.required' => 'Username wajib diisi!',
-            'username.unique' => 'Username tidak boleh sama!',
+            'guru_id.required_if' => 'Data guru wajib dipilih jika role adalah Guru!',
+            'guru_id.exists' => 'Data guru yang dipilih tidak ditemukan di sistem!',
+            'guru_id.unique' => 'Guru ini sudah memiliki akun user!',
+
+            'nama_lengkap.required_if' => 'Nama lengkap wajib diisi!',
+            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter!',
+
+            'username.required_if' => 'Username wajib diisi!',
+            'username.unique' => 'Username sudah digunakan, cari username lain!',
+            'username.max' => 'Username maksimal 50 karakter!',
 
             'password.required' => 'Password wajib diisi!',
-            'password.min' => 'Password minimal 8 karakter',
-
-            'role.required' => 'Role wajib diisi!',
+            'password.min' => 'Password minimal harus 8 karakter!',
         ]);
 
-        // jika password terisi maka enkripsikan password itu
-        if ($request->password) {
-            $validated_data['password'] = bcrypt($request->password);
+        if ($request->role === 'Guru') {
+            $guru = Guru::findOrFail($request->guru_id);
+            $namaLengkap = $guru->nama_lengkap;
+            $username = $guru->nip;
+        } else {
+            $namaLengkap = $request->nama_lengkap;
+            $username = $request->username;
         }
 
-        User::create($validated_data);
+        User::create([
+            'role'         => $request->role,
+            'guru_id'      => $request->role === 'Guru' ? $request->guru_id : null,
+            'nama_lengkap' => $namaLengkap,
+            'username'     => $username,
+            'password'     => Hash::make($request->password),
+        ]);
 
-        flash()->addSuccess('Tambah Data user berhasil');
+        flash()->addSuccess('Tambah Data User baru berhasil');
 
-        return back();
+        return redirect()->to(route('data-user.index'));
+    }
+
+    public function edit(string $id)
+    {
+        $guru = Guru::all();
+        $user = User::findOrfail($id);
+        return view('admin.data-user.update', [
+            'header' => 'Edit Data User',
+            'data_guru' => $guru,
+            'data_user' => $user
+        ]);
     }
 
     /**
@@ -60,30 +98,51 @@ class UserController extends Controller
     {
         $user = User::findOrfail($id);
 
-        $validated_data = $request->validate([
-            'nama_lengkap' => 'required|max:100',
-            'username' => 'required',
+        $request->validate([
+            'role' => 'required|in:Admin,Guru,BK',
+            'guru_id' => 'nullable|required_if:role,Guru|exists:guru,id|unique:user,guru_id,' . $id,
+            'nama_lengkap' => 'nullable|required_if:role,Admin,BK|string|max:100',
+            'username' => 'nullable|required_if:role,Admin,BK|string|max:50|unique:user,username,' . $id,
             'password' => 'nullable|min:8',
-            'role' => 'required|in:Admin,Guru,BK'
         ], [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
-            'nama_lengkap.max' => 'Nama lengkap yang anda masukkan terlalu panjang!',
+            'role.required' => 'Role wajib dipilih!',
+            'role.in' => 'Pilihan role tidak valid!',
 
-            'username.required' => 'Username wajib diisi!',
+            'guru_id.required_if' => 'Data guru wajib dipilih jika role adalah Guru!',
+            'guru_id.exists' => 'Data guru yang dipilih tidak ditemukan di sistem!',
+            'guru_id.unique' => 'Guru ini sudah memiliki akun user!',
 
-            'password.min' => 'Password minimal 8 karakter',
-            'role.required' => 'Role wajib diisi!',
+            'nama_lengkap.required_if' => 'Nama lengkap wajib diisi!',
+            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter!',
+
+            'username.required_if' => 'Username wajib diisi!',
+            'username.unique' => 'Username sudah digunakan, cari username lain!',
+            'username.max' => 'Username maksimal 50 karakter!',
+
+            'password.required' => 'Password wajib diisi!',
+            'password.min' => 'Password minimal harus 8 karakter!',
         ]);
 
-        if ($request->password) {
-            $validated_data['password'] = bcrypt($request->password);
+        if ($request->role === 'Guru') {
+            $guru = Guru::findOrFail($request->guru_id);
+            $namaLengkap = $guru->nama_lengkap;
+            $username = $guru->nip;
+        } else {
+            $namaLengkap = $request->nama_lengkap;
+            $username = $request->username;
         }
 
-        $user->update($validated_data);
+        $user->update([
+            'role'         => $request->role,
+            'guru_id'      => $request->role === 'Guru' ? $request->guru_id : null,
+            'nama_lengkap' => $namaLengkap,
+            'username'     => $username,
+            'password'     => $request->filled('password') ? Hash::make($request->password) : $user['password'],
+        ]);
 
         flash()->addSuccess('Edit Data User Berhasil!');
 
-        return back();
+        return redirect()->to(route('data-user.index'));
     }
 
     /**
@@ -97,6 +156,6 @@ class UserController extends Controller
 
         flash()->addSuccess('Hapus Data User Berhasil');
 
-        return back();
+        return redirect()->to(route('data-user.index'));
     }
 }
