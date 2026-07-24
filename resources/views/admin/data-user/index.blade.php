@@ -42,7 +42,7 @@
 </table>
 @endsection
 
-@push('additional_js')
+@section('additional_js')
 <script>
     $(document).ready(function() {
         $('#table-private').DataTable({
@@ -53,4 +53,4 @@
         });
     });
 </script>
-@endpush
+@endsection
