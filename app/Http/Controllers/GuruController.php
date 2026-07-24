@@ -68,7 +68,12 @@ class GuruController extends Controller
 
     public function import_excel(ExcelImportRequest $request)
     {
-        Excel::import(new ImportDataGuru, $request->validated()['file']);
+        $import = new ImportDataGuru();
+        Excel::import($import, $request->validated()['file']);
+
+        if ($import->failures()->isNotEmpty()) {
+            return back()->with('import_failures', $import->failures());
+        }
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
