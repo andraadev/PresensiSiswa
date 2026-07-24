@@ -41,19 +41,13 @@ class UserController extends Controller
             'password' => 'required|min:8',
         ], [
             'role.required' => 'Role wajib dipilih!',
-            'role.in' => 'Pilihan role tidak valid!',
-
             'guru_id.required_if' => 'Data guru wajib dipilih jika role adalah Guru!',
-            'guru_id.exists' => 'Data guru yang dipilih tidak ditemukan di sistem!',
             'guru_id.unique' => 'Guru ini sudah memiliki akun user!',
-
             'nama_lengkap.required_if' => 'Nama lengkap wajib diisi!',
             'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter!',
-
             'username.required_if' => 'Username wajib diisi!',
             'username.unique' => 'Username sudah digunakan, cari username lain!',
             'username.max' => 'Username maksimal 50 karakter!',
-
             'password.required' => 'Password wajib diisi!',
             'password.min' => 'Password minimal harus 8 karakter!',
         ]);
@@ -97,7 +91,6 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrfail($id);
-
         $request->validate([
             'role' => 'required|in:Admin,Guru,BK',
             'guru_id' => 'nullable|required_if:role,Guru|exists:guru,id|unique:user,guru_id,' . $id,
@@ -106,20 +99,13 @@ class UserController extends Controller
             'password' => 'nullable|min:8',
         ], [
             'role.required' => 'Role wajib dipilih!',
-            'role.in' => 'Pilihan role tidak valid!',
-
             'guru_id.required_if' => 'Data guru wajib dipilih jika role adalah Guru!',
-            'guru_id.exists' => 'Data guru yang dipilih tidak ditemukan di sistem!',
             'guru_id.unique' => 'Guru ini sudah memiliki akun user!',
-
             'nama_lengkap.required_if' => 'Nama lengkap wajib diisi!',
             'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter!',
-
             'username.required_if' => 'Username wajib diisi!',
             'username.unique' => 'Username sudah digunakan, cari username lain!',
             'username.max' => 'Username maksimal 50 karakter!',
-
-            'password.required' => 'Password wajib diisi!',
             'password.min' => 'Password minimal harus 8 karakter!',
         ]);
 
