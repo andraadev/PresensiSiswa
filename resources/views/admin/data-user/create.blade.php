@@ -22,28 +22,29 @@
 
 @section('content')
     <div class="card card-body">
-        <x-alert-error />
         <form action="{{ route('data-user.store') }}" method="POST">
             @csrf
-
             <div class="mb-3">
                 <label class="form-label">Role</label><br>
-                <input type="radio" name="role" id="admin" value="Admin" class="form-check-input role-radio-tambah"
-                    checked>
-                <label for="admin">Admin</label>
+                <input type="radio" name="role" id="admin" value="Admin"
+                    class="form-check-input @error('role') is-invalid @enderror" checked>
+                <label for="admin" class="">Admin</label>
                 <br>
                 <input type="radio" name="role" id="guru" value="Guru"
-                    class="form-check-input role-radio-tambah">
+                    class="form-check-input @error('role') is-invalid @enderror">
                 <label for="guru">Guru atau Wali Kelas</label>
                 <br>
                 <input type="radio" name="role" id="bk" value="BK"
-                    class="form-check-input role-radio-tambah">
+                    class="form-check-input @error('role') is-invalid @enderror">
                 <label for="bk">BK</label>
+                @error('role')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3 d-none" id="container_guru">
                 <label class="form-label">Pilih Guru</label>
-                <select name="guru_id" class="form-select guru-select" id="guru_select">
+                <select name="guru_id" class="form-select guru-select @error('role') is-invalid @enderror" id="guru_select">
                     <option value="">-- Pilih Guru --</option>
                     @foreach ($data_guru as $guru)
                         <option value="{{ $guru->id }}" data-nama="{{ $guru->nama_lengkap }}"
@@ -52,28 +53,43 @@
                         </option>
                     @endforeach
                 </select>
+                @error('role')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" required>
+                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" id="nama_lengkap"
+                    name="nama_lengkap">
+                @error('nama_lengkap')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+                <input type="text" class="form-control @error('username') is-invalid @enderror" id="username"
+                    name="username">
+                @error('nama_lengkap')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                        name="password" required>
                     <span class="input-group-text">
                         <i class="ti ti-eye toggle-password" data-target="password"></i>
                     </span>
                     <button class="btn btn-outline-secondary generate-password" type="button"
                         data-target="password">Generate</button>
                 </div>
+                @error('password')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <button type="reset" class="btn btn-danger">Reset</button>
             <button type="submit" class="btn btn-primary">Simpan</button>

@@ -22,29 +22,34 @@
 
 @section('content')
     <div class="card card-body">
-        <x-alert-error />
         <form action="{{ route('data-user.update', $data_user->id) }}" method="POST">
             @csrf
             @method('PUT')
 
             <div class="mb-3">
                 <label class="form-label">Role</label><br>
-                <input type="radio" name="role" id="role_admin" value="Admin" class="form-check-input"
+                <input type="radio" name="role" id="role_admin" value="Admin"
+                    class="form-check-input @error('role') is-invalid @enderror"
                     {{ old('role', $data_user->role) == 'Admin' ? 'checked' : '' }}>
                 <label for="role_admin">Admin</label>
                 <br>
-                <input type="radio" name="role" id="role_guru" value="Guru" class="form-check-input"
+                <input type="radio" name="role" id="role_guru" value="Guru"
+                    class="form-check-input @error('role') is-invalid @enderror"
                     {{ old('role', $data_user->role) == 'Guru' ? 'checked' : '' }}>
                 <label for="role_guru">Guru atau Wali Kelas</label>
                 <br>
-                <input type="radio" name="role" id="role_bk" value="BK" class="form-check-input"
+                <input type="radio" name="role" id="role_bk" value="BK"
+                    class="form-check-input @error('role') is-invalid @enderror"
                     {{ old('role', $data_user->role) == 'BK' ? 'checked' : '' }}>
                 <label for="role_bk">BK</label>
+                @error('role')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3 {{ old('role', $data_user->role) == 'Guru' ? '' : 'd-none' }}" id="container_guru">
                 <label class="form-label">Pilih Guru</label>
-                <select name="guru_id" class="form-select" id="guru_select">
+                <select name="guru_id" class="form-select @error('guru_id') is-invalid @enderror" id="guru_select">
                     <option value="">-- Pilih Guru --</option>
                     @foreach ($data_guru as $guru)
                         <option value="{{ $guru->id }}" data-nama="{{ $guru->nama_lengkap }}"
@@ -54,35 +59,47 @@
                         </option>
                     @endforeach
                 </select>
+                @error('guru_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
                 <input type="text"
-                    class="form-control {{ old('role', $data_user->role) == 'Guru' ? 'read-only-disabled' : '' }}"
+                    class="form-control {{ old('role', $data_user->role) == 'Guru' ? 'read-only-disabled' : '' }} @error('nama_lengkap') is-invalid @enderror"
                     id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap', $data_user->nama_lengkap) }}"
                     {{ old('role', $data_user->role) == 'Guru' ? 'readonly' : '' }}>
+                @error('nama_lengkap')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text"
-                    class="form-control {{ old('role', $data_user->role) == 'Guru' ? 'read-only-disabled' : '' }}"
+                    class="form-control {{ old('role', $data_user->role) == 'Guru' ? 'read-only-disabled' : '' }} @error('username') is-invalid @enderror"
                     id="username" name="username" value="{{ old('username', $data_user->username) }}"
                     {{ old('role', $data_user->role) == 'Guru' ? 'readonly' : '' }}>
+                @error('username')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="password" name="password"
-                        placeholder="Kosongkan jika tidak ingin mengubah password">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                        name="password" placeholder="Kosongkan jika tidak ingin mengubah password">
                     <span class="input-group-text">
                         <i class="ti ti-eye toggle-password" data-target="password"></i>
                     </span>
                     <button class="btn btn-outline-secondary generate-password" type="button"
                         data-target="password">Generate</button>
                 </div>
+                @error('password')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
