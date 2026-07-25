@@ -5,11 +5,35 @@
 @endsection
 
 @section('content')
+    @if (session()->has('import_failures'))
+        <div class="alert alert-danger mt-3">
+            <h5>Ringkasan Kesalahan Impor Data:</h5>
+            <ul class="mb-0">
+                @php
+                    $groupedErrors = [];
+                    foreach (session('import_failures') as $failure) {
+                        foreach ($failure->errors() as $error) {
+                            $groupedErrors[$error][] = $failure->row();
+                        }
+                    }
+                @endphp
 
+                @foreach ($groupedErrors as $errorMessage => $rows)
+                    <li>
+                        <strong>{{ $errorMessage }}</strong>
+                        <br>
+                        <small class="text-muted">
+                            Ditemukan pada baris ke: {{ implode(', ', array_unique($rows)) }}
+                        </small>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @section('action-buttons')
     <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah</a>
     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
-    
+
     <!-- Modal Tambah Data Guru dengan File Excel -->
     <div class="modal fade" id="import_excel" tabindex="-1">
         <div class="modal-dialog">
@@ -31,16 +55,16 @@
                                 </p>
                             </li>
                         </ol>
-    
+
                         <label class="form-label">Pilih File Excel(.xlsx)</label>
                         <input type="file" name="file" class="form-control" accept=".xlsx, .xls">
-    
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
-    
+
                 </div>
             </div>
         </div>
