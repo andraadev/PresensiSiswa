@@ -4,72 +4,154 @@
     Data Guru
 @endsection
 
-@section('content')
-    @if (session()->has('import_failures'))
-        <div class="alert alert-danger mt-3">
-            <h5>Ringkasan Kesalahan Impor Data:</h5>
-            <ul class="mb-0">
-                @php
-                    $groupedErrors = [];
-                    foreach (session('import_failures') as $failure) {
-                        foreach ($failure->errors() as $error) {
-                            $groupedErrors[$error][] = $failure->row();
-                        }
-                    }
-                @endphp
+{{-- @section('additional_css')
+    <style>
+        .upload-zone {
+            border: 2px dashed #0d6efd;
+            border-radius: 12px;
+            background: #f8f9fa;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-                @foreach ($groupedErrors as $errorMessage => $rows)
-                    <li>
-                        <strong>{{ $errorMessage }}</strong>
-                        <br>
-                        <small class="text-muted">
-                            Ditemukan pada baris ke: {{ implode(', ', array_unique($rows)) }}
-                        </small>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        .upload-zone:hover {
+            border-color: #0b5ed7;
+            background: #f1f4f9;
+        }
+
+        .upload-zone.dragover {
+            border-color: #198754;
+            background: #e8f5e9;
+        }
+
+        .upload-zone-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-zone-content {
+            pointer-events: none;
+        }
+
+        /* Style file info */
+        #fileInfo .alert {
+            padding: 0.75rem 1rem;
+        }
+    </style> 
+@endsection --}}
+
+@section('content')
 @section('action-buttons')
     <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah</a>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">
+        <i class="ti ti-upload me-1"></i> Import
+    </button>
 
-    <!-- Modal Tambah Data Guru dengan File Excel -->
     <div class="modal fade" id="import_excel" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Tambah Data Guru dengan File Excel</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">
+                        <i class="ti ti-file-import me-2"></i>
+                        Import Data Guru dari Excel
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.data_guru.import_excel') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <ol class="mb-2">
-                            <li>Pastikan jumlah kolom pada file excel yang kamu upload sama dengan yang ada di
-                                <i>database</i>
-                            </li>
-                            <li>
-                                <p>Unduh Template Excel
-                                    <a href="{{ asset('template_excel/data-guru.xlsx') }}"> Disini</a>
-                                </p>
-                            </li>
-                        </ol>
 
-                        <label class="form-label">Pilih File Excel(.xlsx)</label>
-                        <input type="file" name="file" class="form-control" accept=".xlsx, .xls">
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                <form action="{{ route('admin.data_guru.import_excel') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="alert alert-info d-flex gap-2 align-items-center">
+                            <i class="ti ti-info-circle fs-5"></i>
+                            <span>Pastikan format kolom sesuai dengan template yang disediakan</span>
                         </div>
-                    </form>
 
-                </div>
+                        <div class="mb-3">
+                            <a href="{{ asset('template_excel/data-guru.xlsx') }}" class="btn btn-outline-primary">
+                                <i class="ti ti-download me-1"></i>
+                                Download Template Excel
+                            </a>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label fw-bold">Pilih File Excel</label>
+                            <input type="file" name="file" id="fileInput" class="form-control" accept=".xlsx,.xls"
+                                required>
+                        </div>
+
+                        <div id="fileInfo" class="mt-2 d-none">
+                            <div class="alert alert-success">
+                                <i class="ti ti-check-circle me-1"></i>
+                                File dipilih: <span id="fileNameDisplay" class="fw-bold"></span>
+                            </div>
+                        </div>
+
+                        @error('file')
+                            <small class="text-danger d-block mt-1">{{ $message }}</small>
+                        @enderror
+
+                        @if (session()->has('import_failures') && session('import_failures')->isNotEmpty())
+                            <div class="alert alert-warning mt-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ti ti-alert-triangle fs-4 me-2 text-warning"></i>
+                                    <h6 class="mb-0 fw-bold">Proses Impor Selesai dengan Beberapa Catatan</h6>
+                                </div>
+                                <p class="small mb-2">
+                                    Data yang valid telah berhasil disimpan ke database. Silakan perbaiki baris berikut pada
+                                    file Excel Anda lalu unggah kembali:
+                                </p>
+
+                                <ul class="mb-0 ps-3" style="max-height: 180px; overflow-y: auto;">
+                                    @foreach (session('import_failures') as $row => $failures)
+                                        <li>
+                                            <strong>Baris {{ $row }}</strong>
+                                            <ul>
+                                                @foreach ($failures as $failure)
+                                                    @foreach ($failure->errors() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if (session()->has('success'))
+                            <div class="alert alert-success mt-3">
+                                <i class="ti ti-check-circle me-1"></i>
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="ti ti-x me-1"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="ti ti-upload me-1"></i> Import Data
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <!-- Akhir Dari Modal Form Tambah Guru-->
 @endsection
 
 
@@ -107,4 +189,14 @@
         @endforeach
     </tbody>
 </table>
+@endsection
+
+@section('additional_js')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if (session()->has('import_failures'))
+            new bootstrap.Modal(document.getElementById('import_excel')).show();
+        @endif
+    });
+</script>
 @endsection
