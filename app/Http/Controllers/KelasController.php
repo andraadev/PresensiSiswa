@@ -106,22 +106,6 @@ class KelasController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $kelas = Kelas::findOrFail($id);
-
-        $kelas->delete();
-
-        Storage::disk('public')->delete($kelas->qr_code);
-
-        flash()->option('timeout', 3000)->addSuccess('Hapus Data Kelas Berhasil');
-
-        return back();
-    }
-
     public function download_qr(Kelas $kelas)
     {
         $fullPath = storage_path('app/public/' . $kelas->qr_code);

@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'],
     // Route yang menangani fungsi CRUD
     Route::resource('/data-guru', GuruController::class)->parameters(['data-guru' => 'guru']);
     Route::resource('/data-siswa', SiswaController::class)->parameters(['data-siswa' => 'siswa']);
-    Route::resource('/data-kelas', KelasController::class)->parameters(['data-kelas' => 'kelas']);
+    Route::resource('/data-kelas', KelasController::class)->parameters(['data-kelas' => 'kelas'])->except(['destroy']);
     Route::resource('/data-user', UserController::class)->parameters(['data-user' => 'user']);
 });
 
