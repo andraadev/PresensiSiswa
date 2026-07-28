@@ -64,27 +64,23 @@ class KelasController extends Controller
                 ->with('edit_kelas_id', $id);
         }
 
-        // jika nama kelas yang dimasukkan tidak sama dengan nama kelas yang ada di database
         if ($validated_data['nama_kelas'] !== $kelas->nama_kelas) {
-
             $qr_code_kelas = QRCode::format('png')
                 ->size(500)
                 ->margin(2)
                 ->generate(route('absensi.index') . $slug_kelas);
 
             $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
-
             Storage::disk('public')->delete($kelas->qr_code);
-
             Storage::disk('public')->put($output_file, $qr_code_kelas);
-
-            $validated = $request->validated();
-
-            $validated['slug_kelas'] = Str::slug($request->nama_kelas);
-            $validated['qr_code'] = $output_file;
-
-            $kelas->update($validated);
         }
+
+        $validated = $request->validated();
+
+        $validated['slug_kelas'] = Str::slug($request->nama_kelas);
+        $validated['qr_code'] = $output_file;
+
+        $kelas->update($validated);
 
         flash()->option('timeout', 3000)->addSuccess('Edit Data Kelas Berhasil');
 
