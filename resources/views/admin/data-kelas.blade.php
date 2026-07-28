@@ -5,11 +5,11 @@
 @endsection
 
 @section('content')
-    <x-alert-error />
+    {{-- <x-alert-error /> --}}
 
-    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#tambah_kelas">Tambah</button>
+    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambahKelas">Tambah</button>
     <!-- Modal -->
-    <div class="modal fade" id="tambah_kelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalTambahKelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -21,16 +21,24 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nama Kelas</label>
-                            <input type="text" class="form-control" name="nama_kelas" value="{{ old('nama_kelas') }}">
+                            <input type="text"
+                                class="form-control @error('nama_kelas', 'storeKelas') is-invalid @enderror"
+                                name="nama_kelas" value="{{ old('nama_kelas') }}">
+                            @error('nama_kelas', 'storeKelas')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama Wali Kelas</label>
-                            <select name="guru_id" class="form-select">
+                            <select name="guru_id" class="form-select @error('guru_id', 'storeKelas') is-invalid @enderror">
                                 <option value="" selected disabled>Pilih</option>
                                 @foreach ($guru as $data_guru)
                                     <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}</option>
                                 @endforeach
                             </select>
+                            @error('guru_id', 'storeKelas')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -60,60 +68,108 @@
                         <a href="{{ route('admin.data_kelas.download_qr', $data_kelas->id) }}" class="btn btn-success">
                             Simpan QR
                         </a>
-                        <button class="btn btn-warning" data-bs-toggle="modal"
-                            data-bs-target="#update_kelas{{ $data_kelas->id }}">
+                        <button class="btn btn-warning btn-edit-kelas" data-bs-toggle="modal"
+                            data-bs-target="#modalEditKelas" data-id="{{ $data_kelas->id }}"
+                            data-nama="{{ $data_kelas->nama_kelas }}" data-guru="{{ $data_kelas->guru_id }}">
                             Edit
                         </button>
-                        <form action="{{ route('data-kelas.destroy', $data_kelas->id) }}" method="post"
-                            style="display: inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger show-alert-delete-box">Hapus</button>
-                        </form>
                     </td>
-                    <!-- Modal -->
-                    <div class="modal fade" id="update_kelas{{ $data_kelas->id }}" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Kelas</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('data-kelas.update', $data_kelas->id) }}" method="post">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama Kelas</label>
-                                            <input type="text" class="form-control" name="nama_kelas"
-                                                value="{{ $data_kelas->nama_kelas }}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama Wali Kelas</label>
-                                            <select name="guru_id" class="form-select">
-                                                @foreach ($guru as $data_guru)
-                                                    <option value="{{ $data_guru->id }}"
-                                                        {{ $data_guru->id == $data_kelas->guru_id ? 'selected' : '' }}>
-                                                        {{ $data_guru->nama_lengkap }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="modalEditKelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Kelas</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditKelas" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                            <label class="form-label">Nama Kelas</label>
+                            <input type="text"
+                                class="form-control @error('nama_kelas', 'updateKelas') is-invalid @enderror"
+                                name="nama_kelas" id="edit_nama_kelas">
+                            @error('nama_kelas', 'updateKelas')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama Wali Kelas</label>
+                            <select name="guru_id" class="form-select @error('guru_id', 'updateKelas') is-invalid @enderror"
+                                id="edit_guru_id">
+                                @foreach ($guru as $data_guru)
+                                    <option value="{{ $data_guru->id }}">
+                                        {{ $data_guru->nama_lengkap }}</option>
+                                @endforeach
+                            </select>
+                            @error('guru_id', 'updateKelas')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('additional_js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->storeKelas->any())
+                const modalTambah = new bootstrap.Modal(document.getElementById('modalTambahKelas'));
+                modalTambah.show();
+            @endif
+
+            const modalEditElement = document.getElementById('modalEditKelas');
+            const modalEdit = new bootstrap.Modal(modalEditElement);
+            const formEdit = document.getElementById('formEditKelas');
+
+            const oldNamaKelas = @json(old('nama_kelas'));
+            const oldGuruId = @json(old('guru_id'));
+            const isUpdateError = @json($errors->updateKelas->any());
+
+            modalEditElement.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+
+                if (button) {
+                    formEdit.action = `/admin/data-kelas/${button.dataset.id}`;
+
+                    if (isUpdateError) {
+                        document.getElementById('edit_nama_kelas').value = oldNamaKelas !== null ?
+                            oldNamaKelas : button.dataset.nama;
+                        document.getElementById('edit_guru_id').value = oldGuruId !== null ? oldGuruId :
+                            button.dataset.guru;
+                    } else {
+                        document.getElementById('edit_nama_kelas').value = button.dataset.nama;
+                        document.getElementById('edit_guru_id').value = button.dataset.guru;
+                    }
+                }
+            });
+
+            @if ($errors->updateKelas->any() && session('edit_kelas_id'))
+                formEdit.action = `/admin/data-kelas/{{ session('edit_kelas_id') }}`;
+
+                if (oldNamaKelas !== null) {
+                    document.getElementById('edit_nama_kelas').value = oldNamaKelas;
+                }
+                if (oldGuruId !== null) {
+                    document.getElementById('edit_guru_id').value = oldGuruId;
+                }
+
+                modalEdit.show();
+            @endif
+        });
+    </script>
 @endsection
