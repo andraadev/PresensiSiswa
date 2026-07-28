@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\KelasFormRequest;
 use App\Models\Guru;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
@@ -27,20 +28,8 @@ class KelasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(KelasFormRequest $request)
     {
-        $validated_data = $request->validateWithBag('storeKelas', [
-            'nama_kelas' => 'required|max:20',
-            'guru_id' => 'required|integer|exists:guru,id'
-        ], [
-            'nama_kelas.required' => 'Nama kelas wajib diisi!',
-            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 20 karakter',
-            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!',
-            'guru_id.exists' => 'Silakan pilih wali kelas yang tersedia.'
-        ]);
-
-        $slug_kelas = Str::slug($request->nama_kelas);
-
         $qr_code_kelas = QRCode::format('png')
             ->size(500)
             ->margin(2)
@@ -50,33 +39,23 @@ class KelasController extends Controller
 
         Storage::disk('public')->put($output_file, $qr_code_kelas);
 
-        Kelas::create([
-            'slug_kelas' => $slug_kelas,
-            'nama_kelas' => $validated_data['nama_kelas'],
-            'guru_id' => $validated_data['guru_id'],
-            'qr_code' => $output_file,
-        ]);
+        $validated = $request->validated();
+
+        $validated['slug_kelas'] = Str::slug($request->nama_kelas);
+        $validated['qr_code'] = $output_file;
+
+        Kelas::create($validated);
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Kelas Berhasil');
-
         return back();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(KelasFormRequest $request, string $id)
     {
         $kelas = Kelas::findOrFail($id);
-        $validator = Validator::make($request->all(), [
-            'nama_kelas' => 'required|max:20',
-            'guru_id' => 'required|integer|exists:guru,id'
-        ], [
-            'nama_kelas.required' => 'Nama kelas wajib diisi!',
-            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 20 karakter',
-            'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!',
-            'guru_id.exists' => 'Silakan pilih wali kelas yang tersedia.'
-        ]);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -85,12 +64,9 @@ class KelasController extends Controller
                 ->with('edit_kelas_id', $id);
         }
 
-        $validated_data = $validator->validated();
-
         // jika nama kelas yang dimasukkan tidak sama dengan nama kelas yang ada di database
         if ($validated_data['nama_kelas'] !== $kelas->nama_kelas) {
 
-            $slug_kelas = Str::slug($request->nama_kelas);
             $qr_code_kelas = QRCode::format('png')
                 ->size(500)
                 ->margin(2)
@@ -102,12 +78,12 @@ class KelasController extends Controller
 
             Storage::disk('public')->put($output_file, $qr_code_kelas);
 
-            $kelas->update([
-                'slug_kelas' => $slug_kelas,
-                'nama_kelas' => $validated_data['nama_kelas'],
-                'guru_id' => $validated_data['guru_id'],
-                'qr_code' => $output_file,
-            ]);
+            $validated = $request->validated();
+
+            $validated['slug_kelas'] = Str::slug($request->nama_kelas);
+            $validated['qr_code'] = $output_file;
+
+            $kelas->update($validated);
         }
 
         flash()->option('timeout', 3000)->addSuccess('Edit Data Kelas Berhasil');
