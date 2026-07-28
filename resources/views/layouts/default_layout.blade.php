@@ -116,7 +116,8 @@
                 }, ],
 
                 language: {
-                    zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur."
+                    zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur.",
+                    emptyTable: "Belum ada data di dalam tabel ini."
                 },
             }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
         });
