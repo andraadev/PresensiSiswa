@@ -6,6 +6,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -28,7 +29,7 @@ class KelasController extends Controller
      */
     public function store(Request $request)
     {
-        $validated_data = $request->validate([
+        $validated_data = $request->validateWithBag('storeKelas', [
             'nama_kelas' => 'required|max:20',
             'guru_id' => 'required|integer|exists:guru,id'
         ], [
@@ -67,8 +68,7 @@ class KelasController extends Controller
     public function update(Request $request, $id)
     {
         $kelas = Kelas::findOrFail($id);
-
-        $validated_data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama_kelas' => 'required|max:20',
             'guru_id' => 'required|integer|exists:guru,id'
         ], [
@@ -77,6 +77,15 @@ class KelasController extends Controller
             'guru_id.required' => 'Opsi wali kelas tidak boleh kosong!',
             'guru_id.exists' => 'Silakan pilih wali kelas yang tersedia.'
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator, 'updateKelas')
+                ->withInput()
+                ->with('edit_kelas_id', $id);
+        }
+
+        $validated_data = $validator->validated();
 
         // jika nama kelas yang dimasukkan tidak sama dengan nama kelas yang ada di database
         if ($validated_data['nama_kelas'] !== $kelas->nama_kelas) {
