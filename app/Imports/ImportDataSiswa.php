@@ -2,47 +2,26 @@
 
 namespace App\Imports;
 
-use App\Models\Siswa;
-use App\Models\Kelas;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-HeadingRowFormatter::default('none');
-
-class ImportDataSiswa implements ToCollection, WithHeadingRow
+class ImportDataSiswa implements WithMultipleSheets
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function collection(Collection $collection)
-    {
-        // Cek waktu eksekusi dalam detik dan aktifkan log query
-        // DB::enableQueryLog();
-        // $start = microtime(true);
-        // $end = microtime(true);
-        // $executionTime = $end - $start;
-        // dd([
-        //     'Execution time (seconds)' => $executionTime,
-        //     'Total queries' => count(DB::getQueryLog()),
-        //     'Query log' => DB::getQueryLog()
-        // ]);
-        $daftarKelas = Kelas::all()->keyBy('nama_kelas');
-        foreach ($collection as $row) {
-            // Cari ID kelas berdasarkan nama kelas
-            $kelas = $daftarKelas[$row['Kelas']] ?? null;
+    protected $sheetImport;
 
-            // Jika kelas ditemukan, buat entri siswa
-            Siswa::create([
-                'nisn' => $row['NISN'],
-                'nama_lengkap' => $row['Nama'],
-                'jenis_kelamin' => $row['Jenis Kelamin'],
-                'kelas_id' => $kelas->id, // Gunakan ID kelas yang ditemukan
-                'no_telepon' => $row['No Telepon']
-            ]);
-        }
+    public function __construct()
+    {
+        $this->sheetImport = new ImportDataSiswaSheet();
+    }
+
+    public function sheets(): array
+    {
+        return [
+            0 => $this->sheetImport,
+        ];
+    }
+
+    public function failures()
+    {
+        return $this->sheetImport->failures();
     }
 }
