@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use App\Imports\ImportDataSiswaSheet;
 
 class ImportDataSiswa implements WithMultipleSheets
 {
