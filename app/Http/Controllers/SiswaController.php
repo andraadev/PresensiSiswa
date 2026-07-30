@@ -77,10 +77,19 @@ class SiswaController extends Controller
 
     public function import_excel(ExcelImportRequest $request)
     {
-        Excel::import(new ImportDataSiswa, $request->validated()['file']);
+        $import = new ImportDataSiswa;
+        Excel::import($import, $request->file('file'));
 
+        if ($import->failures()->isNotEmpty()) {
+            $failuresByRow = $import->failures()->groupBy(fn($f) => $f->row())->sortKeys(SORT_NUMERIC);
+
+            return back()->with([
+                'import_failures' => $failuresByRow,
+            ]);
+        }
+
+        session()->forget('import_failures');
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
-
         return back();
     }
 }
