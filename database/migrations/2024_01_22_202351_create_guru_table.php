@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_lengkap', 100);
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->char('no_telepon', 13);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
