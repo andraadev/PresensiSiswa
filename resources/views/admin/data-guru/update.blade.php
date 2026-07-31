@@ -10,7 +10,6 @@
 
 @section('content')
     <div class="card card-body">
-        <x-alert-error />
         <form action="{{ route('data-guru.update', $guru->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -19,6 +18,9 @@
                 <input type="text" class="form-control" name="nip" value="{{ old('nip', $guru->nip) }}" maxlength="18"
                     pattern="[0-9]{18}" id="nip" data-counter="nipCounter" required>
                 <small class="counter"></small>
+                @error('nip')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
             </div>
             <div class="mb-3">
                 <label class="form-label">Nama Lengkap</label>
@@ -26,6 +28,9 @@
                     value="{{ old('nama_lengkap', $guru->nama_lengkap) }}" maxlength="100" id="nama_lengkap"
                     data-counter="namaCounter" required>
                 <small class="counter"></small>
+                @error('nama_lengkap')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
             </div>
             <div class="mb-3">
                 <label class="form-label">Jenis Kelamin</label>
@@ -43,6 +48,9 @@
                         Perempuan
                     </label>
                 </div>
+                @error('jenis_kelamin')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
             </div>
             <div class="mb-3">
                 <label class="form-label">Nomor Telepon</label>
@@ -50,6 +58,9 @@
                     value="{{ old('no_telepon', $guru->no_telepon) }}" maxlength="13" pattern="08[0-9]{10,11}$"
                     id="no_telepon" data-counter="telpCounter" required>
                 <small class="counter"></small>
+                @error('no_telepon')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
