@@ -49,7 +49,7 @@
         #fileInfo .alert {
             padding: 0.75rem 1rem;
         }
-    </style> 
+    </style>
 @endsection --}}
 
 @section('content')
@@ -162,11 +162,24 @@
                 <td>
                     <a href="{{ route('data-guru.edit', $data_guru->id) }}" type="button"
                         class="btn btn-warning btn-edit">Edit</a>
-                    <form action="{{ route('data-guru.destroy', $data_guru->id) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('Apakah anda yakin ingin menghapus data dengan nama {{ $data_guru->nama_lengkap }} ini?')">
+                    <form action="{{ route('data_guru.update_status', $data_guru->id) }}" method="POST"
+                        class="d-inline">
                         @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
+                        @method('PATCH')
+
+                        @if ($data_guru->is_active)
+                            <input type="hidden" name="is_active" value="0">
+                            <button type="button" class="btn btn-danger" data-nama="{{ $data_guru->nama_lengkap }}"
+                                data-active="true" onclick="confirmStatusChange(this)">
+                                Nonaktifkan
+                            </button>
+                        @else
+                            <input type="hidden" name="is_active" value="1">
+                            <button type="button" class="btn btn-success" data-nama="{{ $data_guru->nama_lengkap }}"
+                                data-active="false" onclick="confirmStatusChange(this)">
+                                Aktifkan
+                            </button>
+                        @endif
                     </form>
                 </td>
             </tr>
@@ -177,6 +190,28 @@
 
 @section('additional_js')
 <script>
+    function confirmStatusChange(button) {
+        const form = button.closest('form');
+        const nama = button.getAttribute('data-nama');
+        const isActive = button.getAttribute('data-active') === 'true';
+
+        Swal.fire({
+            title: isActive ? 'Nonaktifkan Guru?' : 'Aktifkan Guru?',
+            text: isActive ?
+                `Guru ${nama} akan dinonaktifkan dari sistem.` : `Guru ${nama} akan diaktifkan kembali.`,
+            icon: isActive ? 'warning' : 'question',
+            showCancelButton: true,
+            confirmButtonColor: isActive ? '#dc3545' : '#198754',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: isActive ? 'Ya, Nonaktifkan!' : 'Ya, Aktifkan!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
     document.addEventListener('DOMContentLoaded', function() {
         @if (session()->has('import_failures'))
             new bootstrap.Modal(document.getElementById('import_excel')).show();
