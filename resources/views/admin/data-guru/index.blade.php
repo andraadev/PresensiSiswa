@@ -93,13 +93,6 @@
                                 required>
                         </div>
 
-                        <div id="fileInfo" class="mt-2 d-none">
-                            <div class="alert alert-success">
-                                <i class="ti ti-check-circle me-1"></i>
-                                File dipilih: <span id="fileNameDisplay" class="fw-bold"></span>
-                            </div>
-                        </div>
-
                         @error('file')
                             <small class="text-danger d-block mt-1">{{ $message }}</small>
                         @enderror
@@ -129,13 +122,6 @@
                                         </li>
                                     @endforeach
                                 </ul>
-                            </div>
-                        @endif
-
-                        @if (session()->has('success'))
-                            <div class="alert alert-success mt-3">
-                                <i class="ti ti-check-circle me-1"></i>
-                                {{ session('success') }}
                             </div>
                         @endif
                     </div>
