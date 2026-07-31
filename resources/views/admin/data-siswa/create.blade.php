@@ -14,13 +14,11 @@
 
 @section('content')
     <div class="card card-body">
-        <div class="alert alert-info" role="alert">
-            <strong>Petunjuk Pengisian: </strong>
-            <ul class="mb-0 mt-2">
-                <li><strong>NISN</strong>: Wajib 10 digit angka (contoh: 1234567890)</li>
-                <li><strong>Nama Lengkap</strong>: Maksimal 100 karakter</li>
-                <li><strong>Nomor Telepon</strong>: Wajib diawali 08, total 12-13 digit (contoh: 08123456789)</li>
-            </ul>
+        <div class="alert alert-info d-flex gap-2 align-items-center" role="alert">
+            <i class="ti ti-info-circle fs-5"></i>
+            Pastikan kelas yang dipilih sudah tersedia. Jika belum ada, tambahkan melalui menu <a
+                href="{{ route('data-kelas.index') }}" class="alert-link fw-bolder">Data Kelas</a> terlebih
+            dahulu.
         </div>
 
         <x-alert-error />
