@@ -63,18 +63,5 @@
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
-
-        <script>
-            const form = document.querySelector(".add-data-form");
-            const submitBtn = document.querySelector('button[type="submit"]');
-
-            // Set initial state on first loading
-            submitBtn.disabled = true;
-
-            // Submit button will be disabled if form doesn't meet requirements
-            form.addEventListener("input", () => {
-                submitBtn.disabled = !form.checkValidity();
-            });
-        </script>
     </div>
 @endsection
