@@ -15,6 +15,10 @@ class Guru extends Model
 
     protected $primaryKey = "id";
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function kelas()
     {
         return $this->hasOne(Kelas::class);
@@ -23,5 +27,10 @@ class Guru extends Model
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }
