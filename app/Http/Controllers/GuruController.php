@@ -17,7 +17,7 @@ class GuruController extends Controller
     public function index()
     {
         return view('admin.data-guru.index', [
-            'guru' => Guru::latest()->get(),
+            'guru' => Guru::orderBy('nama_lengkap', 'ASC')->get(),
         ]);
     }
 
