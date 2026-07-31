@@ -148,6 +148,7 @@
             <th scope="col">Nama Lengkap</th>
             <th scope="col">Jenis Kelamin</th>
             <th scope="col">Nomor Telepon</th>
+            <th scope="col">Status</th>
             <th scope="col">Aksi</th>
         </tr>
     </thead>
@@ -159,6 +160,11 @@
                 <td>{{ $data_guru->nama_lengkap }}</td>
                 <td>{{ $data_guru->jenis_kelamin }}</td>
                 <td>{{ $data_guru->no_telepon }}</td>
+                <td>
+                    <span class="badge {{ $data_guru->is_active ? 'text-bg-success' : 'text-bg-danger' }}">
+                        {{ $data_guru->is_active ? 'Aktif' : 'Nonaktif' }}
+                    </span>
+                </td>
                 <td>
                     <a href="{{ route('data-guru.edit', $data_guru->id) }}" type="button"
                         class="btn btn-warning btn-edit">Edit</a>
