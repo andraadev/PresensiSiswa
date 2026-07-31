@@ -4,6 +4,15 @@
     Data Kelas
 @endsection
 
+@section('additional_css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.6.1/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <style>
+        .ts-dropdown {
+            z-index: 1060 !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     {{-- <x-alert-error /> --}}
 
@@ -30,8 +39,9 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama Wali Kelas</label>
-                            <select name="guru_id" class="form-select @error('guru_id', 'storeKelas') is-invalid @enderror">
-                                <option value="" selected disabled>Pilih</option>
+                            <select name="guru_id" id="select_guru_tambah"
+                                class="form-select @error('guru_id', 'storeKelas') is-invalid @enderror">
+                                <option value="" selected disabled>Pilih atau cari guru...</option>
                                 @foreach ($guru as $data_guru)
                                     <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}</option>
                                 @endforeach
@@ -125,12 +135,36 @@
 @endsection
 
 @section('additional_js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.6.1/js/tom-select.complete.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const tsTambah = new TomSelect('#select_guru_tambah', {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                dropdownParent: 'body'
+            });
+
+            const tsEdit = new TomSelect('#edit_guru_id', {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                dropdownParent: 'body'
+            });
+
+            const modalTambahEl = document.getElementById('modalTambahKelas');
             @if ($errors->storeKelas->any())
-                const modalTambah = new bootstrap.Modal(document.getElementById('modalTambahKelas'));
+                const modalTambah = new bootstrap.Modal(modalTambahEl);
                 modalTambah.show();
             @endif
+
+            modalTambahEl.addEventListener('hidden.bs.modal', function() {
+                tsTambah.clear();
+            });
 
             const modalEditElement = document.getElementById('modalEditKelas');
             const modalEdit = new bootstrap.Modal(modalEditElement);
@@ -149,11 +183,11 @@
                     if (isUpdateError) {
                         document.getElementById('edit_nama_kelas').value = oldNamaKelas !== null ?
                             oldNamaKelas : button.dataset.nama;
-                        document.getElementById('edit_guru_id').value = oldGuruId !== null ? oldGuruId :
-                            button.dataset.guru;
+                        const targetGuru = oldGuruId !== null ? oldGuruId : button.dataset.guru;
+                        tsEdit.setValue(targetGuru);
                     } else {
                         document.getElementById('edit_nama_kelas').value = button.dataset.nama;
-                        document.getElementById('edit_guru_id').value = button.dataset.guru;
+                        tsEdit.setValue(button.dataset.guru);
                     }
                 }
             });
@@ -165,7 +199,7 @@
                     document.getElementById('edit_nama_kelas').value = oldNamaKelas;
                 }
                 if (oldGuruId !== null) {
-                    document.getElementById('edit_guru_id').value = oldGuruId;
+                    tsEdit.setValue(oldGuruId);
                 }
 
                 modalEdit.show();
