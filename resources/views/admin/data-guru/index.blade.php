@@ -55,9 +55,7 @@
 @section('content')
 @section('action-buttons')
     <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah</a>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">
-        <i class="ti ti-upload me-1"></i> Import
-    </button>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
 
     <div class="modal fade" id="import_excel" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -89,8 +87,8 @@
 
                         <div class="mb-3">
                             <label for="fileInput" class="form-label fw-bold">Pilih File Excel</label>
-                            <input type="file" name="file" id="fileInput" class="form-control" accept=".xlsx,.xls"
-                                required>
+                            <input type="file" name="file" id="fileInput"
+                                class="form-control @error('file') is-invalid @enderror" accept=".xlsx,.xls" required>
                         </div>
 
                         @error('file')
