@@ -92,12 +92,8 @@ class GuruController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        $guru->update([
-            'is_active' => $request->is_active
-        ]);
-
+        $guru->update($validated);
         $statusText = $guru->is_active ? 'diaktifkan' : 'dinonaktifkan';
-
 
         flash()->option('timeout', 3000)->addSuccess("Data guru {$guru->nama_lengkap} berhasil {$statusText}!");
         return redirect()->route('data-guru.index');
