@@ -4,6 +4,10 @@
     Tambah Data Siswa
 @endsection
 
+@push('additional_css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.6.1/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+@endpush
+
 @section('action-buttons')
     <a href="{{ route('data-siswa.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
 @endsection
@@ -50,7 +54,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Kelas</label>
-                <select name="kelas_id" class="form-select">
+                <select name="kelas_id" id="select_kelas" class="form-select">
                     @forelse ($kelas as $data_kelas)
                         <option value="{{ $data_kelas->id }}" {{ old('kelas_id') == $data_kelas->id ? 'selected' : '' }}>
                             {{ $data_kelas->nama_kelas }}
@@ -71,3 +75,13 @@
         </form>
     </div>
 @endsection
+
+@push('additional_js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.6.1/js/tom-select.complete.min.js"></script>
+    <script>
+        const guruTomSelect = new TomSelect('#select_kelas', {
+            create: false,
+            placeholder: '-- Pilih Kelas --',
+        });
+    </script>
+@endpush
