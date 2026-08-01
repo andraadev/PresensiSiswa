@@ -15,59 +15,33 @@
 
 @section('content')
 @section('action-buttons')
-    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#filter">
-        Filter
-    </button>
-
-    @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
-        <a href="{{ route('data_absensi') }}" class="btn btn-danger">
-            Reset Filter
-        </a>
-    @endif
-
-
-    <!-- Modal Filter -->
-    <div class="modal fade" id="filter" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Filter...</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Batal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        Untuk memfilter data, isi minimal satu kolom di bawah.
-                    </div>
-                    <form action="{{ route($prefix . '.data_absensi.filter') }}" method="get" id="filterForm">
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal Mulai</label>
-                            <input type="date" name="tanggal_mulai" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal Selesai</label>
-                            <input type="date" name="tanggal_selesai" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kelas</label>
-                            <select name="kelas_id" class="form-select">
-                                <option value="">Pilih</option>
-                                @foreach ($kelas as $data_kelas)
-                                    <option value="{{ $data_kelas->id }}">{{ $data_kelas->nama_kelas }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Simpan</button>
-                </div>
-                </form>
-            </div>
+    <form action="{{ route($prefix . '.data_absensi.filter') }}" method="get" id="filterForm"
+        class="d-flex gap-2 align-items-center mb-3">
+        <div class="">
+            <label class="form-label">Tanggal Mulai</label>
+            <input type="date" name="tanggal_mulai" class="form-control">
         </div>
-    </div>
+        <div class="">
+            <label class="form-label">Tanggal Selesai</label>
+            <input type="date" name="tanggal_selesai" class="form-control">
+        </div>
+        <div class="">
+            <label class="form-label">Kelas</label>
+            <select name="kelas_id" class="form-select">
+                <option value="">Pilih Kelas</option>
+                @foreach ($kelas as $data_kelas)
+                    <option value="{{ $data_kelas->id }}">{{ $data_kelas->nama_kelas }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="align-self-end">
+            @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
+                <a href="{{ route('data_absensi') }}" class="btn btn-danger">Reset Filter</a>
+            @endif
+            <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Simpan</button>
+        </div>
+    </form>
 @endsection
-
-
 
 <table class="table" id="table">
     <thead>
@@ -102,17 +76,16 @@
 
 @section('additional_js')
 <script>
-const form = document.querySelector("#filterForm");
-const submitBtn = document.querySelector("#filterBtn");
+    const form = document.querySelector("#filterForm");
+    const submitBtn = document.querySelector("#filterBtn");
 
-form.addEventListener("change", () => {
-    // Check if there is an input in the form that has a value
-    let hasValue = Array.from(form.querySelectorAll("input, select"))
-                        .some(el => el.value.trim() !== "");
+    form.addEventListener("change", () => {
+        // Check if there is an input in the form that has a value
+        let hasValue = Array.from(form.querySelectorAll("input, select"))
+            .some(el => el.value.trim() !== "");
 
-    // The button will return to disabled if the value returns empty
-    submitBtn.disabled = !hasValue;
-});
-
+        // The button will return to disabled if the value returns empty
+        submitBtn.disabled = !hasValue;
+    });
 </script>
 @endsection
