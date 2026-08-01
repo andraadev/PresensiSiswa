@@ -38,7 +38,7 @@
             @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
                 <a href="{{ route('data_absensi') }}" class="btn btn-danger">Reset Filter</a>
             @endif
-            <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Simpan</button>
+            <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Filter</button>
         </div>
     </form>
 @endsection
@@ -66,8 +66,7 @@
                 <td>{{ $data_absensi->status }}</td>
                 <td>{{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }} </td>
                 <td>{{ $data_absensi->user->nama_lengkap }}</td>
-                <td>{{ $data_absensi->created_at }}</td>
-                {{-- <td>{{ $data_absensi->created_at->format('d F Y') }}</td> --}}
+                <td>{{ \Carbon\Carbon::parse($data_absensi->created_at)->translatedFormat('l, d F Y') }}</td>
             </tr>
         @endforeach
     </tbody>
