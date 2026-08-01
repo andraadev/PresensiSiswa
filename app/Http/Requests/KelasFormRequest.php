@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 
 class KelasFormRequest extends FormRequest
 {
+    protected $errorBag = 'updateKelas';
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -32,7 +33,8 @@ class KelasFormRequest extends FormRequest
     public function rules(): array
     {
         // [For update data only: check if guru id on kelas table is available or not]
-        $kelasID = $this->kelas?->id;
+        // $kelasID = $this->kelas?->id;
+        $kelasID = $this->route('kelas') ?? $this->kelas;
         return [
             'nama_kelas' => 'required|max:20',
             'guru_id' => [
