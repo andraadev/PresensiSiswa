@@ -19,9 +19,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_admin'])->name('admin.beranda');
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('data_absensi');
+    Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('absensi.rekapitulasi');
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
     Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
-
 
     //Import Excel
     Route::post('/data-guru/import', [GuruController::class, 'import_excel'])->name('admin.data_guru.import_excel');
@@ -45,4 +45,5 @@ Route::group(['middleware' => ['auth', 'checkrole:BK'], 'prefix' => 'bk'], funct
     Route::get('/beranda', [DashboardController::class, 'beranda_bk'])->name('bk.beranda');
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('bk.data_absensi');
     Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('bk.data_absensi.filter');
+    Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('absensi.rekapitulasi');
 });
