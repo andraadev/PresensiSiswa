@@ -13,70 +13,39 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    // public function beranda()
-    // {
-    //     $user =  User::count('nama_lengkap');
-    //     $guru = Guru::count('nama_lengkap');
-    //     $siswa = Siswa::count('nama_lengkap');
-    //     $kelas = Kelas::count('nama_kelas');
-    //     $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
-    //         $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
-    //     })
-    //         ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
-    //         ->groupBy('year')
-    //         ->orderBy('year')
-    //         ->get();
-
-    //     $jumlah_user = User::select('role', DB::raw('COUNT(*) as count'))
-    //         ->whereIn('role', ['guru', 'BK']) // Filter hanya untuk role 'guru' dan 'BK'
-    //         ->groupBy('role')
-    //         ->get()
-    //         ->pluck('count', 'role')
-    //         ->toArray();
-
-    //     // Konversi nilai menjadi bilangan bulat
-    //     $jumlah_siswa = array_map('intval', $jumlah_siswa);
-
-    //     // Siapkan data untuk grafik
-    //     $labels = $jumlah_siswa->pluck('year')->toArray(); // Label sumbu X berdasarkan tahun
-    //     $data = $jumlah_siswa->pluck('count')->toArray(); // Data jumlah siswa
-
-    //     // Kirim data grafik ke tampilan
-    //     return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'jumlah_user'));
-    // }
     public function beranda_admin()
     {
         $user =  User::count('nama_lengkap');
         $guru = Guru::count('nama_lengkap');
         $siswa = Siswa::count('nama_lengkap');
         $kelas = Kelas::count('nama_kelas');
-        $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
-            $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
-        })
-            ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
-            ->groupBy('year')
-            ->orderBy('year')
-            ->get()
-            ->toArray(); // Mengubah koleksi menjadi array PHP biasa
 
-        // Siapkan data untuk grafik
-        $labels = array_column($jumlah_siswa, 'year'); // Label sumbu X berdasarkan tahun
-        $data = array_map('intval', array_column($jumlah_siswa, 'count')); // Data jumlah siswa (konversi ke bilangan bulat)
+        $siswaPerKelas = Kelas::withCount('siswa')->orderBy('nama_kelas', 'asc')->get();
 
-        $jumlah_user = User::select('role', DB::raw('COUNT(*) as count'))
-            ->whereIn('role', ['guru', 'BK']) // Filter hanya untuk role 'guru' dan 'BK'
-            ->groupBy('role')
-            ->get()
-            ->pluck('count', 'role')
-            ->toArray();
+        $labels = $siswaPerKelas->pluck('nama_kelas')->toArray();
+        $data   = $siswaPerKelas->pluck('siswa_count')->toArray();
 
-        // Siapkan data untuk grafik pie
-        $pieLabels = array_keys($jumlah_user);
-        $pieData = array_values($jumlah_user);
+        $today = \Carbon\Carbon::today();
+        $allKelas = Kelas::orderBy('nama_kelas', 'asc')->get();
+
+        $statusKelas = $allKelas->map(function ($kelas) use ($today) {
+            $sudahAbsen = $kelas->siswa()->whereHas('absensi', function ($query) use ($today) {
+                $query->whereDate('created_at', $today);
+            })->exists();
+
+            return [
+                'nama_kelas'  => $kelas->nama_kelas,
+                'sudah_absen' => $sudahAbsen,
+            ];
+        });
+
+        // 2. Hitung total untuk badge header
+        $totalKelas      = $statusKelas->count();
+        $totalKelasSudah = $statusKelas->where('sudah_absen', true)->count();
+
         $header = "Beranda";
 
-        // Kirim data grafik ke tampilan
-        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData', 'header'));
+        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'statusKelas', 'totalKelas', 'totalKelasSudah', 'header'));
     }
 
     public function beranda_bk()
