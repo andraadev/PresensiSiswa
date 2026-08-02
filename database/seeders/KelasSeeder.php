@@ -6,6 +6,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 
 class KelasSeeder extends Seeder
@@ -21,7 +22,7 @@ class KelasSeeder extends Seeder
         foreach (['X IPA', 'X IPS', 'XI IPA', 'XI IPS', 'XII IPA'] as $kelasNama) {
             Kelas::create([
                 'nama_kelas' => $kelasNama,
-                'slug_kelas' => str_replace(' ', '-', $kelasNama),
+                'slug_kelas' => Str::slug($kelasNama),
                 'qr_code' => '-',
                 'guru_id' => $faker->randomElement($guruIds),
             ]);
