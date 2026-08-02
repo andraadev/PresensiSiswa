@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('siswa_id')->references('id')->on('siswa');
             $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Alpa']);
             $table->string('keterangan', 50)->nullable();
-            $table->date('tanggal_absensi')->after('keterangan');
+            $table->date('tanggal_absensi');
             $table->timestamps();
         });
     }
