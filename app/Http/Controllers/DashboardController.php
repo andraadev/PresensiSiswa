@@ -111,14 +111,20 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function data_absensi()
+    public function data_absensi(Request $request)
     {
-        return view('data-absensi', [
-            'header' => 'Data Absensi',
-            'absensi' => Absensi::all(),
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all()
-        ]);
+        $tanggal_mulai = $request->input('tanggal_mulai');
+        $tanggal_selesai = $request->input('tanggal_selesai');
+        $kelas_id = $request->input('kelas_id');
+
+        $absensi =  Absensi::when($tanggal_mulai, fn($q) => $q->where("created_at", ">=", $tanggal_mulai . " 00:00:00"))
+            ->when($tanggal_selesai, fn($q) => $q->where("created_at", "<=", $tanggal_selesai . " 23:59:59"))
+            ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->get();
+
+        $kelas = Kelas::all();
+
+        return view('data-absensi', compact('absensi', 'kelas'));
     }
 
     public function rekapitulasi_absensi(Request $request)
@@ -137,22 +143,5 @@ class DashboardController extends Controller
         $kelas = Kelas::all();
 
         return view('rekapitulasi-absensi', compact('siswa', 'kelas'));
-    }
-
-    public function filter_data_absensi(Request $request)
-    {
-        $tanggal_mulai = $request->input('tanggal_mulai');
-        $tanggal_selesai = $request->input('tanggal_selesai');
-        $kelas_id = $request->input('kelas_id');
-        $kelas = Kelas::all();
-        $header = "Data Absensi";
-
-        // Query untuk mengambil data absensi dengan filter tanggal mulai, tanggal selesai, dan kelas
-        // Update: menambahkan fallback jika tanggal tidak diisi, sistem tidak melempar error secara langsung
-        $absensi = Absensi::when($tanggal_mulai, fn($q) => $q->where("created_at", ">=", $tanggal_mulai . " 00:00:00"))
-            ->when($tanggal_selesai, fn($q) => $q->where("created_at", "<=", $tanggal_selesai . " 23:59:59"))
-            ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
-            ->get();
-        return view('data-absensi', compact('absensi', 'kelas', 'header'));
     }
 }
