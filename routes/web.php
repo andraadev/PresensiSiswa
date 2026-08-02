@@ -18,7 +18,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_admin'])->name('admin.beranda');
-    Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('data_absensi');
+    Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('admin.data_absensi');
     Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('admin.rekapitulasi');
     Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
 
