@@ -23,7 +23,7 @@ class AbsensiController extends Controller
         $slug_kelas = $request->query('kelas') ?? session('active_kelas_slug');
 
         $relations = ['siswa.absensi' => function ($query) use ($hari_ini) {
-            $query->whereBetween('created_at', [$hari_ini . ' 00:00:00', $hari_ini . ' 23:59:59']);
+            $query->whereBetween('created_at', $hari_ini);
         }];
 
         $kelasAktif = $slug_kelas ? Kelas::with($relations)->where('slug_kelas', $slug_kelas)->first() : null;
@@ -103,6 +103,7 @@ class AbsensiController extends Controller
                 'siswa_id' => $siswa_id,
                 'status' => $status,
                 'keterangan' => $keterangan,
+                'tanggal_absensi' => date('Y-m-d')
             ]);
         }
 
@@ -117,7 +118,7 @@ class AbsensiController extends Controller
         $hari_ini = date('Y-m-d');
         $dataSiswa = Siswa::where('kelas_id', $id)
             ->with(['absensi' => function ($query) use ($hari_ini) {
-                $query->whereBetween('created_at', [$hari_ini . ' 00:00:00', $hari_ini . ' 23:59:59']);
+                $query->whereBetween('tanggal_absensi', $hari_ini);
             }])
             ->get();
         $kelas = Kelas::findOrFail($id);
@@ -145,8 +146,7 @@ class AbsensiController extends Controller
         $hari_ini = date('Y-m-d');
         foreach ($siswa_ids as $siswa_id) {
             $absensi = Absensi::where('siswa_id', $siswa_id)
-                ->where('created_at', '>=', $hari_ini . ' 00:00:00')
-                ->where('created_at', '<=', $hari_ini . ' 23:59:59')
+                ->where('tanggal_absensi', $hari_ini)
                 ->firstOrFail();;
 
             $statusBaru = $request->status[$siswa_id];
@@ -196,12 +196,12 @@ class AbsensiController extends Controller
 
         $riwayatAbsensi = Absensi::where('siswa_id', $siswa->id)
             ->when($tanggalMulai, function ($query, $mulai) {
-                $query->whereDate('created_at', '>=', $mulai . ' 00:00:00');
+                $query->whereDate('tanggal_absensi', $mulai);
             })
             ->when($tanggalSelesai, function ($query, $selesai) {
-                $query->whereDate('created_at', '<=', $selesai . ' 23:59:59');
+                $query->whereDate('tanggal_absensi', $selesai);
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal_absensi', 'desc')
             ->get();
 
         return view('guru.data-absensi-detail', [
