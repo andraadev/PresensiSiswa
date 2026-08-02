@@ -58,6 +58,17 @@
             'icon' => 'ti-table',
             'roles' => ['Admin', 'Guru', 'BK'],
         ],
+        [
+            'label' => 'Rekapitulasi Absensi',
+            'route' => match ($userRole) {
+                'Admin' => 'absensi.rekapitulasi',
+                'BK' => 'absensi.rekapitulasi',
+                default => '#',
+            },
+            'pattern' => '*rekapitulasi-absensi*',
+            'icon' => 'ti-clipboard-check',
+            'roles' => ['Admin', 'BK'],
+        ],
     ];
 @endphp
 
