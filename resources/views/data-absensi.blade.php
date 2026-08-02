@@ -36,7 +36,7 @@
         </div>
         <div class="align-self-end">
             @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
-                <a href="{{ route('data_absensi') }}" class="btn btn-danger">Reset Filter</a>
+                <a href="{{ route($prefix . '.data_absensi') }}" class="btn btn-danger">Reset Filter</a>
             @endif
             <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Filter</button>
         </div>
