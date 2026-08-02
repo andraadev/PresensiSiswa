@@ -15,7 +15,7 @@
 
 @section('content')
 @section('action-buttons')
-    <form action="{{ route('absensi.rekapitulasi') }}" method="get" id="filterForm"
+    <form action="{{ route($prefix . '.rekapitulasi') }}" method="get" id="filterForm"
         class="d-flex gap-2 align-items-center mb-3">
         <div>
             <label class="form-label">Bulan</label>
