@@ -86,8 +86,8 @@ class DashboardController extends Controller
         $tanggal_selesai = $request->input('tanggal_selesai');
         $kelas_id = $request->input('kelas_id');
 
-        $absensi =  Absensi::when($tanggal_mulai, fn($q) => $q->where("created_at", ">=", $tanggal_mulai . " 00:00:00"))
-            ->when($tanggal_selesai, fn($q) => $q->where("created_at", "<=", $tanggal_selesai . " 23:59:59"))
+        $absensi =  Absensi::when($tanggal_mulai, fn($q) => $q->where("tanggal_absensi", $tanggal_mulai))
+            ->when($tanggal_selesai, fn($q) => $q->where("tanggal_absensi", $tanggal_selesai))
             ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
             ->get();
 
