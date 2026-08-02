@@ -61,8 +61,8 @@
         [
             'label' => 'Rekapitulasi Absensi',
             'route' => match ($userRole) {
-                'Admin' => 'absensi.rekapitulasi',
-                'BK' => 'absensi.rekapitulasi',
+                'Admin' => 'admin.rekapitulasi',
+                'BK' => 'bk.rekapitulasi',
                 default => '#',
             },
             'pattern' => '*rekapitulasi-absensi*',
