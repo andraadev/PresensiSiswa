@@ -121,6 +121,24 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function rekapitulasi_absensi(Request $request)
+    {
+
+        $bulan = $request->bulan ?? date('Y-m');
+        $kelas_id = $request->kelas_id ?? null;
+
+        [$tahun, $bulan] = explode('-', $bulan);
+
+        $siswa = Siswa::with(['kelas'])
+            ->withRekapBulan($tahun, $bulan)
+            ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->get();
+
+        $kelas = Kelas::all();
+
+        return view('rekapitulasi-absensi', compact('siswa', 'kelas'));
+    }
+
     public function filter_data_absensi(Request $request)
     {
         $tanggal_mulai = $request->input('tanggal_mulai');
