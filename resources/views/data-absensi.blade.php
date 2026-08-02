@@ -58,12 +58,25 @@
     </thead>
     <tbody>
         @foreach ($absensi as $data_absensi)
+            @php
+                $statusClasses = [
+                    'Hadir' => 'text-bg-success',
+                    'Izin' => 'text-bg-warning',
+                    'Sakit' => 'text-bg-info',
+                    'Alpa' => 'text-bg-danger',
+                ];
+                $class = $statusClasses[$data_absensi->status] ?? 'text-bg-secondary';
+            @endphp
             <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ $data_absensi->siswa->nisn }}</td>
                 <td>{{ $data_absensi->siswa->nama_lengkap }}</td>
                 <td>{{ $data_absensi->kelas->nama_kelas }}</td>
-                <td>{{ $data_absensi->status }}</td>
+                <td>
+                    <span class="d-flex justify-content-center align-items-center badge {{ $class }} py-2 mb-3">
+                        {{ $data_absensi->status }}
+                    </span>
+                </td>
                 <td>{{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }} </td>
                 <td>{{ $data_absensi->user->nama_lengkap }}</td>
                 <td>{{ \Carbon\Carbon::parse($data_absensi->created_at)->translatedFormat('l, d F Y') }}</td>
