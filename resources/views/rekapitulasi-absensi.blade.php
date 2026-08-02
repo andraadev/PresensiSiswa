@@ -15,28 +15,24 @@
 
 @section('content')
 @section('action-buttons')
-    <form action="{{ route($prefix . '.data_absensi.filter') }}" method="get" id="filterForm"
+    <form action="{{ route('absensi.rekapitulasi') }}" method="get" id="filterForm"
         class="d-flex gap-2 align-items-center mb-3">
-        <div class="">
-            <label class="form-label">Tanggal Mulai</label>
-            <input type="date" name="tanggal_mulai" class="form-control">
-        </div>
-        <div class="">
-            <label class="form-label">Tanggal Selesai</label>
-            <input type="date" name="tanggal_selesai" class="form-control">
+        <div>
+            <label class="form-label">Bulan</label>
+            <input type="month" name="bulan" class="form-control" value="{{ request('bulan', date('Y-m')) }}">
         </div>
         <div class="">
             <label class="form-label">Kelas</label>
             <select name="kelas_id" class="form-select">
                 <option value="">Pilih Kelas</option>
-                {{-- @foreach ($kelas as $data_kelas)
+                @foreach ($kelas as $data_kelas)
                     <option value="{{ $data_kelas->id }}">{{ $data_kelas->nama_kelas }}</option>
-                @endforeach --}}
+                @endforeach
             </select>
         </div>
         <div class="align-self-end">
-            @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai') || request()->has('kelas_id'))
-                <a href="{{ route('data_absensi') }}" class="btn btn-danger">Reset Filter</a>
+            @if (request()->has('bulan') || request()->has('kelas_id'))
+                <a href="{{ route('absensi.rekapitulasi') }}" class="btn btn-danger">Reset Filter</a>
             @endif
             <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Simpan</button>
         </div>
