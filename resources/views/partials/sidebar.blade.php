@@ -52,7 +52,7 @@
             'route' => match ($userRole) {
                 'Guru' => 'guru.data_absensi',
                 'BK' => 'bk.data_absensi',
-                default => 'data_absensi',
+                default => 'admin.data_absensi',
             },
             'pattern' => '*data_absensi*',
             'icon' => 'ti-table',
