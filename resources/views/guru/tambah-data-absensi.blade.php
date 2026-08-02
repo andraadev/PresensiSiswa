@@ -73,7 +73,7 @@
     </div>
 @endsection
 
-@section('additional_js')
+@push('additional_js')
     <script>
         $(document).ready(function() {
             $('input[type="radio"]').change(function() {
@@ -91,4 +91,4 @@
             });
         });
     </script>
-@endsection
+@endpush

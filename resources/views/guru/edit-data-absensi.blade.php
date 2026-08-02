@@ -66,7 +66,7 @@
     </form>
     </div>
 @endsection
-@section('additional_js')
+@push('additional_js')
     <script>
         $(document).ready(function() {
             function toggleKeterangan(radioElement) {
@@ -84,7 +84,7 @@
                     keteranganLabel.hide();
                     keteranganInput.hide();
                     if (radioElement.is(':checked')) {
-                        // keteranganInput.val(''); 
+                        // keteranganInput.val('');
                     }
                 }
             }
@@ -98,4 +98,4 @@
             });
         });
     </script>
-@endsection
+@endpush
