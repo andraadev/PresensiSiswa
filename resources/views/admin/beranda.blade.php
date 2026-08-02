@@ -10,7 +10,7 @@
                     <div class="row align-items-start">
                         <div class="col-8">
                             <h5 class="mb-8 fw-bolder">Selamat Datang, {{ Auth::user()->nama_lengkap }}</h5>
-                            <h6 id="jam" class="fw-semibold mb-0"></h6>
+                            <h6 id="jam" class="fw-semibold mb-2"></h6>
                         </div>
                         <div class="col-4">
                             <div class="d-flex justify-content-end">
