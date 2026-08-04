@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->enum('role', ['Admin', 'Guru', 'BK']);
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }
