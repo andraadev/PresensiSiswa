@@ -44,7 +44,8 @@
 
             <div class="mb-3 d-none" id="container_guru">
                 <label class="form-label">Pilih Guru</label>
-                <select name="guru_id" class="form-select guru-select @error('role') is-invalid @enderror" id="guru_select">
+                <select name="guru_id" class="form-select guru-select @error('guru_id') is-invalid @enderror"
+                    id="guru_select">
                     <option value="">-- Pilih Guru --</option>
                     @foreach ($data_guru as $guru)
                         <option value="{{ $guru->id }}" data-nama="{{ $guru->nama_lengkap }}"
@@ -53,7 +54,7 @@
                         </option>
                     @endforeach
                 </select>
-                @error('role')
+                @error('guru_id')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
