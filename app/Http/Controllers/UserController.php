@@ -61,9 +61,8 @@ class UserController extends Controller
         return redirect()->to(route('data-user.index'));
     }
 
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        $user = User::findOrfail($id);
         return view('admin.data-user.update', [
             'data_user' => $user
         ]);
@@ -72,10 +71,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserFormRequest $request, string $id)
+    public function update(UserFormRequest $request, User $user)
     {
-        $user = User::findOrfail($id);
-
         // Preventing Admins from Changing Their Own Roles
         if ($user->id === auth()->id() && $request->has('role') && $request->role !== $user->role) {
             flash()->addError('Anda tidak dapat mengubah role akun Anda sendiri!');
