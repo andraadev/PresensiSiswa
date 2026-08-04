@@ -106,16 +106,24 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Toggle active status of the specified user.
      */
-    public function destroy(string $id)
+    public function update_status(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
+        $validated = $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
 
-        $user->delete();
+        // Preventing the Admin from deactivating themselves
+        if ($user->id === auth()->id() && !$request->is_active) {
+            flash()->addError('Anda tidak dapat menonaktifkan akun Anda sendiri yang sedang digunakan!');
+            return back();
+        }
 
-        flash()->addSuccess('Hapus Data User Berhasil');
+        $user->update($validated);
+        $statusText = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
-        return redirect()->to(route('data-user.index'));
+        flash()->option('timeout', 3000)->addSuccess("Data user {$user->nama_lengkap} berhasil {$statusText}!");
+        return redirect()->route('data-user.index');
     }
 }

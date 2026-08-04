@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'],
     Route::resource('/data-siswa', SiswaController::class)->parameters(['data-siswa' => 'siswa']);
     Route::resource('/data-kelas', KelasController::class)->parameters(['data-kelas' => 'kelas'])->except(['destroy']);
     Route::resource('/data-user', UserController::class)->parameters(['data-user' => 'user']);
+    Route::patch('/data-user/{user}/status', [UserController::class, 'update_status'])->name('data_user.update_status');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:Guru'], 'prefix' => 'guru'], function () {
