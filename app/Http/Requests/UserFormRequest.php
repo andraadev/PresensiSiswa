@@ -5,27 +5,20 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-
 class UserFormRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         $user = $this->route('user');
         $isUpdate = $user !== null;
-        $role = $this->input('role') ?? $user?->role;
+
+        // Ensure that the fallback works properly if the 'role' is submitted as empty
+        $role = $this->filled('role') ? $this->input('role') : $user?->role;
 
         $passwordRule = $isUpdate ? ['nullable', 'min:8'] : ['required', 'min:8'];
 
@@ -42,7 +35,7 @@ class UserFormRequest extends FormRequest
                 'guru_id' => [
                     'required',
                     'exists:guru,id',
-                    Rule::unique('users', 'guru_id'),
+                    Rule::unique('user', 'guru_id'),
                 ],
 
                 'password' => $passwordRule,
@@ -55,14 +48,36 @@ class UserFormRequest extends FormRequest
         if ($isUpdate) {
             $usernameRules[] = Rule::unique('user', 'username')->ignore($user);
         } else {
-            $usernameRules[] = Rule::unique('users', 'username');
+            $usernameRules[] = Rule::unique('user', 'username');
         }
 
         return [
-            'role' => 'required|in:Admin,BK',
-            'nama_lengkap' => 'required|string|max:100',
+            'role' => ['required', 'in:Admin,BK'],
+            'nama_lengkap' => ['required', 'string', 'max:100'],
             'username' => $usernameRules,
             'password' => $passwordRule,
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'role.required'         => 'Role wajib dipilih!',
+            'role.in'               => 'Role tidak valid!',
+
+            'guru_id.required'      => 'Data guru wajib dipilih untuk akun Guru!',
+            'guru_id.exists'        => 'Data guru tidak ditemukan!',
+            'guru_id.unique'        => 'Guru ini sudah memiliki akun user!',
+
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
+            'nama_lengkap.max'      => 'Nama lengkap maksimal 100 karakter!',
+
+            'username.required'     => 'Username wajib diisi!',
+            'username.unique'       => 'Username sudah digunakan, cari username lain!',
+            'username.max'          => 'Username maksimal 50 karakter!',
+
+            'password.required'     => 'Password wajib diisi!',
+            'password.min'          => 'Password minimal harus 8 karakter!',
         ];
     }
 }
