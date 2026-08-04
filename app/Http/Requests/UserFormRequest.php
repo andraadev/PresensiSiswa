@@ -24,11 +24,7 @@ class UserFormRequest extends FormRequest
     public function rules(): array
     {
         $user = $this->route('user');
-
-        // Dalam mode create, is update berisi null
         $isUpdate = $user !== null;
-
-        // Dalam mode update, guru menggunakan role yang tersedia--sementara admin dan BK menggunakan role dari input
         $role = $this->input('role') ?? $user?->role;
 
         $passwordRule = $isUpdate ? ['nullable', 'min:8'] : ['required', 'min:8'];
