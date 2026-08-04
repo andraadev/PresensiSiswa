@@ -15,7 +15,6 @@ class UserController extends Controller
     public function index()
     {
         return view('admin.data-user.index', [
-            'header' => 'Data User',
             'user' => User::orderBy('nama_lengkap', 'ASC')->get(),
         ]);
     }
@@ -23,7 +22,6 @@ class UserController extends Controller
     public function create()
     {
         return view('admin.data-user.create', [
-            'header' => 'Tambah Data User',
             'data_guru' => Guru::all()
         ]);
     }
@@ -79,7 +77,6 @@ class UserController extends Controller
         $guru = Guru::all();
         $user = User::findOrfail($id);
         return view('admin.data-user.update', [
-            'header' => 'Edit Data User',
             'data_guru' => $guru,
             'data_user' => $user
         ]);
