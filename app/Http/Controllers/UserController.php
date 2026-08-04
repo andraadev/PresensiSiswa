@@ -116,7 +116,7 @@ class UserController extends Controller
 
         // Preventing the Admin from deactivating themselves
         if ($user->id === auth()->id() && !$request->is_active) {
-            flash()->addError('Anda tidak dapat menonaktifkan akun Anda sendiri yang sedang digunakan!');
+            flash()->addError('Anda tidak dapat menonaktifkan akun Anda sendiri!');
             return back();
         }
 
