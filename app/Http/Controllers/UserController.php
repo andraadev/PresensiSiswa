@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserFormRequest;
 use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserFormRequest $request)
     {
         if ($request->role === 'Guru') {
             $guru = Guru::findOrFail($request->guru_id);
@@ -51,6 +52,8 @@ class UserController extends Controller
             ];
         }
 
+        // dd($payload);
+
         User::create($payload);
 
         flash()->addSuccess('Data User baru berhasil ditambahkan');
@@ -69,7 +72,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserFormRequest $request, string $id)
     {
         $user = User::findOrfail($id);
 
