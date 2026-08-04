@@ -74,10 +74,8 @@ class UserController extends Controller
 
     public function edit(string $id)
     {
-        $guru = Guru::all();
         $user = User::findOrfail($id);
         return view('admin.data-user.update', [
-            'data_guru' => $guru,
             'data_user' => $user
         ]);
     }
