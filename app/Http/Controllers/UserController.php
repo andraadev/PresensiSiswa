@@ -31,43 +31,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'role' => 'required|in:Admin,Guru,BK',
-            'guru_id' => 'nullable|required_if:role,Guru|exists:guru,id|unique:user,guru_id',
-            'nama_lengkap' => 'nullable|required_if:role,Admin,BK|string|max:100',
-            'username' => 'nullable|required_if:role,Admin,BK|string|max:50|unique:user,username',
-            'password' => 'required|min:8',
-        ], [
-            'role.required' => 'Role wajib dipilih!',
-            'guru_id.required_if' => 'Data guru wajib dipilih jika role adalah Guru!',
-            'guru_id.unique' => 'Guru ini sudah memiliki akun user!',
-            'nama_lengkap.required_if' => 'Nama lengkap wajib diisi!',
-            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter!',
-            'username.required_if' => 'Username wajib diisi!',
-            'username.unique' => 'Username sudah digunakan, cari username lain!',
-            'username.max' => 'Username maksimal 50 karakter!',
-            'password.required' => 'Password wajib diisi!',
-            'password.min' => 'Password minimal harus 8 karakter!',
-        ]);
-
         if ($request->role === 'Guru') {
             $guru = Guru::findOrFail($request->guru_id);
-            $namaLengkap = $guru->nama_lengkap;
-            $username = $guru->nip;
+
+            $payload = [
+                'role'         => 'Guru',
+                'guru_id'      => $guru->id,
+                'nama_lengkap' => $guru->nama_lengkap,
+                'username'     => $guru->nip, // Menggunakan NIP sebagai username bawaan
+                'password'     => Hash::make($request->password),
+            ];
         } else {
-            $namaLengkap = $request->nama_lengkap;
-            $username = $request->username;
+            $payload = [
+                'role'         => $request->role,
+                'guru_id'      => null,
+                'nama_lengkap' => $request->nama_lengkap,
+                'username'     => $request->username,
+                'password'     => Hash::make($request->password),
+            ];
         }
 
-        User::create([
-            'role'         => $request->role,
-            'guru_id'      => $request->role === 'Guru' ? $request->guru_id : null,
-            'nama_lengkap' => $namaLengkap,
-            'username'     => $username,
-            'password'     => Hash::make($request->password),
-        ]);
+        User::create($payload);
 
-        flash()->addSuccess('Tambah Data User baru berhasil');
+        flash()->addSuccess('Data User baru berhasil ditambahkan');
 
         return redirect()->to(route('data-user.index'));
     }
@@ -86,43 +72,36 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrfail($id);
-        $request->validate([
-            'role' => 'required|in:Admin,Guru,BK',
-            'guru_id' => 'nullable|required_if:role,Guru|exists:guru,id|unique:user,guru_id,' . $id,
-            'nama_lengkap' => 'nullable|required_if:role,Admin,BK|string|max:100',
-            'username' => 'nullable|required_if:role,Admin,BK|string|max:50|unique:user,username,' . $id,
-            'password' => 'nullable|min:8',
-        ], [
-            'role.required' => 'Role wajib dipilih!',
-            'guru_id.required_if' => 'Data guru wajib dipilih jika role adalah Guru!',
-            'guru_id.unique' => 'Guru ini sudah memiliki akun user!',
-            'nama_lengkap.required_if' => 'Nama lengkap wajib diisi!',
-            'nama_lengkap.max' => 'Nama lengkap maksimal 100 karakter!',
-            'username.required_if' => 'Username wajib diisi!',
-            'username.unique' => 'Username sudah digunakan, cari username lain!',
-            'username.max' => 'Username maksimal 50 karakter!',
-            'password.min' => 'Password minimal harus 8 karakter!',
-        ]);
 
-        if ($request->role === 'Guru') {
-            $guru = Guru::findOrFail($request->guru_id);
-            $namaLengkap = $guru->nama_lengkap;
-            $username = $guru->nip;
-        } else {
-            $namaLengkap = $request->nama_lengkap;
-            $username = $request->username;
+        // Preventing Admins from Changing Their Own Roles
+        if ($user->id === auth()->id() && $request->has('role') && $request->role !== $user->role) {
+            flash()->addError('Anda tidak dapat mengubah role akun Anda sendiri!');
+            return back();
         }
 
-        $user->update([
-            'role'         => $request->role,
-            'guru_id'      => $request->role === 'Guru' ? $request->guru_id : null,
-            'nama_lengkap' => $namaLengkap,
-            'username'     => $username,
-            'password'     => $request->filled('password') ? Hash::make($request->password) : $user['password'],
-        ]);
+        $payload = [];
 
-        flash()->addSuccess('Edit Data User Berhasil!');
+        if ($user->role === 'Guru') {
+            if ($request->filled('password')) {
+                $payload['password'] = Hash::make($request->password);
+            }
+        } else {
+            $payload = [
+                'role'         => $request->role,
+                'nama_lengkap' => $request->nama_lengkap,
+                'username'     => $request->username,
+            ];
 
+            if ($request->filled('password')) {
+                $payload['password'] = Hash::make($request->password);
+            }
+        }
+
+        if (!empty($payload)) {
+            $user->update($payload);
+        }
+
+        flash()->addSuccess("Data {$user->nama_lengkap} Berhasil Diedit!");
         return redirect()->to(route('data-user.index'));
     }
 
