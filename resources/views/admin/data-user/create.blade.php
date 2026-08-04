@@ -32,7 +32,7 @@
                 <br>
                 <input type="radio" name="role" id="guru" value="Guru"
                     class="form-check-input @error('role') is-invalid @enderror">
-                <label for="guru">Guru atau Wali Kelas</label>
+                <label for="guru">Guru</label>
                 <br>
                 <input type="radio" name="role" id="bk" value="BK"
                     class="form-check-input @error('role') is-invalid @enderror">
@@ -71,7 +71,7 @@
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control @error('username') is-invalid @enderror" id="username"
                     name="username">
-                @error('nama_lengkap')
+                @error('username')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
