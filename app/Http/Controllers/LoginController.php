@@ -26,6 +26,15 @@ class LoginController extends Controller
         // Generate session ID baru
         $request->session()->regenerate();
         if (Auth::attempt($data_user)) {
+            $user = Auth::user();
+
+            if (!$user->is_active) {
+                Auth::logout();
+                return redirect('/')->withErrors([
+                    'username' => 'Akun kamu tidak aktif. Hubungi admin.'
+                ]);
+            }
+
             if (Auth::user()->role == 'Admin') {
                 return redirect()->intended('admin/beranda');
             } elseif (Auth::user()->role == 'Guru') {
