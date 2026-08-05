@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route khusus halaman login
 Route::get('/', [LoginController::class, 'login'])->name('login');
-Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
+Route::post('/auth', [LoginController::class, 'auth'])->name('auth')->middleware('throttle:5,1');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'], function () {
