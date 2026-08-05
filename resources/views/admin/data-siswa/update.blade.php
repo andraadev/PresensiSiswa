@@ -79,6 +79,18 @@
                     <small class="text-danger d-block mt-1">{{ $message }}</small>
                 @enderror
             </div>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" id="status" class="form-select @error('status') is-invalid @enderror">
+                    <option value="Aktif">Aktif</option>
+                    <option value="Lulus">Lulus</option>
+                    <option value="Mutasi">Mutasi</option>
+                    <option value="Keluar">Keluar</option>
+                </select>
+                @error('status')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
+            </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     </div>
