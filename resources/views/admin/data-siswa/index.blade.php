@@ -107,11 +107,21 @@
             <th>Jenis Kelamin</th>
             <th>Kelas</th>
             <th>No Telepon</th>
+            <th>Status</th>
             <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($siswa as $datasiswa)
+            @php
+                $statusClasses = [
+                    'Aktif' => 'text-bg-success',
+                    'Lulus' => 'text-bg-primary',
+                    'Mutasi' => 'text-bg-info',
+                    'Keluar' => 'text-bg-danger',
+                ];
+                $class = $statusClasses[$datasiswa->status] ?? 'text-bg-secondary';
+            @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $datasiswa->nisn }}</td>
@@ -120,13 +130,12 @@
                 <td>{{ $datasiswa->kelas->nama_kelas ?? '-' }}</td>
                 <td>{{ $datasiswa->no_telepon }}</td>
                 <td>
+                    <span class="d-flex justify-content-center align-items-center badge {{ $class }} py-2 mb-3">
+                        {{ $datasiswa->status }}
+                    </span>
+                </td>
+                <td>
                     <a href="{{ route('data-siswa.edit', $datasiswa->id) }}" class="btn btn-warning">Edit</a>
-                    <form action="{{ route('data-siswa.destroy', $datasiswa->id) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('Apakah anda yakin ingin menghapus data dengan nama {{ $datasiswa->nama_lengkap }} ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
-                    </form>
                 </td>
             </tr>
         @endforeach
