@@ -36,7 +36,10 @@ class SiswaController extends Controller
      */
     public function store(SiswaFormRequest $request)
     {
-        Siswa::create($request->validated());
+        $validated = $request->validated();
+        $validated['status'] = "Aktif";
+
+        Siswa::create($validated);
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
@@ -59,18 +62,6 @@ class SiswaController extends Controller
         $siswa->update($request->validated());
 
         flash()->option('timeout', 3000)->addSuccess('Edit Data Siswa Berhasil');
-
-        return redirect()->route('data-siswa.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Siswa $siswa)
-    {
-        $siswa->delete();
-
-        flash()->option('timeout', 3000)->addSuccess('Hapus Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
