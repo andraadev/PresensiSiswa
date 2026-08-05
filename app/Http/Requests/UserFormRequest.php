@@ -34,7 +34,7 @@ class UserFormRequest extends FormRequest
 
                 'guru_id' => [
                     'required',
-                    'exists:guru,id',
+                    Rule::exists('guru', 'id')->where('is_active', true),
                     Rule::unique('user', 'guru_id'),
                 ],
 

@@ -23,7 +23,7 @@ class UserController extends Controller
     public function create()
     {
         return view('admin.data-user.create', [
-            'data_guru' => Guru::all()
+            'data_guru' => Guru::where('is_active', true)->get()
         ]);
     }
 
