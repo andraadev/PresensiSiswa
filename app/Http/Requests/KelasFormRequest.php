@@ -40,7 +40,7 @@ class KelasFormRequest extends FormRequest
             'guru_id' => [
                 'required',
                 'integer',
-                'exists:guru,id',
+                Rule::exists('guru', 'id')->where('is_active', true),
                 Rule::unique('kelas', 'guru_id')->ignore($kelasID)
             ]
         ];

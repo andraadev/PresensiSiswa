@@ -21,7 +21,7 @@ class KelasController extends Controller
         return view('admin.data-kelas', [
             'header' => 'Data Kelas',
             'kelas' => Kelas::latest()->get(),
-            'guru' => Guru::all(),
+            'guru' => Guru::where('is_active', true)->get(),
         ]);
     }
 
