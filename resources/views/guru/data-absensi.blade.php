@@ -28,11 +28,11 @@
         <div>
             <label class="form-label">Status Siswa</label>
             <select name="status" id="status" class="form-select">
-                <option value="Semua">Semua</option>
-                <option value="Aktif">Aktif</option>
-                <option value="Lulus">Lulus</option>
-                <option value="Mutasi">Mutasi</option>
-                <option value="Keluar">Keluar</option>
+                <option value="Semua" {{ request('status', 'Semua') == 'Semua' ? 'selected' : '' }}>Semua</option>
+                <option value="Aktif" {{ request('status') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="Lulus" {{ request('status') == 'Lulus' ? 'selected' : '' }}>Lulus</option>
+                <option value="Mutasi" {{ request('status') == 'Mutasi' ? 'selected' : '' }}>Mutasi</option>
+                <option value="Keluar" {{ request('status') == 'Keluar' ? 'selected' : '' }}>Keluar</option>
             </select>
         </div>
         <div class="align-self-end">
