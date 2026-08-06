@@ -28,7 +28,8 @@ class ImportDataSiswaSheet implements ToCollection, WithHeadingRow, WithValidati
                 'nama_lengkap' => $row['nama_lengkap'],
                 'jenis_kelamin' => $row['jenis_kelamin'],
                 'kelas_id' => $row['kelas_id'],
-                'no_telepon' => $row['no_telepon']
+                'no_telepon' => $row['no_telepon'],
+                'status' => $row['status']
             ]);
         }
     }
@@ -41,6 +42,7 @@ class ImportDataSiswaSheet implements ToCollection, WithHeadingRow, WithValidati
             '*.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             '*.kelas_id'      => 'required|exists:kelas,id',
             '*.no_telepon'    => 'required|regex:/^08[0-9]{8,11}$/|distinct|unique:siswa,no_telepon',
+            '*.status'        => 'nullable|in:Aktif,Lulus,Mutasi,Keluar',
         ];
     }
 
@@ -61,26 +63,33 @@ class ImportDataSiswaSheet implements ToCollection, WithHeadingRow, WithValidati
             '*.no_telepon.distinct'    => 'Nomor telepon duplikat ditemukan di dalam file Excel.',
             '*.no_telepon.unique'      => 'Nomor telepon sudah terdaftar di sistem.',
             '*.no_telepon.regex'       => 'Nomor telepon harus diawali 08 dan berjumlah 10-13 digit.',
+            '*.status.in'              => 'Status hanya boleh berisi: Aktif, Lulus, Mutasi, atau Keluar.',
         ];
     }
 
     public function prepareForValidation($data, $index)
     {
         // dd($index, $data);
-        // 1. Trim SEMUA isi sel di baris ini yang bertipe string/angka
+        // Trim all data
         $data = array_map(function ($value) {
             return is_string($value) ? trim($value) : $value;
         }, $data);
 
-        // 2. Ambil ID Kelas berdasarkan slug
+        // Get kelas_id based on slug
         $rawKelas = $data['kelas'] ?? null;
         $data['kelas_id'] = $rawKelas
             ? Kelas::where('slug_kelas', Str::slug($rawKelas))->value('id')
             : null;
 
-        // 3. Pastikan NISN dikonversi ke string murni (mencegah format Scientific Excel)
+        // Convert NISN to string
         if (isset($data['nisn'])) {
             $data['nisn'] = (string) $data['nisn'];
+        }
+
+        if (!empty($data['status'])) {
+            $data['status'] = Str::ucfirst(Str::lower($data['status']));
+        } else {
+            $data['status'] = 'Aktif';
         }
 
         return $data;
