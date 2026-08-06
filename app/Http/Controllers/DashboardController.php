@@ -85,10 +85,16 @@ class DashboardController extends Controller
         $tanggal_mulai = $request->input('tanggal_mulai');
         $tanggal_selesai = $request->input('tanggal_selesai');
         $kelas_id = $request->input('kelas_id');
+        $statusSelected = $request->query('status', 'Semua');
 
-        $absensi =  Absensi::when($tanggal_mulai, fn($q) => $q->where("tanggal_absensi", $tanggal_mulai))
-            ->when($tanggal_selesai, fn($q) => $q->where("tanggal_absensi", $tanggal_selesai))
+        $absensi =  Absensi::when($tanggal_mulai, fn($q) => $q->where("tanggal_absensi", '>=', $tanggal_mulai))
+            ->when($tanggal_selesai, fn($q) => $q->where("tanggal_absensi", '<=', $tanggal_selesai))
             ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
+                $query->whereHas('siswa', function ($q) use ($statusSelected) {
+                    $q->where('status', $statusSelected);
+                });
+            })
             ->get();
 
         $kelas = Kelas::all();
@@ -98,15 +104,18 @@ class DashboardController extends Controller
 
     public function rekapitulasi_absensi(Request $request)
     {
-
         $bulan = $request->bulan ?? date('Y-m');
         $kelas_id = $request->kelas_id ?? null;
+        $statusSelected = $request->query('status', 'Semua');
 
         [$tahun, $bulan] = explode('-', $bulan);
 
         $siswa = Siswa::with(['kelas'])
             ->withRekapBulan($tahun, $bulan)
             ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
+                $query->where('status', $statusSelected);
+            })
             ->get();
 
         $kelas = Kelas::all();
