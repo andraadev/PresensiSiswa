@@ -22,9 +22,14 @@ class AbsensiController extends Controller
 
         $slug_kelas = $request->query('kelas') ?? session('active_kelas_slug');
 
-        $relations = ['siswa.absensi' => function ($query) use ($hari_ini) {
-            $query->whereBetween('created_at', $hari_ini);
-        }];
+        $relations = [
+            'siswa' => function ($query) {
+                $query->where('status', 'Aktif');
+            },
+            'siswa.absensi' => function ($query) use ($hari_ini) {
+                $query->where('tanggal_absensi', $hari_ini);
+            }
+        ];
 
         $kelasAktif = $slug_kelas ? Kelas::with($relations)->where('slug_kelas', $slug_kelas)->first() : null;
         if ($kelasAktif) {
@@ -33,7 +38,10 @@ class AbsensiController extends Controller
             $kelasSaya = collect([$kelasAktif]);
             $totalSiswa = $kelasAktif->siswa()->where('status', 'Aktif')->count();
             $stats = $kelasAktif->absensi()
-                ->whereDate('created_at', today())
+                ->where('tanggal_absensi', $hari_ini)
+                ->whereHas('siswa', function ($query) {
+                    $query->where('status', 'Aktif');
+                })
                 ->select('status', DB::raw('count(*) as total'))
                 ->groupBy('status')
                 ->pluck('total', 'status');
@@ -119,7 +127,7 @@ class AbsensiController extends Controller
         $dataSiswa = Siswa::where('kelas_id', $id)
             ->where('status', 'Aktif')
             ->with(['absensi' => function ($query) use ($hari_ini) {
-                $query->whereBetween('tanggal_absensi', $hari_ini);
+                $query->where('tanggal_absensi', $hari_ini);
             }])
             ->get();
         $kelas = Kelas::findOrFail($id);
@@ -180,7 +188,7 @@ class AbsensiController extends Controller
         $bulan = $request->bulan ?? date('Y-m');
         [$tahun, $bulan] = explode('-', $bulan);
 
-        $statusSelected = $request->query('status', 'Aktif');
+        $statusSelected = $request->query('status', 'Semua');
 
         $siswa = Siswa::where('kelas_id', $kelas->id)
             ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
@@ -203,10 +211,10 @@ class AbsensiController extends Controller
 
         $riwayatAbsensi = Absensi::where('siswa_id', $siswa->id)
             ->when($tanggalMulai, function ($query, $mulai) {
-                $query->whereDate('tanggal_absensi', $mulai);
+                $query->where('tanggal_absensi', '>=', $mulai);
             })
             ->when($tanggalSelesai, function ($query, $selesai) {
-                $query->whereDate('tanggal_absensi', $selesai);
+                $query->where('tanggal_absensi', '<=', $selesai);
             })
             ->orderBy('tanggal_absensi', 'desc')
             ->get();
