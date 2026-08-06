@@ -12,7 +12,8 @@
     <a href="{{ route('guru.data_absensi') }}" class="btn btn-secondary mb-3">
         Kembali ke data absensi
     </a>
-    <form action="{{ route('data_absensi.detail', $siswa->id) }}" method="GET" class="d-flex gap-2 align-items-center mb-3">
+    <form action="{{ route('data_absensi.detail', $siswa->id) }}" method="GET" id="filterForm"
+        class="d-flex gap-2 align-items-center mb-3">
         <div>
             <label class="form-label mb-0">Mulai:</label>
             <input type="date" name="tanggal_mulai" class="form-control" value="{{ request('tanggal_mulai') }}">
@@ -22,7 +23,7 @@
             <input type="date" name="tanggal_selesai" class="form-control" value="{{ request('tanggal_selesai') }}">
         </div>
         <div class="align-self-end">
-            <button type="submit" class="btn btn-primary">Terapkan</button>
+            <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Terapkan</button>
             @if (request()->has('tanggal_mulai') || request()->has('tanggal_selesai'))
                 <a href="{{ route('data_absensi.detail', $siswa->id) }}" class="btn btn-secondary">Reset</a>
             @endif
