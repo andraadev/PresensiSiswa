@@ -25,6 +25,16 @@
             <label class="form-label">Bulan</label>
             <input type="month" name="bulan" class="form-control" value="{{ request('bulan', date('Y-m')) }}">
         </div>
+        <div>
+            <label class="form-label">Status Siswa</label>
+            <select name="status" id="status" class="form-select">
+                <option value="Semua">Semua</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Lulus">Lulus</option>
+                <option value="Mutasi">Mutasi</option>
+                <option value="Keluar">Keluar</option>
+            </select>
+        </div>
         <div class="align-self-end">
             @if (request()->has('bulan'))
                 <a href="{{ route('guru.data_absensi') }}" class="btn btn-danger">
@@ -44,6 +54,7 @@
             <th scope="col">No</th>
             <th scope="col">NISN</th>
             <th scope="col">Nama Siswa</th>
+            <th scope="col">Status</th>
             <th scope="col">Hadir</th>
             <th scope="col">Sakit</th>
             <th scope="col">Izin</th>
@@ -53,18 +64,37 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($siswa as $s)
+        @foreach ($siswa as $index => $item)
             <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $s->nisn }}</td>
-                <td>{{ $s->nama_lengkap }}</td>
-                <td>{{ $s->total_hadir }}</td>
-                <td>{{ $s->total_sakit }}</td>
-                <td>{{ $s->total_izin }}</td>
-                <td>{{ $s->total_alpa }}</td>
-                <td>{{ $s->persen_hadir }}%</td>
+                <td>{{ $item->nisn }}</td>
+                <td>{{ $item->nama_lengkap }}</td>
                 <td>
-                    <a href="{{ route('data_absensi.detail', $s->id) }}" class="btn btn-primary">Detail</a>
+                    @switch($item->status)
+                        @case('Aktif')
+                            <span class="badge text-bg-success">Aktif</span>
+                        @break
+
+                        @case('Lulus')
+                            <span class="badge text-bg-primary">Lulus</span>
+                        @break
+
+                        @case('Mutasi')
+                            <span class="badge text-bg-info">Mutasi</span>
+                        @break
+
+                        @case('Keluar')
+                            <span class="badge text-bg-danger">Keluar</span>
+                        @break
+                    @endswitch
+                </td>
+                <td>{{ $item->total_hadir }}</td>
+                <td>{{ $item->total_sakit }}</td>
+                <td>{{ $item->total_izin }}</td>
+                <td>{{ $item->total_alpa }}</td>
+                <td>{{ $item->persen_hadir }}%</td>
+                <td>
+                    <a href="{{ route('data_absensi.detail', $item->id) }}" class="btn btn-primary">Detail</a>
                 </td>
             </tr>
         @endforeach
