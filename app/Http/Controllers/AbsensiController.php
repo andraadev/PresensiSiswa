@@ -31,7 +31,7 @@ class AbsensiController extends Controller
             session(['active_kelas_slug' => $kelasAktif->slug_kelas]);
 
             $kelasSaya = collect([$kelasAktif]);
-            $totalSiswa = $kelasAktif->siswa()->count();
+            $totalSiswa = $kelasAktif->siswa()->where('status', 'Aktif')->count();
             $stats = $kelasAktif->absensi()
                 ->whereDate('created_at', today())
                 ->select('status', DB::raw('count(*) as total'))
@@ -69,7 +69,7 @@ class AbsensiController extends Controller
             return redirect()->route('absensi.index');
         }
 
-        $siswa = Siswa::where('kelas_id', $kelas->id)->get();
+        $siswa = Siswa::where('kelas_id', $kelas->id)->where('status', 'Aktif')->get();
         return view('guru.tambah-data-absensi', compact('kelas', 'siswa'));
     }
 
@@ -117,6 +117,7 @@ class AbsensiController extends Controller
     {
         $hari_ini = date('Y-m-d');
         $dataSiswa = Siswa::where('kelas_id', $id)
+            ->where('status', 'Aktif')
             ->with(['absensi' => function ($query) use ($hari_ini) {
                 $query->whereBetween('tanggal_absensi', $hari_ini);
             }])
@@ -147,7 +148,7 @@ class AbsensiController extends Controller
         foreach ($siswa_ids as $siswa_id) {
             $absensi = Absensi::where('siswa_id', $siswa_id)
                 ->where('tanggal_absensi', $hari_ini)
-                ->firstOrFail();;
+                ->firstOrFail();
 
             $statusBaru = $request->status[$siswa_id];
             $absensi->status = $statusBaru;
@@ -179,7 +180,13 @@ class AbsensiController extends Controller
         $bulan = $request->bulan ?? date('Y-m');
         [$tahun, $bulan] = explode('-', $bulan);
 
-        $siswa = Siswa::where('kelas_id', $kelas->id)->withRekapBulan($tahun, $bulan)->get();
+        $statusSelected = $request->query('status', 'Aktif');
+
+        $siswa = Siswa::where('kelas_id', $kelas->id)
+            ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
+                $query->where('status', $statusSelected);
+            })
+            ->withRekapBulan($tahun, $bulan)->get();
 
         return view('guru.data-absensi', [
             'siswa' => $siswa,
