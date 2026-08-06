@@ -26,13 +26,24 @@
             <select name="kelas_id" class="form-select">
                 <option value="">Pilih Kelas</option>
                 @foreach ($kelas as $data_kelas)
-                    <option value="{{ $data_kelas->id }}">{{ $data_kelas->nama_kelas }}</option>
+                    <option value="{{ $data_kelas->id }}" {{ request('kelas_id') == $data_kelas->id ? 'selected' : '' }}>
+                        {{ $data_kelas->nama_kelas }}</option>
                 @endforeach
+            </select>
+        </div>
+        <div>
+            <label class="form-label">Status Siswa</label>
+            <select name="status" id="status" class="form-select">
+                <option value="Semua" {{ request('status', 'Semua') == 'Semua' ? 'selected' : '' }}>Semua</option>
+                <option value="Aktif" {{ request('status') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="Lulus" {{ request('status') == 'Lulus' ? 'selected' : '' }}>Lulus</option>
+                <option value="Mutasi" {{ request('status') == 'Mutasi' ? 'selected' : '' }}>Mutasi</option>
+                <option value="Keluar" {{ request('status') == 'Keluar' ? 'selected' : '' }}>Keluar</option>
             </select>
         </div>
         <div class="align-self-end">
             @if (request()->has('bulan') || request()->has('kelas_id'))
-                <a href="{{ route('absensi.rekapitulasi') }}" class="btn btn-danger">Reset Filter</a>
+                <a href="{{ route($prefix . '.rekapitulasi') }}" class="btn btn-danger">Reset Filter</a>
             @endif
             <button type="submit" class="btn btn-primary" id="filterBtn" disabled>Simpan</button>
         </div>
@@ -45,6 +56,7 @@
             <th scope="col">No</th>
             <th scope="col">NISN</th>
             <th scope="col">Nama Siswa</th>
+            <th scope="col">Status</th>
             <th scope="col">Kelas</th>
             <th scope="col">Hadir</th>
             <th scope="col">Sakit</th>
@@ -55,10 +67,24 @@
     </thead>
     <tbody>
         @foreach ($siswa as $s)
+            @php
+                $statusClasses = [
+                    'Aktif' => 'text-bg-success',
+                    'Lulus' => 'text-bg-primary',
+                    'Mutasi' => 'text-bg-info',
+                    'Keluar' => 'text-bg-danger',
+                ];
+                $class = $statusClasses[$s->status] ?? 'text-bg-secondary';
+            @endphp
             <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ $s->nisn }}</td>
                 <td>{{ $s->nama_lengkap }}</td>
+                <td>
+                    <span class="d-flex justify-content-center align-items-center badge {{ $class }} py-2 mb-3">
+                        {{ $s->status }}
+                    </span>
+                </td>
                 <td>{{ $s->kelas->nama_kelas }}</td>
                 <td>{{ $s->total_hadir }}</td>
                 <td>{{ $s->total_sakit }}</td>
