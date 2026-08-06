@@ -6,6 +6,7 @@
 {{-- @section('heading')
     Riwayat Absensi: nama kelas
 @endsection --}}
+
 @section('content')
 @section('action-buttons')
     <a href="{{ route('guru.data_absensi') }}" class="btn btn-secondary mb-3">
@@ -34,6 +35,7 @@
             <th scope="col">No</th>
             <th scope="col">Tanggal</th>
             <th scope="col">Status</th>
+            <th scope="col">Status Siswa</th>
             <th scope="col">Keterangan/Catatan</th>
         </tr>
     </thead>
@@ -43,6 +45,9 @@
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ \Carbon\Carbon::parse($data_absensi->created_at)->translatedFormat('l, d F Y') }}</td>
                 <td>{{ $data_absensi->status }}</td>
+                <td>
+                    {{ $siswa->status }}
+                </td>
                 <td>{{ $data_absensi->keterangan ?? '-' }} </td>
             </tr>
         @endforeach
