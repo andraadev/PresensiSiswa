@@ -5,64 +5,63 @@
 @endsection
 
 @section('action-buttons')
-    <a href="{{ route('data-guru.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ route('data-guru.index') }}">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i> Kembali
+    </a>
 @endsection
 
 @section('content')
-    <div class="card card-body">
-        <form action="{{ route('data-guru.update', $guru->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="mb-3">
-                <label class="form-label">NIP</label>
-                <input type="text" class="form-control" name="nip" value="{{ old('nip', $guru->nip) }}" maxlength="18"
-                    pattern="[0-9]{18}" id="nip" data-counter="nipCounter" required>
-                <small class="counter"></small>
-                @error('nip')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                @enderror
+    <form action="{{ route('data-guru.update', $guru->id) }}" method="POST" class="panel needs-validation">
+        @csrf
+        @method('PUT')
+        <div class="mb-3">
+            <label class="form-label">NIP</label>
+            <input type="text" class="form-control" name="nip" value="{{ old('nip', $guru->nip) }}" maxlength="18"
+                pattern="[0-9]{18}" id="nip" data-counter="nipCounter" required>
+            <small class="counter"></small>
+            @error('nip')
+                <small class="text-danger d-block mt-1">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-control" name="nama_lengkap"
+                value="{{ old('nama_lengkap', $guru->nama_lengkap) }}" maxlength="100" id="nama_lengkap"
+                data-counter="namaCounter" required>
+            <small class="counter"></small>
+            @error('nama_lengkap')
+                <small class="text-danger d-block mt-1">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Jenis Kelamin</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="jenis_kelamin" value="Laki-laki" id="lkk"
+                    {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'Laki-laki' ? 'checked' : '' }}>
+                <label class="form-check-label" for="lkk">
+                    Laki-laki
+                </label>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control" name="nama_lengkap"
-                    value="{{ old('nama_lengkap', $guru->nama_lengkap) }}" maxlength="100" id="nama_lengkap"
-                    data-counter="namaCounter" required>
-                <small class="counter"></small>
-                @error('nama_lengkap')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                @enderror
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="jenis_kelamin" value="Perempuan" id="prr"
+                    {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'Perempuan' ? 'checked' : '' }}>
+                <label class="form-check-label" for="prr">
+                    Perempuan
+                </label>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Jenis Kelamin</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="jenis_kelamin" value="Laki-laki" id="lkk"
-                        {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'Laki-laki' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="lkk">
-                        Laki-laki
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="jenis_kelamin" value="Perempuan" id="prr"
-                        {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'Perempuan' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="prr">
-                        Perempuan
-                    </label>
-                </div>
-                @error('jenis_kelamin')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Nomor Telepon</label>
-                <input type="tel" name="no_telepon" class="form-control"
-                    value="{{ old('no_telepon', $guru->no_telepon) }}" maxlength="13" pattern="08[0-9]{10,11}$"
-                    id="no_telepon" data-counter="telpCounter" required>
-                <small class="counter"></small>
-                @error('no_telepon')
-                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                @enderror
-            </div>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
-    </div>
+            @error('jenis_kelamin')
+                <small class="text-danger d-block mt-1">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nomor Telepon</label>
+            <input type="tel" name="no_telepon" class="form-control" value="{{ old('no_telepon', $guru->no_telepon) }}"
+                maxlength="13" pattern="08[0-9]{10,11}$" id="no_telepon" data-counter="telpCounter" required>
+            <small class="counter"></small>
+            @error('no_telepon')
+                <small class="text-danger d-block mt-1">{{ $message }}</small>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
 @endsection

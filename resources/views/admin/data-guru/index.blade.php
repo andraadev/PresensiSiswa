@@ -54,9 +54,14 @@
 
 @section('content')
 @section('action-buttons')
-    <a href="{{ route('data-guru.create') }}" class="btn btn-primary">Tambah</a>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#import_excel">Import</button>
-
+    <div class="heading-actions">
+        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#import_excel">
+            <i class="ti ti-table-import" aria-hidden="true"></i> Import Excel
+        </button>
+        <a class="btn btn-primary btn-sm" href="{{ route('data-guru.create') }}">
+            <i class="ti ti-plus" aria-hidden="true"></i> Tambah Guru
+        </a>
+    </div>
     <div class="modal fade" id="import_excel" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
