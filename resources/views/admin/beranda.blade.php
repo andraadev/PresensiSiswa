@@ -3,7 +3,54 @@
     Beranda
 @endsection
 @section('basic-statistics-section')
-    <div class="row">
+    <section class="row g-3 mt-1" aria-label="Dashboard metrics">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="metric-card metric-primary">
+                <div class="metric-top">
+                    <span class="metric-label">Jumlah Kelas</span>
+                    <span class="metric-icon">
+                        <i class="ti ti-door" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="metric-value">{{ $kelas }} Kelas</div>
+            </article>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="metric-card metric-success">
+                <div class="metric-top">
+                    <span class="metric-label">Jumlah Siswa</span>
+                    <span class="metric-icon">
+                        <i class="ti ti-school" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="metric-value">{{ $siswa }} Orang</div>
+            </article>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="metric-card metric-warning">
+                <div class="metric-top">
+                    <span class="metric-label">Jumlah Guru</span>
+                    <span class="metric-icon"><i class="ti ti-chalkboard-teacher" aria-hidden="true"></i></span>
+                </div>
+                <div class="metric-value">{{ $guru }} Orang</div>
+            </article>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <article class="metric-card metric-danger">
+                <div class="metric-top">
+                    <span class="metric-label">Jumlah User</span>
+                    <span class="metric-icon">
+                        <i class="ti ti-user-check" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="metric-value">{{ $user }} Orang</div>
+            </article>
+        </div>
+    </section>
+    {{-- <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="p-2">
@@ -44,9 +91,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-4 col-sm-12">
             <!-- Monthly Earnings -->
             <div class="card">
@@ -110,58 +157,57 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @section('charts-section')
-    <div class="row">
-        <div class="col-lg-9 d-flex align-items-strech">
-            <div class="card w-100">
-                <div class="card-body">
-                    <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
-                        <div class="mb-3 mb-sm-0">
-                            <h5 class="card-title fw-semibold">Statistik Siswa per Kelas</h5>
+    <section class="row g-3 mt-1">
+        <div class="col-12 col-xl-8">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2 class="h5 mb-1 section-title">Jumlah Siswa Per Kelas</h2>
+                    </div>
+                    <a class="btn btn-light btn-sm" href="charts.html">View Details</a>
+                </div>
+                <div id="statistik_siswa"></div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-4">
+            <div class="panel h-100">
+                <div class="panel-header">
+                    <div>
+                        <h2 class="h5 mb-1 section-title">
+                            Status Presensi
+                            <span class="badge bg-primary-subtle text-primary fw-semibold">
+                                {{ $totalKelasSudah }} / {{ $totalKelas }} Kelas
+                            </span>
+                        </h2>
+                        <p class="text-muted mb-0">Status presensi per kelas hari ini</p>
+                    </div>
+                </div>
+
+
+                <div class="activity-list">
+                    @foreach ($statusKelas as $item)
+                        <div class="activity-item d-flex justify-content-between align-items-center px-3 py-2">
+                            <span class="mb-1 fw-semibold">{{ $item['nama_kelas'] }}</span>
+
+                            @if ($item['sudah_absen'])
+                                <span class="badge text-bg-success d-inline-flex align-items-center">
+                                    <i class="ti ti-check me-1"></i> Sudah
+                                </span>
+                            @else
+                                <span class="badge text-bg-warning d-inline-flex align-items-center">
+                                    <i class="ti ti-clock me-1"></i> Belum
+                                </span>
+                            @endif
                         </div>
-                    </div>
-                    <div id="statistik_siswa"></div>
+                    @endforeach
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-12 d-flex align-items-strech">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent d-flex justify-content-between align-items-center gap-3 py-3">
-                    <div class="mb- mb-sm-0 ">
-                        <h5 class="card-title fw-semibold">Status Presensi</h5>
-                    </div>
-                    <span class="badge bg-primary-subtle text-primary fw-semibold">
-                        {{ $totalKelasSudah }} / {{ $totalKelas }} Kelas
-                    </span>
-                </div>
-
-                <div class="card-body p-0">
-                    <p class="text-center fs-3 fw-normal">Status presensi per kelas hari ini</p>
-                    <div class="list-group list-group-flush">
-                        @foreach ($statusKelas as $item)
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
-                                <span class="fw-medium text-dark">{{ $item['nama_kelas'] }}</span>
-
-                                @if ($item['sudah_absen'])
-                                    <span
-                                        class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
-                                        <i class="ti ti-check me-1"></i> Sudah
-                                    </span>
-                                @else
-                                    <span
-                                        class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">
-                                        <i class="ti ti-clock me-1"></i> Belum
-                                    </span>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 @endsection
 @section('additional_js')
     <script>
