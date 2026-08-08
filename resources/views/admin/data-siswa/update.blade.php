@@ -5,7 +5,9 @@
 @endsection
 
 @section('action-buttons')
-    <a href="{{ route('data-siswa.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ route('data-siswa.index') }}">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i> Kembali
+    </a>
 @endsection
 
 @push('additional_css')
@@ -13,8 +15,8 @@
 @endpush
 
 @section('content')
-    <div class="card card-body">
-        <form action="{{ route('data-siswa.update', $siswa->id) }}" method="POST">
+    <div class="panel">
+        <form action="{{ route('data-siswa.update', $siswa->id) }}" method="POST" class="needs-validation">
             @csrf
             @method('PUT')
             <div class="mb-3">

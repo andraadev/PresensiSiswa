@@ -9,11 +9,13 @@
 @endpush
 
 @section('action-buttons')
-    <a href="{{ route('data-siswa.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ route('data-siswa.index') }}">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i> Kembali
+    </a>
 @endsection
 
 @section('content')
-    <div class="card card-body">
+    <div class="panel">
         <div class="alert alert-info d-flex gap-2 align-items-center" role="alert">
             <i class="ti ti-info-circle fs-5"></i>
             Pastikan kelas yang dipilih sudah tersedia. Jika belum ada, tambahkan melalui menu <a
@@ -21,7 +23,7 @@
             dahulu.
         </div>
 
-        <form action="{{ route('data-siswa.store') }}" method="POST">
+        <form action="{{ route('data-siswa.store') }}" method="POST" class="needs-validation">
             @csrf
             <div class="mb-3">
                 <label class="form-label">NISN</label>

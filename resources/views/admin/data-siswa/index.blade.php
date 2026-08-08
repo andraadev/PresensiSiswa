@@ -4,10 +4,15 @@
     Data Siswa
 @endsection
 
-@section('content')
 @section('action-buttons')
-    <a href="{{ route('data-siswa.create') }}" class="btn btn-primary">Tambah</a>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImportExcel">Import</button>
+    <div class="heading-actions">
+        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modalImportExcel">
+            <i class="ti ti-table-import" aria-hidden="true"></i> Import Excel
+        </button>
+        <a class="btn btn-primary btn-sm" href="{{ route('data-siswa.create') }}">
+            <i class="ti ti-plus" aria-hidden="true"></i> Tambah
+        </a>
+    </div>
 
     <div class="modal fade" id="modalImportExcel" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -84,12 +89,8 @@
                         @endif
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary d-inline-flex" data-bs-dismiss="modal">
-                                <i class="ti ti-x me-1"></i> Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-1">
-                                <i class="ti ti-upload"></i> Import Data
-                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Import Data</button>
                         </div>
                     </form>
                 </div>
@@ -98,57 +99,56 @@
     </div>
 @endsection
 
-<table class="table" id="table">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>NISN</th>
-            <th>Nama Lengkap</th>
-            <th>Jenis Kelamin</th>
-            <th>Kelas</th>
-            <th>No Telepon</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($siswa as $datasiswa)
-            @php
-                $statusClasses = [
-                    'Aktif' => 'text-bg-success',
-                    'Lulus' => 'text-bg-primary',
-                    'Mutasi' => 'text-bg-info',
-                    'Keluar' => 'text-bg-danger',
-                ];
-                $class = $statusClasses[$datasiswa->status] ?? 'text-bg-secondary';
-            @endphp
+@section('content')
+    <table class="table" id="table">
+        <thead>
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $datasiswa->nisn }}</td>
-                <td>{{ $datasiswa->nama_lengkap }}</td>
-                <td>{{ $datasiswa->jenis_kelamin }}</td>
-                <td>{{ $datasiswa->kelas->nama_kelas ?? '-' }}</td>
-                <td>{{ $datasiswa->no_telepon }}</td>
-                <td>
-                    <span class="d-flex justify-content-center align-items-center badge {{ $class }} py-2 mb-3">
-                        {{ $datasiswa->status }}
-                    </span>
-                </td>
-                <td>
-                    <a href="{{ route('data-siswa.edit', $datasiswa->id) }}" class="btn btn-warning">Edit</a>
-                </td>
+                <th>No</th>
+                <th>NISN</th>
+                <th>Nama Lengkap</th>
+                <th>Jenis Kelamin</th>
+                <th>Kelas</th>
+                <th>No Telepon</th>
+                <th>Status</th>
+                <th>Aksi</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($siswa as $datasiswa)
+                @php
+                    $statusClasses = [
+                        'Aktif' => 'text-bg-success',
+                        'Lulus' => 'text-bg-primary',
+                        'Mutasi' => 'text-bg-info',
+                        'Keluar' => 'text-bg-danger',
+                    ];
+                    $class = $statusClasses[$datasiswa->status] ?? 'text-bg-secondary';
+                @endphp
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $datasiswa->nisn }}</td>
+                    <td>{{ $datasiswa->nama_lengkap }}</td>
+                    <td>{{ $datasiswa->jenis_kelamin }}</td>
+                    <td>{{ $datasiswa->kelas->nama_kelas ?? '-' }}</td>
+                    <td>{{ $datasiswa->no_telepon }}</td>
+                    <td>
+                        <span class="badge {{ $class }}">{{ $datasiswa->status }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ route('data-siswa.edit', $datasiswa->id) }}" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 @section('additional_js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        @if (session()->has('import_failures') && session('import_failures')->isNotEmpty())
-            const modalTambah = new bootstrap.Modal(document.getElementById('modalImportExcel'));
-            modalTambah.show();
-        @endif
-    });
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session()->has('import_failures') && session('import_failures')->isNotEmpty())
+                const modalTambah = new bootstrap.Modal(document.getElementById('modalImportExcel'));
+                modalTambah.show();
+            @endif
+        });
+    </script>
 @endsection
