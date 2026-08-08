@@ -4,55 +4,6 @@
     Data Guru
 @endsection
 
-{{-- @section('additional_css')
-    <style>
-        .upload-zone {
-            border: 2px dashed #0d6efd;
-            border-radius: 12px;
-            background: #f8f9fa;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            min-height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .upload-zone:hover {
-            border-color: #0b5ed7;
-            background: #f1f4f9;
-        }
-
-        .upload-zone.dragover {
-            border-color: #198754;
-            background: #e8f5e9;
-        }
-
-        .upload-zone-input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .upload-zone-content {
-            pointer-events: none;
-        }
-
-        /* Style file info */
-        #fileInfo .alert {
-            padding: 0.75rem 1rem;
-        }
-    </style>
-@endsection --}}
-
-@section('content')
 @section('action-buttons')
     <div class="heading-actions">
         <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#import_excel">
@@ -143,90 +94,89 @@
     </div>
 @endsection
 
-
-
-<table class="table" id="table">
-    <thead>
-        <tr>
-            <th scope="col">No</th>
-            <th scope="col">NIP</th>
-            <th scope="col">Nama Lengkap</th>
-            <th scope="col">Jenis Kelamin</th>
-            <th scope="col">Nomor Telepon</th>
-            <th scope="col">Status</th>
-            <th scope="col">Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($guru as $data_guru)
+@section('content')
+    <table class="table" id="table">
+        <thead>
             <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $data_guru->nip }}</td>
-                <td>{{ $data_guru->nama_lengkap }}</td>
-                <td>{{ $data_guru->jenis_kelamin }}</td>
-                <td>{{ $data_guru->no_telepon }}</td>
-                <td>
-                    <span class="badge {{ $data_guru->is_active ? 'text-bg-success' : 'text-bg-danger' }}">
-                        {{ $data_guru->is_active ? 'Aktif' : 'Nonaktif' }}
-                    </span>
-                </td>
-                <td>
-                    <a href="{{ route('data-guru.edit', $data_guru->id) }}" type="button"
-                        class="btn btn-warning btn-edit">Edit</a>
-                    <form action="{{ route('data_guru.update_status', $data_guru->id) }}" method="POST"
-                        class="d-inline">
-                        @csrf
-                        @method('PATCH')
-
-                        @if ($data_guru->is_active)
-                            <input type="hidden" name="is_active" value="0">
-                            <button type="button" class="btn btn-danger" data-nama="{{ $data_guru->nama_lengkap }}"
-                                data-active="true" onclick="confirmStatusChange(this)">
-                                Nonaktifkan
-                            </button>
-                        @else
-                            <input type="hidden" name="is_active" value="1">
-                            <button type="button" class="btn btn-success" data-nama="{{ $data_guru->nama_lengkap }}"
-                                data-active="false" onclick="confirmStatusChange(this)">
-                                Aktifkan
-                            </button>
-                        @endif
-                    </form>
-                </td>
+                <th scope="col">No</th>
+                <th scope="col">NIP</th>
+                <th scope="col">Nama Lengkap</th>
+                <th scope="col">Jenis Kelamin</th>
+                <th scope="col">Nomor Telepon</th>
+                <th scope="col">Status</th>
+                <th scope="col">Aksi</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($guru as $data_guru)
+                <tr>
+                    <th scope="row">{{ $loop->iteration }}</th>
+                    <td>{{ $data_guru->nip }}</td>
+                    <td>{{ $data_guru->nama_lengkap }}</td>
+                    <td>{{ $data_guru->jenis_kelamin }}</td>
+                    <td>{{ $data_guru->no_telepon }}</td>
+                    <td>
+                        <span class="badge {{ $data_guru->is_active ? 'text-bg-success' : 'text-bg-danger' }}">
+                            {{ $data_guru->is_active ? 'Aktif' : 'Nonaktif' }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ route('data-guru.edit', $data_guru->id) }}" type="button"
+                            class="btn btn-warning btn-edit">Edit</a>
+                        <form action="{{ route('data_guru.update_status', $data_guru->id) }}" method="POST"
+                            class="d-inline">
+                            @csrf
+                            @method('PATCH')
+
+                            @if ($data_guru->is_active)
+                                <input type="hidden" name="is_active" value="0">
+                                <button type="button" class="btn btn-danger" data-nama="{{ $data_guru->nama_lengkap }}"
+                                    data-active="true" onclick="confirmStatusChange(this)">
+                                    Nonaktifkan
+                                </button>
+                            @else
+                                <input type="hidden" name="is_active" value="1">
+                                <button type="button" class="btn btn-success" data-nama="{{ $data_guru->nama_lengkap }}"
+                                    data-active="false" onclick="confirmStatusChange(this)">
+                                    Aktifkan
+                                </button>
+                            @endif
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 
 @section('additional_js')
-<script>
-    function confirmStatusChange(button) {
-        const form = button.closest('form');
-        const nama = button.getAttribute('data-nama');
-        const isActive = button.getAttribute('data-active') === 'true';
+    <script>
+        function confirmStatusChange(button) {
+            const form = button.closest('form');
+            const nama = button.getAttribute('data-nama');
+            const isActive = button.getAttribute('data-active') === 'true';
 
-        Swal.fire({
-            title: isActive ? 'Nonaktifkan Guru?' : 'Aktifkan Guru?',
-            text: isActive ?
-                `Guru ${nama} akan dinonaktifkan dari sistem.` : `Guru ${nama} akan diaktifkan kembali.`,
-            icon: isActive ? 'warning' : 'question',
-            showCancelButton: true,
-            confirmButtonColor: isActive ? '#dc3545' : '#198754',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: isActive ? 'Ya, Nonaktifkan!' : 'Ya, Aktifkan!',
-            cancelButtonText: 'Batal',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
+            Swal.fire({
+                title: isActive ? 'Nonaktifkan Guru?' : 'Aktifkan Guru?',
+                text: isActive ?
+                    `Guru ${nama} akan dinonaktifkan dari sistem.` : `Guru ${nama} akan diaktifkan kembali.`,
+                icon: isActive ? 'warning' : 'question',
+                showCancelButton: true,
+                confirmButtonColor: isActive ? '#dc3545' : '#198754',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: isActive ? 'Ya, Nonaktifkan!' : 'Ya, Aktifkan!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session()->has('import_failures'))
+                new bootstrap.Modal(document.getElementById('import_excel')).show();
+            @endif
         });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        @if (session()->has('import_failures'))
-            new bootstrap.Modal(document.getElementById('import_excel')).show();
-        @endif
-    });
-</script>
+    </script>
 @endsection
