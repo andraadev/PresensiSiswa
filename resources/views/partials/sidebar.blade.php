@@ -72,46 +72,41 @@
     ];
 @endphp
 
-<aside class="left-sidebar">
-    <!-- Sidebar scroll-->
-    <div class="brand-logo d-flex justify-content-center align-items-center">
-        <h2 class="text-white fw-bolder">PresensiSiswa</h2>
-        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-            <i class="ti ti-x fs-8"></i>
-        </div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
+            <span class="brand-icon">
+                <i class="ti ti-clipboard-check" aria-hidden="true"></i>
+            </span>
+            <span class="brand-copy">
+                <span class="brand-title fs-4">PresensiSiswa</span>
+            </span>
+        </a>
     </div>
-    <!-- Sidebar navigation-->
-    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-        <ul id="sidebarnav">
-            @foreach ($menus as $menu)
-                @if (in_array($userRole, $menu['roles']))
-                    @php
-                        $url = route($menu['route']);
-                        $isActive = request()->routeIs($menu['pattern']);
-                    @endphp
-                    <li class="sidebar-item">
-                        <a class="sidebar-link {{ $isActive ? 'active' : '' }}" href="{{ $url }}">
-                            <span>
-                                <i class="ti {{ $menu['icon'] }} sidebar-icon"></i>
-                            </span>
-                            <span class="hide-menu">{{ $menu['label'] }}</span>
-                        </a>
-                    </li>
-                @endif
-            @endforeach
-            <li class="sidebar-item">
-                <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
-                    <span>
-                        <i class="ti ti-logout sidebar-icon"></i>
+    <nav class="sidebar-nav">
+        @foreach ($menus as $menu)
+            @if (in_array($userRole, $menu['roles']))
+                @php
+                    $url = route($menu['route']);
+                    $isActive = request()->routeIs($menu['pattern']);
+                @endphp
+                <a class="nav-link {{ $isActive ? 'active' : '' }}" href="{{ $url }}" aria-current="page">
+                    <span class="nav-icon">
+                        <i class="ti {{ $menu['icon'] }}" aria-hidden="true"></i>
                     </span>
-
-                    <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
-                        @csrf
-                    </form>
-                    <span class="hide-menu">Logout</span>
+                    <span class="nav-text">{{ $menu['label'] }}</span>
                 </a>
-            </li>
-        </ul>
+            @endif
+        @endforeach
+        <a class="nav-link" href="javascript:void(0)" onclick="modal_logout()">
+            <span class="nav-icon">
+                <i class="ti ti-logout sidebar-icon" aria-hidden="true"></i>
+            </span>
+            <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
+                @csrf
+            </form>
+            <span class="nav-text">Keluar</span>
+        </a>
     </nav>
-    <!-- End Sidebar navigation -->
 </aside>

@@ -1,32 +1,64 @@
-<header class="app-header">
-    <nav class="navbar navbar-expand-lg">
-        <ul class="navbar-nav">
-            <li class="nav-item d-block d-xl-none">
-                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                    <i class="ti ti-menu-2 text-white"></i>
-                </a>
-            </li>
-        </ul>
-        <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto justify-content-end p-0">
-                <li class="nav-item dropdown">
-                    <button class="text-dark btn btn-profile" role="button" id="dropdownProfile" data-bs-toggle="dropdown">
-                        {{ Auth::user()->username }}
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a href="javascript:void(0)" class="dropdown-item" onclick="modal_logout()">
-                                <i class="ti ti-logout"></i>
-                                Log out
-                            </a>
+  <nav class="navbar admin-navbar navbar-expand bg-white">
+      <div class="container-fluid px-3 px-lg-4">
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+              aria-expanded="true" aria-label="Toggle sidebar">
+              <span></span>
+              <span></span>
+              <span></span>
+          </button>
 
-                            <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+          <div class="navbar-actions ms-auto">
+              <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme"
+                  title="Switch color theme">
+                  <i class="ti ti-moon-stars" data-theme-icon aria-hidden="true"></i>
+              </button>
+              <div class="dropdown">
+                  <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                      aria-label="Notifications">
+                      <span class="notification-dot"></span>
+                      <i class="ti ti-bell" aria-hidden="true"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-end notification-menu">
+                      <div class="dropdown-header fw-bold text-body">Panel Notifikasi</div>
+                      <a class="dropdown-item" href="users.html">
+                          <span class="notification-title">New user registered</span>
+                          <span class="notification-time">4 minutes ago</span>
+                      </a>
+                      <a class="dropdown-item" href="charts.html">
+                          <span class="notification-title">Revenue target reached</span>
+                          <span class="notification-time">32 minutes ago</span>
+                      </a>
+                      <a class="dropdown-item" href="settings.html">
+                          <span class="notification-title">Security review completed</span>
+                          <span class="notification-time">1 hour ago</span>
+                      </a>
+                  </div>
+              </div>
+
+              <div class="dropdown">
+                  <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="ti ti-user-circle"></i>
+                      <span class=" d-none d-sm-inline">{{ Auth::user()->username }}</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                          <a class="dropdown-item" href="#">Profile</a>
+                      </li>
+                      <li>
+                          <a class="dropdown-item" href="#">Account settings</a>
+                      </li>
+                      <li>
+                          <hr class="dropdown-divider">
+                      </li>
+                      <li>
+                          <a class="dropdown-item" href="javascript:void(0)" onclick="modal_logout()">Keluar</a>
+                          <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
+                              @csrf
+                          </form>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </nav>

@@ -5,42 +5,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'PresensiSiswa')</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 
     @stack('additional_css')
 </head>
 
-<body class="bg-light">
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
+<body>
+    <div class="admin-shell">
         @include('partials.sidebar')
-        <!--  Main wrapper -->
-        <div class="body-wrapper">
+        <div class="admin-main">
             @include('partials.navbar')
-            <div class="container-fluid">
-                {{-- Use yield heading first, if section heading is not set, use title section --}}
-                <h1 class="fw-bold">
-                    @yield('heading', View::yieldContent('title', 'Presensi Siswa'))
-                </h1>
-                <section id="action-buttons" class="mb-2">
-                    @yield('action-buttons')
-                </section>
-                @yield('content')
-                @include('partials.footer')
-            </div>
+            <main class="dashboard-content">
+                <div class="container-fluid px-3 px-lg-4 py-4">
+                    <div class="page-heading">
+                        {{-- Use yield heading first, if section heading is not set, use title section --}}
+                        <h1 class="h3 mb-1">@yield('heading', View::yieldContent('title', 'Presensi Siswa'))</h1>
+                        <div class="heading-actions">
+                            @yield('action-buttons')
+                        </div>
+                    </div>
+                    @yield('content')
+                </div>
+            </main>
+            @include('partials.footer')
         </div>
     </div>
 
-    <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('js/app.min.js') }}"></script>
-    <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/logout-modal.js') }}"></script>
-
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/logout-modal.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
     <script>
         document.querySelectorAll("input[data-counter]").forEach(input => {
             // Take the counter element (small) that is after the input
