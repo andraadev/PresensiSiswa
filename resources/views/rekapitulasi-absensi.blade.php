@@ -12,9 +12,7 @@
 @section('heading')
     Rekapitulasi Absensi
 @endsection
-
-@section('content')
-@section('action-buttons')
+@section('filter-form')
     <form action="{{ route($prefix . '.rekapitulasi') }}" method="get" id="filterForm"
         class="d-flex gap-2 align-items-center mb-3">
         <div>
@@ -49,69 +47,64 @@
         </div>
     </form>
 @endsection
-
-<table class="table" id="table">
-    <thead>
-        <tr>
-            <th scope="col">No</th>
-            <th scope="col">NISN</th>
-            <th scope="col">Nama Siswa</th>
-            <th scope="col">Status</th>
-            <th scope="col">Kelas</th>
-            <th scope="col">Hadir</th>
-            <th scope="col">Sakit</th>
-            <th scope="col">Izin</th>
-            <th scope="col">Alpa</th>
-            <th scope="col">% Hadir</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($siswa as $s)
-            @php
-                $statusClasses = [
-                    'Aktif' => 'text-bg-success',
-                    'Lulus' => 'text-bg-primary',
-                    'Mutasi' => 'text-bg-info',
-                    'Keluar' => 'text-bg-danger',
-                ];
-                $class = $statusClasses[$s->status] ?? 'text-bg-secondary';
-            @endphp
+@section('content')
+    <table class="table" id="table">
+        <thead>
             <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $s->nisn }}</td>
-                <td>{{ $s->nama_lengkap }}</td>
-                <td>
-                    <span class="d-flex justify-content-center align-items-center badge {{ $class }} py-2 mb-3">
-                        {{ $s->status }}
-                    </span>
-                </td>
-                <td>{{ $s->kelas->nama_kelas }}</td>
-                <td>{{ $s->total_hadir }}</td>
-                <td>{{ $s->total_sakit }}</td>
-                <td>{{ $s->total_izin }}</td>
-                <td>{{ $s->total_alpa }}</td>
-                <td>{{ $s->persen_hadir }}%</td>
-                {{-- <td>
-                    <a href="{{ route('data_absensi.detail', $s->id) }}" class="btn btn-primary">Detail</a>
-                </td> --}}
+                <th scope="col">No</th>
+                <th scope="col">NISN</th>
+                <th scope="col">Nama Siswa</th>
+                <th scope="col">Status</th>
+                <th scope="col">Kelas</th>
+                <th scope="col">Hadir</th>
+                <th scope="col">Sakit</th>
+                <th scope="col">Izin</th>
+                <th scope="col">Alpa</th>
+                <th scope="col">% Hadir</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($siswa as $s)
+                @php
+                    $statusClasses = [
+                        'Aktif' => 'text-bg-success',
+                        'Lulus' => 'text-bg-primary',
+                        'Mutasi' => 'text-bg-info',
+                        'Keluar' => 'text-bg-danger',
+                    ];
+                    $class = $statusClasses[$s->status] ?? 'text-bg-secondary';
+                @endphp
+                <tr>
+                    <th scope="row">{{ $loop->iteration }}</th>
+                    <td>{{ $s->nisn }}</td>
+                    <td>{{ $s->nama_lengkap }}</td>
+                    <td>
+                        <span class="badge {{ $class }}">{{ $s->status }}</span>
+                    </td>
+                    <td>{{ $s->kelas->nama_kelas }}</td>
+                    <td>{{ $s->total_hadir }}</td>
+                    <td>{{ $s->total_sakit }}</td>
+                    <td>{{ $s->total_izin }}</td>
+                    <td>{{ $s->total_alpa }}</td>
+                    <td>{{ $s->persen_hadir }}%</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 
 @section('additional_js')
-<script>
-    const form = document.querySelector("#filterForm");
-    const submitBtn = document.querySelector("#filterBtn");
+    <script>
+        const form = document.querySelector("#filterForm");
+        const submitBtn = document.querySelector("#filterBtn");
 
-    form.addEventListener("change", () => {
-        // Check if there is an input in the form that has a value
-        let hasValue = Array.from(form.querySelectorAll("input, select"))
-            .some(el => el.value.trim() !== "");
+        form.addEventListener("change", () => {
+            // Check if there is an input in the form that has a value
+            let hasValue = Array.from(form.querySelectorAll("input, select"))
+                .some(el => el.value.trim() !== "");
 
-        // The button will return to disabled if the value returns empty
-        submitBtn.disabled = !hasValue;
-    });
-</script>
+            // The button will return to disabled if the value returns empty
+            submitBtn.disabled = !hasValue;
+        });
+    </script>
 @endsection

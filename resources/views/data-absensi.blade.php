@@ -13,8 +13,7 @@
     Data Absensi
 @endsection
 
-@section('content')
-@section('action-buttons')
+@section('filter-form')
     <form action="{{ route($prefix . '.data_absensi') }}" method="get" id="filterForm"
         class="d-flex gap-2 align-items-center mb-3">
         <div class="">
@@ -53,65 +52,65 @@
         </div>
     </form>
 @endsection
-
-<table class="table" id="table">
-    <thead>
-        <tr>
-            <th scope="col">No</th>
-            <th scope="col">NISN</th>
-            <th scope="col">Nama Siswa</th>
-            <th scope="col">Kelas</th>
-            <th scope="col">Status</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Guru Pengabsen</th>
-            <th scope="col">Tanggal Absen</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($absensi as $data_absensi)
-            @php
-                $statusClasses = [
-                    'Hadir' => 'text-bg-success',
-                    'Izin' => 'text-bg-warning',
-                    'Sakit' => 'text-bg-info',
-                    'Alpa' => 'text-bg-danger',
-                ];
-                $class = $statusClasses[$data_absensi->status] ?? 'text-bg-secondary';
-            @endphp
+@section('content')
+    <table class="table" id="table">
+        <thead>
             <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $data_absensi->siswa->nisn }}</td>
-                <td>
-                    {{ $data_absensi->siswa->nama_lengkap }}
-                    <div class="small d-block">Status Siswa: {{ $data_absensi->siswa->status }}</div>
-                </td>
-                <td>{{ $data_absensi->kelas->nama_kelas }}</td>
-                <td>
-                    <span class="d-flex justify-content-center align-items-center badge {{ $class }} py-2 mb-3">
-                        {{ $data_absensi->status }}
-                    </span>
-                </td>
-                <td>{{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }} </td>
-                <td>{{ $data_absensi->user->nama_lengkap }}</td>
-                <td>{{ \Carbon\Carbon::parse($data_absensi->created_at)->translatedFormat('l, d F Y') }}</td>
+                <th scope="col">No</th>
+                <th scope="col">NISN</th>
+                <th scope="col">Nama Siswa</th>
+                <th scope="col">Kelas</th>
+                <th scope="col">Status</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">Guru Pengabsen</th>
+                <th scope="col">Tanggal Absen</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($absensi as $data_absensi)
+                @php
+                    $statusClasses = [
+                        'Hadir' => 'text-bg-success',
+                        'Izin' => 'text-bg-warning',
+                        'Sakit' => 'text-bg-info',
+                        'Alpa' => 'text-bg-danger',
+                    ];
+                    $class = $statusClasses[$data_absensi->status] ?? 'text-bg-secondary';
+                @endphp
+                <tr>
+                    <th scope="row">{{ $loop->iteration }}</th>
+                    <td>{{ $data_absensi->siswa->nisn }}</td>
+                    <td>
+                        {{ $data_absensi->siswa->nama_lengkap }}
+                        <div class="small d-block">Status Siswa: {{ $data_absensi->siswa->status }}</div>
+                    </td>
+                    <td>{{ $data_absensi->kelas->nama_kelas }}</td>
+                    <td>
+                        <span class="badge {{ $class }}">
+                            {{ $data_absensi->status }}
+                        </span>
+                    </td>
+                    <td>{{ $data_absensi->keterangan !== null ? $data_absensi->keterangan : '-' }} </td>
+                    <td>{{ $data_absensi->user->nama_lengkap }}</td>
+                    <td>{{ \Carbon\Carbon::parse($data_absensi->created_at)->translatedFormat('l, d F Y') }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 
 @section('additional_js')
-<script>
-    const form = document.querySelector("#filterForm");
-    const submitBtn = document.querySelector("#filterBtn");
+    <script>
+        const form = document.querySelector("#filterForm");
+        const submitBtn = document.querySelector("#filterBtn");
 
-    form.addEventListener("change", () => {
-        // Check if there is an input in the form that has a value
-        let hasValue = Array.from(form.querySelectorAll("input, select"))
-            .some(el => el.value.trim() !== "");
+        form.addEventListener("change", () => {
+            // Check if there is an input in the form that has a value
+            let hasValue = Array.from(form.querySelectorAll("input, select"))
+                .some(el => el.value.trim() !== "");
 
-        // The button will return to disabled if the value returns empty
-        submitBtn.disabled = !hasValue;
-    });
-</script>
+            // The button will return to disabled if the value returns empty
+            submitBtn.disabled = !hasValue;
+        });
+    </script>
 @endsection
