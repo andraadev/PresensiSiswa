@@ -10,14 +10,30 @@
         .ts-dropdown {
             z-index: 1060 !important;
         }
+
+        [data-bs-theme="dark"] .ts-dropdown {
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+            border-color: var(--bs-border-color);
+        }
+
+        [data-bs-theme="dark"] .ts-dropdown .option {
+            color: var(--bs-body-color);
+        }
+
+        [data-bs-theme="dark"] .ts-dropdown .option.active {
+            background-color: var(--bs-secondary-bg);
+            color: var(--bs-emphasis-color);
+        }
     </style>
 @endsection
 
-@section('content')
-    {{-- <x-alert-error /> --}}
-
-    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambahKelas">Tambah</button>
-    <!-- Modal -->
+@section('action-buttons')
+    <div class="heading-actions">
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahKelas">
+            <i class="ti ti-plus" aria-hidden="true"></i> Tambah
+        </button>
+    </div>
     <div class="modal fade" id="modalTambahKelas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -26,7 +42,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('data-kelas.store') }}" method="post">
+                    <form action="{{ route('data-kelas.store') }}" method="post" class="needs-validation">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nama Kelas</label>
@@ -43,7 +59,8 @@
                                 class="form-select @error('guru_id', 'storeKelas') is-invalid @enderror">
                                 <option value="" selected disabled>Pilih atau cari guru...</option>
                                 @foreach ($guru as $data_guru)
-                                    <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}</option>
+                                    <option value="{{ $data_guru->id }}">{{ $data_guru->nama_lengkap }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('guru_id', 'storeKelas')
@@ -59,6 +76,9 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('content')
     <table class="table table-hover" id="table">
         <thead>
             <tr>
@@ -97,7 +117,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditKelas" method="post">
+                    <form id="formEditKelas" method="post" class="needs-validation">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
