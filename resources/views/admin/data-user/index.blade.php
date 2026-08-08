@@ -6,7 +6,9 @@
 
 @section('content')
 @section('action-buttons')
-    <a href="{{ route('data-user.create') }}" class="btn btn-primary">Tambah</a>
+    <a href="{{ route('data-user.create') }}" class="btn btn-primary btn-sm">
+        <i class="ti ti-plus" aria-hidden="true"></i> Tambah
+    </a>
 @endsection
 
 <table class="table" id="table-private">

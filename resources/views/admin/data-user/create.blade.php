@@ -17,85 +17,84 @@
 @endpush
 
 @section('action-buttons')
-    <a href="{{ route('data-user.index') }}" class="btn btn-secondary">Kembali ke halaman utama</a>
+    <a href="{{ route('data-user.index') }}" class="btn btn-outline-secondary btn-sm">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i> Kembali
+    </a>
 @endsection
 
 @section('content')
-    <div class="card card-body">
-        <form action="{{ route('data-user.store') }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label class="form-label">Role</label><br>
-                <input type="radio" name="role" id="admin" value="Admin"
-                    class="form-check-input @error('role') is-invalid @enderror" checked>
-                <label for="admin" class="">Admin</label>
-                <br>
-                <input type="radio" name="role" id="guru" value="Guru"
-                    class="form-check-input @error('role') is-invalid @enderror">
-                <label for="guru">Guru</label>
-                <br>
-                <input type="radio" name="role" id="bk" value="BK"
-                    class="form-check-input @error('role') is-invalid @enderror">
-                <label for="bk">BK</label>
-                @error('role')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+    <form action="{{ route('data-user.store') }}" method="POST" class="panel needs-validation">
+        @csrf
+        <div class="mb-3">
+            <label class="form-label">Role</label><br>
+            <input type="radio" name="role" id="admin" value="Admin"
+                class="form-check-input @error('role') is-invalid @enderror" checked>
+            <label for="admin" class="">Admin</label>
+            <br>
+            <input type="radio" name="role" id="guru" value="Guru"
+                class="form-check-input @error('role') is-invalid @enderror">
+            <label for="guru">Guru</label>
+            <br>
+            <input type="radio" name="role" id="bk" value="BK"
+                class="form-check-input @error('role') is-invalid @enderror">
+            <label for="bk">BK</label>
+            @error('role')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="mb-3 d-none" id="container_guru">
-                <label class="form-label">Pilih Guru</label>
-                <select name="guru_id" class="form-select guru-select @error('guru_id') is-invalid @enderror"
-                    id="guru_select">
-                    <option value="">-- Pilih Guru --</option>
-                    @foreach ($data_guru as $guru)
-                        <option value="{{ $guru->id }}" data-nama="{{ $guru->nama_lengkap }}"
-                            data-nip="{{ $guru->nip }}">
-                            {{ $guru->nama_lengkap }} ({{ $guru->nip }})
-                        </option>
-                    @endforeach
-                </select>
-                @error('guru_id')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+        <div class="mb-3 d-none" id="container_guru">
+            <label class="form-label">Pilih Guru</label>
+            <select name="guru_id" class="form-select guru-select @error('guru_id') is-invalid @enderror" id="guru_select">
+                <option value="">-- Pilih Guru --</option>
+                @foreach ($data_guru as $guru)
+                    <option value="{{ $guru->id }}" data-nama="{{ $guru->nama_lengkap }}"
+                        data-nip="{{ $guru->nip }}">
+                        {{ $guru->nama_lengkap }} ({{ $guru->nip }})
+                    </option>
+                @endforeach
+            </select>
+            @error('guru_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" id="nama_lengkap"
-                    name="nama_lengkap">
-                @error('nama_lengkap')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+        <div class="mb-3">
+            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" id="nama_lengkap"
+                name="nama_lengkap">
+            @error('nama_lengkap')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control @error('username') is-invalid @enderror" id="username"
-                    name="username">
-                @error('username')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username"
+                name="username">
+            @error('username')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <div class="input-group">
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                        name="password" required>
-                    <span class="input-group-text">
-                        <i class="ti ti-eye toggle-password" data-target="password"></i>
-                    </span>
-                    <button class="btn btn-outline-secondary generate-password" type="button"
-                        data-target="password">Generate</button>
-                </div>
-                @error('password')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
+                    name="password" required>
+                <span class="input-group-text">
+                    <i class="ti ti-eye toggle-password" data-target="password"></i>
+                </span>
+                <button class="btn btn-outline-secondary generate-password" type="button"
+                    data-target="password">Generate</button>
             </div>
-            <button type="reset" class="btn btn-danger">Reset</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
-    </div>
+            @error('password')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="reset" class="btn btn-danger">Reset</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
 @endsection
 
 @push('additional_js')
