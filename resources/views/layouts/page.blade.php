@@ -9,8 +9,13 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
-
+    <style>
+        .ti {
+            font-size: 22px;
+        }
+    </style>
     @stack('additional_css')
+
 </head>
 
 <body>
