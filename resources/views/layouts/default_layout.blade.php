@@ -16,6 +16,11 @@
         .ti {
             font-size: 22px;
         }
+
+        [data-bs-theme="dark"] table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control::before,
+        [data-bs-theme="dark"] table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control::before {
+            color: #fff;
+        }
     </style>
     @yield('additional_css')
 </head>
@@ -57,12 +62,19 @@
 
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
+            const tableTarget = $('#table');
+
+            if (!tableTarget.length) {
+                return;
+            }
+
+            const table = tableTarget.DataTable({
                 info: false,
                 ordering: true,
                 responsive: true,
                 paging: true,
                 lengthChange: false,
+                autoWidth: false,
 
                 columnDefs: [{
                     targets: -1,
@@ -77,15 +89,21 @@
                     extend: 'excelHtml5',
                     className: 'btn btn-success',
                     exportOptions: {
-                        columns: ":visible:not(.noExport)"
+                        columns: ':not(.noExport)'
                     }
-                }, ],
+                }],
 
                 language: {
                     zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur.",
                     emptyTable: "Belum ada data di dalam tabel ini."
-                },
-            }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+                }
+            });
+
+            const buttonContainer = $('#table_wrapper .col-md-6:eq(0)');
+
+            if (buttonContainer.length) {
+                table.buttons().container().appendTo(buttonContainer);
+            }
         });
     </script>
 

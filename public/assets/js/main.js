@@ -57,6 +57,27 @@
         return "light";
     }
 
+    function refreshDataTables() {
+        if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.dataTable) {
+            return;
+        }
+
+        var tableApis = window.jQuery.fn.dataTable.tables({
+            api: true
+        });
+
+        if (!tableApis || !tableApis.length) {
+            return;
+        }
+
+        tableApis.columns.adjust();
+
+        if (tableApis.responsive &&
+            typeof tableApis.responsive.recalc === "function") {
+            tableApis.responsive.recalc();
+        }
+    }
+
     onReady(function () {
         var body = document.body;
         var sidebarToggle = document.querySelector("[data-sidebar-toggle]");
@@ -165,6 +186,16 @@
 
         initUserProfile();
 
+        document.body.addEventListener("transitionend", function (event) {
+            if (
+                event.propertyName === "width" ||
+                event.propertyName === "margin-left" ||
+                event.propertyName === "transform"
+            ) {
+                refreshDataTables();
+            }
+        });
+
         if (!sidebarToggle) {
             return;
         }
@@ -229,6 +260,7 @@
             }
 
             setToggleExpanded();
+            refreshDataTables();
         }
 
         if (mediaQuery.addEventListener) {
@@ -236,5 +268,7 @@
         } else if (mediaQuery.addListener) {
             mediaQuery.addListener(handleBreakpointChange);
         }
+
+        window.addEventListener("resize", refreshDataTables);
     });
 })();
