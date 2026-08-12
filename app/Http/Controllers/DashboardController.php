@@ -39,47 +39,22 @@ class DashboardController extends Controller
             ];
         });
 
-        // 2. Hitung total untuk badge header
         $totalKelas      = $statusKelas->count();
         $totalKelasSudah = $statusKelas->where('sudah_absen', true)->count();
 
-        $header = "Beranda";
-
-        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'statusKelas', 'totalKelas', 'totalKelasSudah', 'header'));
+        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'statusKelas', 'totalKelas', 'totalKelasSudah'));
     }
 
     public function beranda_bk()
     {
-        $header = "Beranda";
         $siswa = Siswa::count('nama_lengkap');
-        $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
-            $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
-        })
-            ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
-            ->groupBy('year')
-            ->orderBy('year')
-            ->get()
-            ->toArray(); // Mengubah koleksi menjadi array PHP biasa
+        $siswaPerKelas = Kelas::withCount('siswa')->orderBy('nama_kelas', 'asc')->get();
+        $labels = $siswaPerKelas->pluck('nama_kelas')->toArray();
+        $data   = $siswaPerKelas->pluck('siswa_count')->toArray();
 
-        // Siapkan data untuk grafik
-        $labels = array_column($jumlah_siswa, 'year'); // Label sumbu X berdasarkan tahun
-        $data = array_map('intval', array_column($jumlah_siswa, 'count')); // Data jumlah siswa (konversi ke bilangan bulat)
-
-        // Hitung jumlah siswa yang hadir, sakit, izin, dan alpa
-        $statistik_siswa = Absensi::select(
-            DB::raw('COUNT(IF(status = "Hadir", 1, NULL)) as hadir'),
-            DB::raw('COUNT(IF(status = "Sakit", 1, NULL)) as sakit'),
-            DB::raw('COUNT(IF(status = "Izin", 1, NULL)) as izin'),
-            DB::raw('COUNT(IF(status = "Alpa", 1, NULL)) as alpa')
-        )->first();
-
-        // Kirim data grafik ke tampilan
-        return view('bk.beranda', compact('jumlah_siswa', 'header', 'labels', 'data', 'siswa', 'statistik_siswa'));
+        return view('bk.beranda', compact('labels', 'data', 'siswa'));
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function data_absensi(Request $request)
     {
         $tanggal_mulai = $request->input('tanggal_mulai');
