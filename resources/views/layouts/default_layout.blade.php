@@ -32,6 +32,7 @@
                         @yield('action-buttons')
                     </div>
                     <section class="panel mt-3">
+                        @yield('filter-form')
                         @yield('content')
                     </section>
                 </div>
