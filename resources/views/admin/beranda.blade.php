@@ -167,7 +167,7 @@
                     <div>
                         <h2 class="h5 mb-1 section-title">Jumlah Siswa Per Kelas</h2>
                     </div>
-                    <a class="btn btn-light btn-sm" href="charts.html">View Details</a>
+                    <a class="btn btn-light btn-sm" href="{{ route('data-siswa.index') }}">Lihat Data</a>
                 </div>
                 <div id="statistik_siswa"></div>
             </div>
@@ -211,11 +211,9 @@
 @endsection
 @section('additional_js')
     <script>
-        // Ambil data yang diteruskan dari controller
         var labels = <?php echo json_encode($labels); ?>;
         var data = <?php echo json_encode($data); ?>;
 
-        // Mengonversi setiap nilai dalam array data menjadi bilangan bulat positif
         data = data.map(function(value) {
             return Math.round(value);
         });
@@ -239,7 +237,7 @@
                 yaxis: {
                     labels: {
                         formatter: function(value) {
-                            return Math.round(value); // Round the value to the nearest integer
+                            return Math.round(value);
                         }
                     }
                 }
@@ -247,23 +245,6 @@
 
             var chart = new ApexCharts(document.querySelector("#statistik_siswa"), options);
             chart.render();
-
-            // var data_user = {
-            //     chart: {
-            //         width: 380,
-            //         type: 'pie',
-            //     },
-            //     labels: pieLabels,
-            //     series: pieData,
-            //     dataLabels: {
-            //         formatter: function(val, opts) {
-            //             return opts.w.config.series[opts.seriesIndex]
-            //         },
-            //     },
-            // }
-
-            // var statistik_user = new ApexCharts(document.querySelector("#statistik_user"), data_user);
-            // statistik_user.render();
         });
     </script>
 @endsection
