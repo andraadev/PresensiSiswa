@@ -42,9 +42,7 @@
             @endphp
 
             @section('heading')
-                <div class="py-3 mb-3">
-                    <h1 class="fw-bold text-dark mb-0">Presensi Hari Ini {{ $kelas->nama_kelas }}</h1>
-                </div>
+                Presensi Hari Ini {{ $kelas->nama_kelas }}
             @endsection
 
 
@@ -92,7 +90,7 @@
                     @endforeach
                 @else
                     <div class="col-12">
-                        <div class="alert alert-warning shadow-sm py-4 fs-4 text-center">
+                        <div class="alert alert-warning shadow-sm py-4 fs-6 text-center">
                             <strong>Data Absensi Kosong!</strong> Silakan isi formulir absensi terlebih dahulu dengan
                             menekan tombol "+" di bawah.
                         </div>
@@ -111,7 +109,7 @@
         @empty
             <div class="row">
                 <div class="col-12 mb-3">
-                    <h1 class="fw-bold text-dark">Silakan Pilih Kelas untuk Mulai Presensi:</h1>
+                    <h1 class="fw-bold">Silakan Pilih Kelas untuk Mulai Presensi:</h1>
                     <h6 class="text-muted fw-light">Klik salah satu kelas di bawah ini untuk membuka lembar absensi.</h6>
                 </div>
 
