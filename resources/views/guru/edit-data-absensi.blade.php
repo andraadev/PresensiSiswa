@@ -4,14 +4,13 @@
     Edit Absensi
 @endsection
 
-@section('heading')
-    Edit Absensi
+@section('action-buttons')
+    <a href="{{ route('absensi.index') }}" class="btn btn-outline-secondary btn mb-3">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i> Kembali
+    </a>
 @endsection
 
 @section('content')
-    <a href="{{ route('absensi.index') }}" class="btn btn-outline-secondary mb-3">
-        Kembali
-    </a>
     <form action="{{ route('absensi.update', $kelas->id) }}" method="POST">
         @csrf
         @method('PUT')
