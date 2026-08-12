@@ -103,31 +103,27 @@ The following demonstrations highlight the main workflows and business rules imp
 
 ---
 
-## 🗂️ Master Data Management
+---
 
-The Admin role provides management interfaces for the main school entities, including:
+## 🖥️ Application Overview
 
-- Students
-- Teachers
-- Classes
-- Users
+The Admin dashboard provides an overview of school data and today's attendance activity, including student distribution by class and attendance completion status.
 
-Direct deletion is restricted in favor of status-based records, allowing historical attendance data to remain associated with the relevant records.
+<p align="center">
+  <img src="docs/screenshots/admin-dashboard.png" alt="Admin Dashboard" width="90%">
+</p>
 
-<details>
-  <summary><b>🔍 Click to expand Master Data Interfaces</b></summary>
-  <br>
+### Master Data Interface
 
-  <p align="center">
-    <img src="docs/screenshots/tabel-siswa.png" alt="Student Management Table" width="48%">
-    <img src="docs/screenshots/form-guru.png" alt="Teacher Management Form" width="48%">
-  </p>
+The application uses a consistent management interface across its master data modules, including teachers, students, classes, and users.
 
-  <p align="center">
-    <i>Examples of student and teacher management interfaces.</i>
-  </p>
+<p align="center">
+  <img src="docs/screenshots/tabel-guru.png" alt="Teacher Management Table" width="90%">
+</p>
 
-</details>
+<p align="center">
+  <i>Example of the teacher management interface.</i>
+</p>
 
 ---
 
