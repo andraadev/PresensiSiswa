@@ -30,11 +30,13 @@ class SiswaFormRequest extends FormRequest
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'kelas_id' => 'required',
             'no_telepon' => 'required|regex:/^08[0-9]{10,11}$/|unique:siswa,no_telepon,' . $siswaId,
+            'status' => 'sometimes|in:Aktif,Lulus,Mutasi,Keluar'
         ];
     }
 
-    public function messages(): array {
-        return[
+    public function messages(): array
+    {
+        return [
             'nisn.required' => 'NISN tidak boleh kosong.',
             'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
             'nisn.unique' => 'NISN yang Anda masukkan sudah terdaftar.',
@@ -45,6 +47,7 @@ class SiswaFormRequest extends FormRequest
             'no_telepon.required' => 'Nomor telepon tidak boleh kosong.',
             'no_telepon.unique' => 'Nomor telepon yang Anda masukkan sudah terdaftar.',
             'no_telepon.regex' => 'Nomor telepon harus diawali dengan 08 dan terdiri dari 12-13 digit.',
+            'status.in' => 'Status tidak valid.',
         ];
     }
 }

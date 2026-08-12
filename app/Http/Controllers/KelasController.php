@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\KelasFormRequest;
 use App\Models\Guru;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class KelasController extends Controller
@@ -18,80 +21,79 @@ class KelasController extends Controller
         return view('admin.data-kelas', [
             'header' => 'Data Kelas',
             'kelas' => Kelas::latest()->get(),
-            'guru' => Guru::all(),
+            'guru' => Guru::where('is_active', true)->get(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(KelasFormRequest $request)
     {
-        $validated_data = $request->validate([
-            'nama_kelas' => 'required|max:15',
-            'guru_id' => 'required|numeric'
-        ], [
-            'nama_kelas.required' => 'Nama kelas wajib diisi!',
-            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 15',
-        ]);
+        $validated = $request->validated();
+        $slug_kelas = Str::slug($validated['nama_kelas']);
 
-        $slug_kelas = str_replace(' ', '-', $request->nama_kelas);
+        $qr_code_kelas = QRCode::format('png')
+            ->size(500)
+            ->margin(2)
+            ->generate(route('absensi.index') . $slug_kelas);
 
-        Kelas::create([
-            'slug_kelas' => $slug_kelas,
-            'nama_kelas' => $validated_data['nama_kelas'],
-            'guru_id' => $validated_data['guru_id'],
-        ]);
+        $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
+
+        Storage::disk('public')->put($output_file, $qr_code_kelas);
+
+        $validated['slug_kelas'] = $slug_kelas;
+        $validated['qr_code'] = $output_file;
+
+        Kelas::create($validated);
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Kelas Berhasil');
-
         return back();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(KelasFormRequest $request, string $id)
     {
         $kelas = Kelas::findOrFail($id);
+        $validated = $request->validated();
+        $slug_kelas = Str::slug($validated['nama_kelas']);
+        $output_file = $kelas->qr_code;
 
-        $validated_data = $request->validate([
-            'nama_kelas' => 'required|max:15',
-            'guru_id' => 'required|numeric'
-        ], [
-            'nama_kelas.required' => 'Nama kelas wajib diisi!',
-            'nama_kelas.max' => 'Nama kelas tidak boleh lebih dari 15',
-        ]);
+        if ($validated['nama_kelas'] !== $kelas->nama_kelas) {
+            $qr_code_kelas = QRCode::format('png')
+                ->size(500)
+                ->margin(2)
+                ->generate(route('absensi.index') . $slug_kelas);
 
-        // jika nama kelas yang dimasukkan tidak sama dengan nama kelas yang ada di database
-        if ($validated_data['nama_kelas'] !== $kelas->nama_kelas) {
+            $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
 
-            $slug_kelas = str_replace(' ', '-', $request->nama_kelas);
-
-            $kelas->update([
-                'slug_kelas' => $slug_kelas,
-                'nama_kelas' => $validated_data['nama_kelas'],
-                'guru_id' => $validated_data['guru_id'],
-            ]);
+            if ($kelas->qr_code) {
+                Storage::disk('public')->delete($kelas->qr_code);
+            }
+            // Storage::disk('public')->delete($kelas->qr_code);
+            Storage::disk('public')->put($output_file, $qr_code_kelas);
         }
 
-        flash()->option('timeout', 3000)->addSuccess('Edit Data Kelas Berhasil');
+        $validated['slug_kelas'] = $slug_kelas;
+        $validated['qr_code'] = $output_file;
 
+        $kelas->update($validated);
+
+        flash()->option('timeout', 3000)->addSuccess('Edit Data Kelas Berhasil');
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function download_qr(Kelas $kelas)
     {
-        $kelas = Kelas::findOrFail($id);
+        $fullPath = storage_path('app/public/' . $kelas->qr_code);
 
-        $kelas->delete();
+        if (!$kelas->qr_code || !file_exists($fullPath) || !is_readable($fullPath)) {
+            flash()->option('timeout', 3000)->addError('File QR tidak ditemukan atau tidak dapat diakses.');
+            return back();
+        }
 
-        // flash message jika datanya berhasil dihapus
-        flash()->option('timeout', 3000)->addSuccess('Hapus Data Kelas Berhasil');
-
-        return back();
+        return response()->download($fullPath);
     }
 }

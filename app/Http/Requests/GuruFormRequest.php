@@ -28,7 +28,7 @@ class GuruFormRequest extends FormRequest
             'nip' => 'required|digits:18|unique:guru,nip,' . $guruId,
             'nama_lengkap' => 'required|max:100',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'no_telepon' => 'required|digits_between:12,13|unique:guru,no_telepon,' . $guruId,
+            'no_telepon' => 'required|regex:/^08[0-9]{10,11}$/|unique:guru,no_telepon,' . $guruId,
         ];
     }
 
@@ -41,10 +41,10 @@ class GuruFormRequest extends FormRequest
             'nama_lengkap.required' => 'Nama lengkap tidak boleh kosong.',
             'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong.',
-            'jenis_kelamin.in' => 'Jenis kelamin tidak valid.',
+            'jenis_kelamin.in' => 'Pilihan jenis kelamin tidak valid.',
             'no_telepon.required' => 'Nomor telepon tidak boleh kosong.',
             'no_telepon.unique' => 'Nomor telepon yang Anda masukkan sudah terdaftar.',
-            'no_telepon.digits_between' => 'Nomor telepon harus diantara 12-13 digit.',
+            'no_telepon.regex'  => 'Nomor telepon harus diawali 08 dan berjumlah 10-13 digit.',
         ];
     }
 }

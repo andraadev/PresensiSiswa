@@ -5,120 +5,105 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
-
-    <!-- DataTables CSS -->
-    <link href="{{ asset('libs/DataTables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
-
-    <!-- Responsive DataTables CSS -->
-    <link href="{{ asset('libs/DataTables/responsive/css/responsive.bootstrap5.min.css') }}" rel="stylesheet">
-
-    <!-- DataTables Buttons CSS -->
-    <link rel="stylesheet" href="{{ asset('libs/DataTables/buttons/css/buttons.bootstrap5.min.css') }}">
-
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
-
-    {{-- Set default size for class .ti <icon> --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link href="{{ asset('assets/vendors/DataTables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/DataTables/responsive/css/responsive.bootstrap5.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/buttons/css/buttons.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <style>
         .ti {
-            font-size: 20px;
+            font-size: 22px;
+        }
+
+        [data-bs-theme="dark"] table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control::before,
+        [data-bs-theme="dark"] table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control::before {
+            color: #fff;
         }
     </style>
-
     @yield('additional_css')
 </head>
 
 <body>
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- Sidebar Start -->
+    <div class="admin-shell">
         @include('partials.sidebar')
-        <!--  Sidebar End -->
-        <!--  Main wrapper -->
-        <div class="body-wrapper">
-            {{-- Navbar Start --}}
+        <div class="admin-main">
             @include('partials.navbar')
-            {{-- Navbar End --}}
-            <div class="container-fluid">
-                <h1>@yield('heading')</h1>
-                <div class="card shadow-md">
-                    <div class="card-body p-3">
-                        <section id="action-buttons" class="mb-2">
-                            @yield('action-buttons')
-                        </section>
-                        @yield('content')
+            <main class="dashboard-content">
+                <div class="container-fluid px-3 px-lg-4 py-4">
+                    <div class="page-heading">
+                        <h1 class="h3 mb-1">@yield('title')</h1>
+                        @yield('action-buttons')
                     </div>
+                    <section class="panel mt-3">
+                        @yield('filter-form')
+                        @yield('content')
+                    </section>
                 </div>
-            </div>
-            {{-- Footer Start --}}
+            </main>
             @include('partials.footer')
-            {{-- Footer End --}}
         </div>
     </div>
 
-    <!-- jQuery Library -->
-    <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
-
-    <!-- Bootstrap JS -->
-    <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Custom Scripts -->
-    <script src="{{ asset('js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('js/app.min.js') }}"></script>
-
-    <!-- Simplebar JS -->
-    <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
-
-    <!-- SweetAlert2 JS -->
-    <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-
-    <!-- DataTables and Buttons Assets [JS]-->
-    <script src="{{ asset('libs/DataTables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/responsive/js/responsive.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('libs/DataTables/buttons/js/buttons.print.min.js') }}"></script>
-
-    <!-- SweetAlert2 JS -->
-    <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/logout-modal.js')}}"></script>
+    <script src="{{ asset('assets/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/responsive/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/logout-modal.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <script>
-        //Datatables Default Configuration
         $(document).ready(function() {
-            $('#table').DataTable({
+            const tableTarget = $('#table');
+
+            if (!tableTarget.length) {
+                return;
+            }
+
+            const table = tableTarget.DataTable({
                 info: false,
                 ordering: true,
                 responsive: true,
                 paging: true,
                 lengthChange: false,
+                autoWidth: false,
 
                 columnDefs: [{
                     targets: -1,
                     className: 'noExport'
                 }],
 
+                layout: {
+                    topStart: 'buttons'
+                },
+
                 buttons: [{
                     extend: 'excelHtml5',
+                    className: 'btn btn-success',
                     exportOptions: {
-                        columns: ":visible:not(.noExport)"
+                        columns: ':not(.noExport)'
                     }
-                }, ],
+                }],
 
                 language: {
-                    zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur."
-                },
-            }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+                    zeroRecords: "Tidak ada data yang ditemukan berdasarkan filter yang telah diatur.",
+                    emptyTable: "Belum ada data di dalam tabel ini."
+                }
+            });
+
+            const buttonContainer = $('#table_wrapper .col-md-6:eq(0)');
+
+            if (buttonContainer.length) {
+                table.buttons().container().appendTo(buttonContainer);
+            }
         });
     </script>
 

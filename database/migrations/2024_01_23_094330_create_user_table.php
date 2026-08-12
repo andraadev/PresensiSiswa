@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('guru_id')->nullable()->unique()->constrained('guru')->nullOnDelete();
             $table->string('nama_lengkap', 100);
             $table->string('username')->unique();
             $table->string('password');
             $table->enum('role', ['Admin', 'Guru', 'BK']);
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }

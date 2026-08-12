@@ -6,6 +6,7 @@ use App\Http\Requests\ExcelImportRequest;
 use App\Http\Requests\GuruFormRequest;
 use App\Imports\ImportDataGuru;
 use App\Models\Guru;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
@@ -16,7 +17,7 @@ class GuruController extends Controller
     public function index()
     {
         return view('admin.data-guru.index', [
-            'guru' => Guru::latest()->get(),
+            'guru' => Guru::orderBy('nama_lengkap', 'ASC')->get(),
         ]);
     }
 
@@ -68,10 +69,33 @@ class GuruController extends Controller
 
     public function import_excel(ExcelImportRequest $request)
     {
-        Excel::import(new ImportDataGuru, $request->validated()['file']);
+        $import = new ImportDataGuru;
+        Excel::import($import, $request->file('file'));
+
+        if ($import->failures()->isNotEmpty()) {
+            $failuresByRow = $import->failures()->groupBy(fn($f) => $f->row())->sortKeys(SORT_NUMERIC);
+
+            return back()->with([
+                'import_failures' => $failuresByRow,
+            ]);
+        }
+        session()->forget('import_failures');
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Guru Berhasil');
 
         return back();
+    }
+
+    public function update_status(Request $request, Guru $guru)
+    {
+        $validated = $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
+
+        $guru->update($validated);
+        $statusText = $guru->is_active ? 'diaktifkan' : 'dinonaktifkan';
+
+        flash()->option('timeout', 3000)->addSuccess("Data guru {$guru->nama_lengkap} berhasil {$statusText}!");
+        return redirect()->route('data-guru.index');
     }
 }

@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 
 // Route khusus halaman login
 Route::get('/', [LoginController::class, 'login'])->name('login');
-Route::post('/auth', [LoginController::class, 'auth'])->name('auth');
+Route::post('/auth', [LoginController::class, 'auth'])->name('auth')->middleware('throttle:5,1');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
-    Route::get('/beranda', [DashboardController::class, 'beranda_admin']);
-    Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('data_absensi');
-    Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('admin.data_absensi.filter');
+Route::group(['middleware' => ['auth', 'checkrole:Admin'], 'prefix' => 'admin'], function () {
+    Route::get('/beranda', [DashboardController::class, 'beranda_admin'])->name('admin.beranda');
+    Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('admin.data_absensi');
+    Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('admin.rekapitulasi');
+    Route::get('/download/{kelas}', [KelasController::class, 'download_qr'])->name('admin.data_kelas.download_qr');
 
     //Import Excel
     Route::post('/data-guru/import', [GuruController::class, 'import_excel'])->name('admin.data_guru.import_excel');
@@ -27,19 +28,21 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
     // Route yang menangani fungsi CRUD
     Route::resource('/data-guru', GuruController::class)->parameters(['data-guru' => 'guru']);
+    Route::patch('/data-guru/{guru}/status', [GuruController::class, 'update_status'])->name('data_guru.update_status');
     Route::resource('/data-siswa', SiswaController::class)->parameters(['data-siswa' => 'siswa']);
-    Route::resource('/data-kelas', KelasController::class)->parameters(['data-kelas' => 'kelas']);
+    Route::resource('/data-kelas', KelasController::class)->parameters(['data-kelas' => 'kelas'])->except(['destroy']);
     Route::resource('/data-user', UserController::class)->parameters(['data-user' => 'user']);
+    Route::patch('/data-user/{user}/status', [UserController::class, 'update_status'])->name('data_user.update_status');
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'guru'], function () {
-    Route::resource('/absensi', AbsensiController::class)->except('show', 'edit', 'destroy');
-    Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('guru.data_absensi');
-    Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('guru.data_absensi.filter');
+Route::group(['middleware' => ['auth', 'checkrole:Guru'], 'prefix' => 'guru'], function () {
+    Route::resource('/absensi', AbsensiController::class)->except('show', 'destroy');
+    Route::get('/data-absensi', [AbsensiController::class, 'data_absensi'])->name('guru.data_absensi');
+    Route::get('/data-absensi/siswa/{siswa_id}', [AbsensiController::class, 'detailSiswa'])->name('data_absensi.detail');
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'bk'], function () {
+Route::group(['middleware' => ['auth', 'checkrole:BK'], 'prefix' => 'bk'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_bk'])->name('bk.beranda');
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('bk.data_absensi');
-    Route::get('/data-absensi/filter', [DashboardController::class, 'filter_data_absensi'])->name('bk.data_absensi.filter');
+    Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('bk.rekapitulasi');
 });

@@ -15,11 +15,40 @@ class Siswa extends Model
 
     protected $table = "siswa";
 
-    public function kelas() : BelongsTo {
+    public function kelas(): BelongsTo
+    {
         return $this->belongsTo(Kelas::class);
     }
 
-    public function absensi() {
+    public function absensi()
+    {
         return $this->hasMany(Absensi::class);
+    }
+
+    public function getPersenHadirAttribute()
+    {
+        $totalPertemuan = $this->total_hadir + $this->total_sakit + $this->total_izin + $this->total_alpa;
+
+        if ($totalPertemuan == 0) {
+            return 0;
+        }
+
+        return round(($this->total_hadir / $totalPertemuan) * 100, 1);
+    }
+
+    public function scopeWithRekapBulan($query, $tahun, $bulan)
+    {
+        $statuses = ['hadir', 'sakit', 'izin', 'alpa'];
+        $withCountQuery = [];
+
+        foreach ($statuses as $status) {
+            $withCountQuery["absensi as total_{$status}"] = function ($q) use ($status, $tahun, $bulan) {
+                $q->where('status', ucfirst($status))
+                    ->whereYear('created_at', $tahun)
+                    ->whereMonth('created_at', $bulan);
+            };
+        }
+
+        return $query->withCount($withCountQuery);
     }
 }

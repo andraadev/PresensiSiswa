@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->unsignedBigInteger('kelas_id')->references('id')->on('kelas')->onDelete('set null')->nullable();
             $table->char('no_telepon', 13)->unique();
+            $table->enum('status', ['Aktif', 'Lulus', 'Mutasi', 'Keluar']);
             $table->timestamps();
         });
     }

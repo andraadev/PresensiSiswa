@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExcelImportRequest;
 use App\Http\Requests\SiswaFormRequest;
 use App\Imports\ImportDataSiswa;
 use App\Models\Kelas;
@@ -23,8 +24,9 @@ class SiswaController extends Controller
         ]);
     }
 
-    public function create() {
-        return view('admin.data-siswa.create',[
+    public function create()
+    {
+        return view('admin.data-siswa.create', [
             'kelas' => Kelas::all(),
         ]);
     }
@@ -34,14 +36,18 @@ class SiswaController extends Controller
      */
     public function store(SiswaFormRequest $request)
     {
-        Siswa::create($request->validated());
+        $validated = $request->validated();
+        $validated['status'] = "Aktif";
+
+        Siswa::create($validated);
 
         flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
 
         return redirect()->route('data-siswa.index');
     }
 
-    public function edit(Siswa $siswa) {
+    public function edit(Siswa $siswa)
+    {
         return view('admin.data-siswa.update', [
             'siswa' => $siswa,
             'kelas' => Kelas::all()
@@ -60,24 +66,21 @@ class SiswaController extends Controller
         return redirect()->route('data-siswa.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Siswa $siswa)
+    public function import_excel(ExcelImportRequest $request)
     {
-        $siswa->delete();
+        $import = new ImportDataSiswa;
+        Excel::import($import, $request->file('file'));
 
-        flash()->option('timeout', 3000)->addSuccess('Hapus Data Siswa Berhasil');
+        if ($import->failures()->isNotEmpty()) {
+            $failuresByRow = $import->failures()->groupBy(fn($f) => $f->row())->sortKeys(SORT_NUMERIC);
 
-        return redirect()->route('data-siswa.index');
-    }
+            return back()->with([
+                'import_failures' => $failuresByRow,
+            ]);
+        }
 
-    public function import_excel(Request $request)
-    {
-        Excel::import(new ImportDataSiswa, $request->validated()['file']);
-
-        flash()->options('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
-
+        session()->forget('import_failures');
+        flash()->option('timeout', 3000)->addSuccess('Tambah Data Siswa Berhasil');
         return back();
     }
 }

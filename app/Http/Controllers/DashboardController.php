@@ -13,134 +13,88 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    // public function beranda()
-    // {
-    //     $user =  User::count('nama_lengkap');
-    //     $guru = Guru::count('nama_lengkap');
-    //     $siswa = Siswa::count('nama_lengkap');
-    //     $kelas = Kelas::count('nama_kelas');
-    //     $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
-    //         $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
-    //     })
-    //         ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
-    //         ->groupBy('year')
-    //         ->orderBy('year')
-    //         ->get();
-
-    //     $jumlah_user = User::select('role', DB::raw('COUNT(*) as count'))
-    //         ->whereIn('role', ['guru', 'BK']) // Filter hanya untuk role 'guru' dan 'BK'
-    //         ->groupBy('role')
-    //         ->get()
-    //         ->pluck('count', 'role')
-    //         ->toArray();
-
-    //     // Konversi nilai menjadi bilangan bulat
-    //     $jumlah_siswa = array_map('intval', $jumlah_siswa);
-
-    //     // Siapkan data untuk grafik
-    //     $labels = $jumlah_siswa->pluck('year')->toArray(); // Label sumbu X berdasarkan tahun
-    //     $data = $jumlah_siswa->pluck('count')->toArray(); // Data jumlah siswa
-
-    //     // Kirim data grafik ke tampilan
-    //     return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'jumlah_user'));
-    // }
     public function beranda_admin()
     {
         $user =  User::count('nama_lengkap');
         $guru = Guru::count('nama_lengkap');
         $siswa = Siswa::count('nama_lengkap');
         $kelas = Kelas::count('nama_kelas');
-        $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
-            $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
-        })
-            ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
-            ->groupBy('year')
-            ->orderBy('year')
-            ->get()
-            ->toArray(); // Mengubah koleksi menjadi array PHP biasa
 
-        // Siapkan data untuk grafik
-        $labels = array_column($jumlah_siswa, 'year'); // Label sumbu X berdasarkan tahun
-        $data = array_map('intval', array_column($jumlah_siswa, 'count')); // Data jumlah siswa (konversi ke bilangan bulat)
+        $siswaPerKelas = Kelas::withCount('siswa')->orderBy('nama_kelas', 'asc')->get();
 
-        $jumlah_user = User::select('role', DB::raw('COUNT(*) as count'))
-            ->whereIn('role', ['guru', 'BK']) // Filter hanya untuk role 'guru' dan 'BK'
-            ->groupBy('role')
-            ->get()
-            ->pluck('count', 'role')
-            ->toArray();
+        $labels = $siswaPerKelas->pluck('nama_kelas')->toArray();
+        $data   = $siswaPerKelas->pluck('siswa_count')->toArray();
 
-        // Siapkan data untuk grafik pie
-        $pieLabels = array_keys($jumlah_user);
-        $pieData = array_values($jumlah_user);
-        $header="Beranda";
+        $today = \Carbon\Carbon::today();
+        $allKelas = Kelas::orderBy('nama_kelas', 'asc')->get();
 
-        // Kirim data grafik ke tampilan
-        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'pieLabels', 'pieData', 'header'));
+        $statusKelas = $allKelas->map(function ($kelas) use ($today) {
+            $sudahAbsen = $kelas->siswa()->whereHas('absensi', function ($query) use ($today) {
+                $query->whereDate('created_at', $today);
+            })->exists();
+
+            return [
+                'nama_kelas'  => $kelas->nama_kelas,
+                'sudah_absen' => $sudahAbsen,
+            ];
+        });
+
+        $totalKelas      = $statusKelas->count();
+        $totalKelasSudah = $statusKelas->where('sudah_absen', true)->count();
+
+        return view('admin.beranda', compact('labels', 'data', 'user', 'guru', 'siswa', 'kelas', 'statusKelas', 'totalKelas', 'totalKelasSudah'));
     }
 
     public function beranda_bk()
     {
-        $header = "Beranda";
         $siswa = Siswa::count('nama_lengkap');
-        $jumlah_siswa = Siswa::rightJoin(DB::raw('(SELECT YEAR(created_at) AS year FROM siswa GROUP BY year) as years'), function ($join) {
-            $join->on(DB::raw('YEAR(siswa.created_at)'), '=', 'years.year');
-        })
-            ->selectRaw('years.year as year, COALESCE(COUNT(siswa.id), 0) as count')
-            ->groupBy('year')
-            ->orderBy('year')
-            ->get()
-            ->toArray(); // Mengubah koleksi menjadi array PHP biasa
+        $siswaPerKelas = Kelas::withCount('siswa')->orderBy('nama_kelas', 'asc')->get();
+        $labels = $siswaPerKelas->pluck('nama_kelas')->toArray();
+        $data   = $siswaPerKelas->pluck('siswa_count')->toArray();
 
-        // Siapkan data untuk grafik
-        $labels = array_column($jumlah_siswa, 'year'); // Label sumbu X berdasarkan tahun
-        $data = array_map('intval', array_column($jumlah_siswa, 'count')); // Data jumlah siswa (konversi ke bilangan bulat)
-
-        // Hitung jumlah siswa yang hadir, sakit, izin, dan alpa
-        $statistik_siswa = Absensi::select(
-            DB::raw('COUNT(IF(status = "Hadir", 1, NULL)) as hadir'),
-            DB::raw('COUNT(IF(status = "Sakit", 1, NULL)) as sakit'),
-            DB::raw('COUNT(IF(status = "Izin", 1, NULL)) as izin'),
-            DB::raw('COUNT(IF(status = "Alpa", 1, NULL)) as alpa')
-        )->first();
-
-        // Kirim data grafik ke tampilan
-        return view('bk.beranda', compact('jumlah_siswa', 'header', 'labels', 'data', 'siswa', 'statistik_siswa'));
+        return view('bk.beranda', compact('labels', 'data', 'siswa'));
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function data_absensi()
-    {
-        return view('data-absensi', [
-            'header' => 'Data Absensi',
-            'absensi' => Absensi::all(),
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all()
-        ]);
-    }
-
-    public function filter_data_absensi(Request $request)
+    public function data_absensi(Request $request)
     {
         $tanggal_mulai = $request->input('tanggal_mulai');
         $tanggal_selesai = $request->input('tanggal_selesai');
         $kelas_id = $request->input('kelas_id');
-        $kelas = Kelas::all();
-        $header = "Data Absensi";
+        $statusSelected = $request->query('status', 'Semua');
 
-        // Query untuk mengambil data absensi dengan filter tanggal mulai, tanggal selesai, dan kelas
-        // Update: menambahkan fallback jika tanggal tidak diisi, sistem tidak melempar error secara langsung
-        $absensi = Absensi::when($tanggal_mulai, function ($query) use ($tanggal_mulai){
-            return $query->where("created_at", $tanggal_mulai);
-        })
-        ->when($tanggal_selesai, function ($query) use ($tanggal_selesai){
-            return $query->where("created_at", $tanggal_selesai);
-        })
-        ->when($kelas_id, function ($query) use ($kelas_id) {
-                return $query->where('kelas_id', $kelas_id);
-         })
-        ->get();
-        return view('data-absensi', compact('absensi', 'kelas', 'header'));
+        $absensi =  Absensi::when($tanggal_mulai, fn($q) => $q->where("tanggal_absensi", '>=', $tanggal_mulai))
+            ->when($tanggal_selesai, fn($q) => $q->where("tanggal_absensi", '<=', $tanggal_selesai))
+            ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
+                $query->whereHas('siswa', function ($q) use ($statusSelected) {
+                    $q->where('status', $statusSelected);
+                });
+            })
+            ->get();
+
+        $kelas = Kelas::all();
+
+        return view('data-absensi', compact('absensi', 'kelas'));
+    }
+
+    public function rekapitulasi_absensi(Request $request)
+    {
+        $bulan = $request->bulan ?? date('Y-m');
+        $kelas_id = $request->kelas_id ?? null;
+        $statusSelected = $request->query('status', 'Semua');
+
+        [$tahun, $bulan] = explode('-', $bulan);
+
+        $siswa = Siswa::with(['kelas'])
+            ->withRekapBulan($tahun, $bulan)
+            ->when($kelas_id, fn($q) => $q->where('kelas_id', $kelas_id))
+            ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
+                $query->where('status', $statusSelected);
+            })
+            ->get();
+
+        $kelas = Kelas::all();
+
+        return view('rekapitulasi-absensi', compact('siswa', 'kelas'));
     }
 }

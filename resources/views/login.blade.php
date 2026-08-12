@@ -2,87 +2,83 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="adminHMD authentication page">
+    <title>Login | PresensiSiswa</title>
+
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <style>
-        /* Change icon size */
         .ti {
             font-size: 22px;
         }
 
-        body{
-            background-color: rgb(31,54,46)
+        #eye {
+            cursor: pointer;
         }
     </style>
 </head>
 
-<body>
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        <div class="position-relative overflow-hidden min-vh-100 d-flex align-items-center justify-content-center">
-            <div class="d-flex align-items-center justify-content-center w-100">
-                <div class="row justify-content-center w-100">
-                    <div class="col-md-8 col-lg-6 col-xxl-3">
-                        <div class="card mb-0 border border-dark">
-                            <div class="card-body">
-                                <section class="logo-img text-center w-100">
-                                    <h1 class="fw-bolder">PresensiSiswa</h1>
-                                    <p>Silakan login terlebih dahulu untuk melanjutkan</p>
-                                </section>
-                                {{-- Error Detail: Validasi --}}
-                                @if ($errors->any() || session('Gagal'))
-                                    <div class="alert alert-danger alert-dismissible fade show">
-                                        @if ($errors->any())
-                                            <ul class="mb-0">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                        @if (session('Gagal'))
-                                            {{ session('Gagal') }}.
-                                        @endif
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                @endif
-                                <form action="{{ route('auth') }}" method="post" autocomplete="off">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Username</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" autofocus required>
-                                            <span class="input-group-text">
-                                                <i class="ti ti-user"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3" id="input-password">
-                                        <label for="password" class="form-label">Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="Inputpassword" name="password" value="{{ old('password') }}" required>
-                                            <span class="input-group-text">
-                                                <i class="ti ti-eye" id="eye"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
-                                    <p class="fw-bold text-center">-Jika kamu lupa password, silakan hubungi admin-</p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<body class="auth-body">
+    <button class="icon-button theme-toggle auth-theme-toggle" type="button" data-theme-toggle
+        aria-label="Switch color theme" title="Switch color theme">
+        <i class="ti ti-moon-stars" data-theme-icon aria-hidden="true"></i>
+    </button>
+    <main class="auth-page">
+        <section class="auth-card">
+            <div class="auth-brand">
+                <span class="brand-icon">
+                    <i class="ti ti-clipboard-check"></i>
+                </span>
+                <span>
+                    <strong class="fs-4 mb-1">PresensiSiswa</strong>
+                    <small class="fs-6">Silakan login terlebih dahulu untuk melanjutkan</small>
+                </span>
             </div>
-        </div>
-    </div>
-    <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+            @if (session('Gagal'))
+                <div class="alert alert-danger alert-dismissible fade show">
+                    {{ session('Gagal') }}.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            <form action="{{ route('auth') }}" method="POST" autocomplete="off" class="needs-validation">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label" for="loginUsername">Username</label>
+                    <input class="form-control @error('username') is-invalid @enderror" id="loginUsername"
+                        type="text" name="username" value="{{ old('username') }}" autofocus required>
+                    @error('username')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <div class="input-group">
+                        <input class="form-control @error('password') is-invalid @enderror" id="loginPassword"
+                            type="password" name="password" required>
+                        <span class="input-group-text">
+                            <i class="ti ti-eye" id="eye"></i>
+                        </span>
+                    </div>
+                    @error('password')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <button class="btn btn-primary w-100" type="submit">Sign In</button>
+            </form>
+
+            <div class="auth-footer">Jika lupa password, hubungi admin untuk reset password.</div>
+        </section>
+    </main>
+
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/vendors/jquery/dist/jquery.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            const password = $("#Inputpassword");
+            const password = $("#loginPassword");
             const eyeIcon = $("#eye");
 
             eyeIcon.click(function() {

@@ -5,45 +5,227 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Beranda</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="{{ asset('libs/sweetalert2/dist/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/apexcharts/dist/apexcharts.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.css') }}">
+    <style>
+        .ti {
+            font-size: 22px;
+        }
+    </style>
 </head>
 
 <body>
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- Sidebar Start -->
+    <div class="admin-shell">
         @include('partials.sidebar')
-        <!--  Sidebar End -->
-        <!--  Main wrapper -->
-        <div class="body-wrapper">
-            <!--  Navbar Start -->
+        <div class="admin-main">
             @include('partials.navbar')
-            <!--  Navbar End -->
-            <div class="container-fluid">
-                <h1 class="d-sm-block d-md-none">@yield('header')</h1>
-                @yield('basic-statistics-section')
-                @yield('charts-section')
+            <main class="dashboard-content">
+                <div class="container-fluid px-3 px-lg-4 py-4">
+                    <div class="page-heading">
+                        <h1 class="">@yield('header')</h1>
+                    </div>
+
+                    @yield('basic-statistics-section')
+                    @yield('charts-section')
+
+
+                    {{-- <section class="row g-3 mt-1">
+                            <div class="col-12 col-xl-8">
+                                <div class="panel">
+                                    <div class="panel-header">
+                                        <div>
+                                            <h2 class="h5 mb-1 section-title"><i class="bi bi-graph-up-arrow"
+                                                    aria-hidden="true"></i><span>Sales Performance</span></h2>
+                                            <p class="text-muted mb-0">Monthly revenue compared with operational
+                                                targets.</p>
+                                        </div>
+                                        <a class="btn btn-light btn-sm" href="charts.html">View Details</a>
+                                    </div>
+
+                                    <div class="chart-bars" aria-label="Sales performance chart">
+                                        <div class="chart-column bar-42"><span></span><small>Jan</small></div>
+                                        <div class="chart-column bar-58"><span></span><small>Feb</small></div>
+                                        <div class="chart-column bar-51"><span></span><small>Mar</small></div>
+                                        <div class="chart-column bar-72"><span></span><small>Apr</small></div>
+                                        <div class="chart-column bar-66"><span></span><small>May</small></div>
+                                        <div class="chart-column bar-83"><span></span><small>Jun</small></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-xl-4">
+                                <div class="panel h-100">
+                                    <div class="panel-header">
+                                        <div>
+                                            <h2 class="h5 mb-1 section-title"><i class="bi bi-activity"
+                                                    aria-hidden="true"></i><span>Team Activity</span></h2>
+                                            <p class="text-muted mb-0">Recent operational updates.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="activity-list">
+                                        <div class="activity-item"><span class="activity-dot bg-primary"></span>
+                                            <div>
+                                                <p class="mb-1 fw-semibold">New campaign launched</p>
+                                                <p class="text-muted small mb-0">Marketing team published the May
+                                                    offer.</p>
+                                            </div>
+                                        </div>
+                                        <div class="activity-item"><span class="activity-dot bg-success"></span>
+                                            <div>
+                                                <p class="mb-1 fw-semibold">Payment batch cleared</p>
+                                                <p class="text-muted small mb-0">246 invoices were processed
+                                                    successfully.</p>
+                                            </div>
+                                        </div>
+                                        <div class="activity-item"><span class="activity-dot bg-warning"></span>
+                                            <div>
+                                                <p class="mb-1 fw-semibold">Support queue rising</p>
+                                                <p class="text-muted small mb-0">Average first response time is 18
+                                                    minutes.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="panel mt-3">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 class="h5 mb-1 section-title"><i class="bi bi-people"
+                                            aria-hidden="true"></i><span>Recent Users</span></h2>
+                                    <p class="text-muted mb-0">Latest account activity across the workspace.</p>
+                                </div>
+                                <a class="btn btn-outline-secondary btn-sm" href="users.html">Manage Users</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Team</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Joined</th>
+                                            <th scope="col" class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img class="avatar-img avatar-sm"
+                                                        src="../assets/images/avatar/avatar-1.jpg" alt="Sarah Ahmed">
+                                                    <div>
+                                                        <p class="fw-semibold mb-0">Sarah Ahmed</p>
+                                                        <p class="text-muted small mb-0">sarah@example.com</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Admin</td>
+                                            <td>Operations</td>
+                                            <td><span class="badge text-bg-success">Active</span></td>
+                                            <td>Jan 12, 2026</td>
+                                            <td class="text-end"><a class="btn btn-light btn-sm"
+                                                    href="user-details.html">View</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img class="avatar-img avatar-sm"
+                                                        src="../assets/images/avatar/avatar-2.jpg" alt="Rafi Khan">
+                                                    <div>
+                                                        <p class="fw-semibold mb-0">Rafi Khan</p>
+                                                        <p class="text-muted small mb-0">rafi@example.com</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Manager</td>
+                                            <td>Sales</td>
+                                            <td><span class="badge text-bg-success">Active</span></td>
+                                            <td>Feb 03, 2026</td>
+                                            <td class="text-end"><a class="btn btn-light btn-sm"
+                                                    href="user-details.html">View</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img class="avatar-img avatar-sm"
+                                                        src="../assets/images/avatar/avatar-3.jpg" alt="Nadia Islam">
+                                                    <div>
+                                                        <p class="fw-semibold mb-0">Nadia Islam</p>
+                                                        <p class="text-muted small mb-0">nadia@example.com</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Editor</td>
+                                            <td>Content</td>
+                                            <td><span class="badge text-bg-warning">Pending</span></td>
+                                            <td>Mar 18, 2026</td>
+                                            <td class="text-end"><a class="btn btn-light btn-sm"
+                                                    href="user-details.html">View</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img class="avatar-img avatar-sm"
+                                                        src="../assets/images/avatar/avatar-4.jpg" alt="Mina Torres">
+                                                    <div>
+                                                        <p class="fw-semibold mb-0">Mina Torres</p>
+                                                        <p class="text-muted small mb-0">mina@example.com</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Viewer</td>
+                                            <td>Finance</td>
+                                            <td><span class="badge text-bg-secondary">Suspended</span></td>
+                                            <td>Apr 07, 2026</td>
+                                            <td class="text-end"><a class="btn btn-light btn-sm"
+                                                    href="user-details.html">View</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img class="avatar-img avatar-sm"
+                                                        src="../assets/images/avatar/avatar-5.jpg" alt="Jon Oliver">
+                                                    <div>
+                                                        <p class="fw-semibold mb-0">Jon Oliver</p>
+                                                        <p class="text-muted small mb-0">jon@example.com</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Analyst</td>
+                                            <td>Data</td>
+                                            <td><span class="badge text-bg-success">Active</span></td>
+                                            <td>Apr 22, 2026</td>
+                                            <td class="text-end"><a class="btn btn-light btn-sm"
+                                                    href="user-details.html">View</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section> --}}
+                </div>
+                {{-- <h1>@yield('header')</h1> --}}
+                {{-- @yield('basic-statistics-section') --}}
+
 
                 @include('partials.footer')
-            </div>
+            </main>
         </div>
     </div>
 
-    {{-- JS --}}
-    <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
-    <!-- SweetAlert2 JS -->
-    <script src="{{ asset('libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset('js/app.min.js') }}"></script>
-    <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
-    <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-    {{-- <script src="{{ asset('js/dashboard.js') }}"></script> --}}
-    <script src="{{ asset('js/format-date.js')}}"></script>
-    <script src="{{ asset('js/logout-modal.js')}}"></script>
+    <script src="{{ asset('assets/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/apexcharts/dist/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/format-date.js') }}"></script>
+    <script src="{{ asset('assets/js/logout-modal.js') }}"></script>
     @yield('additional_js')
 </body>
 

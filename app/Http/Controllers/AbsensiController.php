@@ -7,32 +7,61 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
-    public function data_absensi()
-    {
-        return view('guru.data-absensi', [
-            'absensi' => Absensi::all(),
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all(),
-            'user' => User::all(),
-            'header' => 'Data Absensi'
-        ]);
-    }
     /**
      * Display a listing of the resource.
      * Fungsi CRUD Absensi
      */
-    public function index()
+    public function index(Request $request)
     {
+        $hari_ini = date('Y-m-d');
+        $kelasSaya = collect();
+
+        $slug_kelas = $request->query('kelas') ?? session('active_kelas_slug');
+
+        $relations = [
+            'siswa' => function ($query) {
+                $query->where('status', 'Aktif');
+            },
+            'siswa.absensi' => function ($query) use ($hari_ini) {
+                $query->where('tanggal_absensi', $hari_ini);
+            }
+        ];
+
+        $kelasAktif = $slug_kelas ? Kelas::with($relations)->where('slug_kelas', $slug_kelas)->first() : null;
+        if ($kelasAktif) {
+            session(['active_kelas_slug' => $kelasAktif->slug_kelas]);
+
+            $kelasSaya = collect([$kelasAktif]);
+            $totalSiswa = $kelasAktif->siswa()->where('status', 'Aktif')->count();
+            $stats = $kelasAktif->absensi()
+                ->where('tanggal_absensi', $hari_ini)
+                ->whereHas('siswa', function ($query) {
+                    $query->where('status', 'Aktif');
+                })
+                ->select('status', DB::raw('count(*) as total'))
+                ->groupBy('status')
+                ->pluck('total', 'status');
+        } else {
+            session()->forget('active_kelas_slug');
+            $kelasSaya = collect();
+            $totalSiswa = 0;
+            $stats = collect();
+        }
+
+        $semuaKelas = Kelas::with($relations)->get();
+
         return view('guru.absensi', [
-            'absensi' => Absensi::all(),
-            'siswa' => Siswa::all(),
-            'header' => 'Absensi',
-            // 'siswa' => Siswa::join('kelas', 'siswa.kelas_id', '=', 'kelas.id')
-            // ->where('kelas.slug', $slug_kelas)
-            // ->get()
+            'kelas_saya'  => $kelasSaya,
+            'semua_kelas' => $semuaKelas,
+            'total_siswa' => $totalSiswa,
+            'siswa_hadir' => $stats['Hadir'] ?? 0,
+            'siswa_sakit' => ($stats['Sakit'] ?? 0) + ($stats['Izin'] ?? 0),
+            'siswa_alpa'  => $stats['Alpa'] ?? 0,
+            'header'      => 'Dashboard Presensi Siswa'
         ]);
     }
 
@@ -41,11 +70,15 @@ class AbsensiController extends Controller
      */
     public function create()
     {
-        return view('guru.tambah-data-absensi', [
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all(),
-            'header' => 'Tambah Data Absensi',
-        ]);
+        $slug = session('active_kelas_slug');
+        $kelas = Kelas::where('slug_kelas', $slug)->first();
+        if (!$kelas) {
+            flash()->option('timeout', 3000)->addError('Sesi kelas tidak valid atau tidak ditemukan.');
+            return redirect()->route('absensi.index');
+        }
+
+        $siswa = Siswa::where('kelas_id', $kelas->id)->where('status', 'Aktif')->get();
+        return view('guru.tambah-data-absensi', compact('kelas', 'siswa'));
     }
 
     /**
@@ -54,12 +87,13 @@ class AbsensiController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'guru_id' => 'required',
-            'kelas_id' => 'required',
-            'siswa_id' => 'required',
+            'guru_id' => 'required|exists:guru,id',
+            'kelas_id' => 'required|exists:kelas,id',
+            'siswa_id' => 'required|exists:siswa,id',
             'status' => 'required|array',
-            'status*' => 'required|in:Hadir,Sakit,Izin,Alpa',
-            'keterangan' => 'nullable|max:50'
+            'status.*' => 'required|in:Hadir,Sakit,Izin,Alpa',
+            'keterangan' => 'nullable|array',
+            'keterangan.*' => 'nullable|max:50'
         ]);
 
         foreach ($request->status as $siswa_id => $status) {
@@ -77,6 +111,7 @@ class AbsensiController extends Controller
                 'siswa_id' => $siswa_id,
                 'status' => $status,
                 'keterangan' => $keterangan,
+                'tanggal_absensi' => date('Y-m-d')
             ]);
         }
 
@@ -86,24 +121,107 @@ class AbsensiController extends Controller
         return redirect()->route('absensi.index');
     }
 
+    public function edit(string $id)
+    {
+        $hari_ini = date('Y-m-d');
+        $dataSiswa = Siswa::where('kelas_id', $id)
+            ->where('status', 'Aktif')
+            ->with(['absensi' => function ($query) use ($hari_ini) {
+                $query->where('tanggal_absensi', $hari_ini);
+            }])
+            ->get();
+        $kelas = Kelas::findOrFail($id);
+
+        return view('guru.edit-data-absensi', [
+            'daftar_siswa' => $dataSiswa,
+            'kelas' => $kelas
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        $siswa_id = $request->siswa_id;
-        foreach ($siswa_id as $id) {
-            // Temukan data absensi berdasarkan siswa_id
-            $absensi = Absensi::where('siswa_id', $id)->firstOrFail();
+        $this->validate($request, [
+            'siswa_id' => 'required|array',
+            'status' => 'required|array',
+            'status.*' => 'required|in:Hadir,Sakit,Izin,Alpa',
+            'keterangan' => 'nullable|array',
+            'keterangan.*' => 'nullable|max:50'
+        ]);
 
-            // Lakukan update data absensi
-            $absensi->status = $request->status[$id];
-            $absensi->keterangan = $request->keterangan[$id];
+        $siswa_ids = $request->siswa_id;
+        $hari_ini = date('Y-m-d');
+        foreach ($siswa_ids as $siswa_id) {
+            $absensi = Absensi::where('siswa_id', $siswa_id)
+                ->where('tanggal_absensi', $hari_ini)
+                ->firstOrFail();
+
+            $statusBaru = $request->status[$siswa_id];
+            $absensi->status = $statusBaru;
+
+            if ($statusBaru == 'Sakit' || $statusBaru == 'Izin') {
+                $absensi->keterangan = $request->keterangan[$siswa_id] ?? null;
+            } else {
+                $absensi->keterangan = null;
+            }
+
             $absensi->save();
         }
 
         flash()->addSuccess('Edit Status Absensi Berhasil!');
 
         return redirect()->route('absensi.index');
+    }
+
+    public function data_absensi(Request $request)
+    {
+        $slug = session('active_kelas_slug');
+        $kelas = Kelas::where('slug_kelas', $slug)->first();
+
+        if (!$kelas) {
+            flash()->option('timeout', 3000)->addError('Sesi kelas tidak valid atau tidak ditemukan.');
+            return redirect()->route('absensi.index');
+        }
+
+        $bulan = $request->bulan ?? date('Y-m');
+        [$tahun, $bulan] = explode('-', $bulan);
+
+        $statusSelected = $request->query('status', 'Semua');
+
+        $siswa = Siswa::where('kelas_id', $kelas->id)
+            ->when($statusSelected !== 'Semua', function ($query) use ($statusSelected) {
+                $query->where('status', $statusSelected);
+            })
+            ->withRekapBulan($tahun, $bulan)->get();
+
+        return view('guru.data-absensi', [
+            'siswa' => $siswa,
+            'header' => 'Data Absensi'
+        ]);
+    }
+
+    public function detailSiswa(string $siswa_id, Request $request)
+    {
+        $siswa = Siswa::findOrFail($siswa_id);
+
+        $tanggalMulai = $request->tanggal_mulai;
+        $tanggalSelesai = $request->tanggal_selesai;
+
+        $riwayatAbsensi = Absensi::where('siswa_id', $siswa->id)
+            ->when($tanggalMulai, function ($query, $mulai) {
+                $query->where('tanggal_absensi', '>=', $mulai);
+            })
+            ->when($tanggalSelesai, function ($query, $selesai) {
+                $query->where('tanggal_absensi', '<=', $selesai);
+            })
+            ->orderBy('tanggal_absensi', 'desc')
+            ->get();
+
+        return view('guru.data-absensi-detail', [
+            'siswa' => $siswa,
+            'riwayat_absensi' => $riwayatAbsensi
+        ]);
     }
 }

@@ -2,30 +2,27 @@
 
 namespace App\Imports;
 
-use App\Models\Guru;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use App\Imports\ImportDataGuruSheet;
 
-HeadingRowFormatter::default('none');
-
-class ImportDataGuru implements ToCollection, WithHeadingRow
+class ImportDataGuru implements WithMultipleSheets
 {
-    /**
-     * @param Collection $collection
-     */
-    public function collection(Collection $collection)
+    protected $sheetImport;
+
+    public function __construct()
     {
-        foreach ($collection as $row) {
-            // $sanitized = array_map('trim', $row->toArray());
-            // dd($sanitized);
-            Guru::create([
-                'nip' => trim($row['NIP']),
-                'nama_lengkap' => trim($row['Nama Lengkap']),
-                'jenis_kelamin' => trim($row['Jenis Kelamin']),
-                'no_telepon' => trim($row['No Telepon'])
-            ]);
-        }
+        $this->sheetImport = new ImportDataGuruSheet();
+    }
+
+    public function sheets(): array
+    {
+        return [
+            0 => $this->sheetImport,
+        ];
+    }
+
+    public function failures()
+    {
+        return $this->sheetImport->failures();
     }
 }

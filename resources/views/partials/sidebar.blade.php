@@ -1,98 +1,112 @@
-<aside class="left-sidebar" style="background-color: rgb(31,54,46); border-color:black">
-    <!-- Sidebar scroll-->
-    <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="javascript:void(0)" class="text-nowrap h1 p-2">
-            <span class="h2 fw-bolder text-white">PresensiSiswa</span>
-        </a>
-        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-            <i class="ti ti-x fs-8"></i>
-        </div>
-    </div>
-    <!-- Sidebar navigation-->
-    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-        <ul id="sidebarnav">
-            @if (Auth::user()->role == 'Admin')
-                <li class="sidebar-item">
-                    <a class="sidebar-link{{ Request::is('beranda') ? 'active' : '' }}" href="beranda">
-                        <span>
-                            <i class="ti ti-home"></i>
-                        </span>
-                        <span class="hide-menu">Beranda</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-guru') ? 'active' : '' }}" href="data-guru">
-                        <span>
-                            <i class="ti ti-chalkboard"></i>
-                        </span>
-                        <span class="hide-menu">Data Guru</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" {{ Request::is('data-siswa') ? 'active' : '' }} href="data-siswa">
-                        <span>
-                            <i class="ti ti-school"></i>
-                        </span>
-                        <span class="hide-menu">Data Siswa</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-kelas') ? 'active' : '' }}" href="data-kelas">
-                        <span>
-                            <i class="ti ti-building"></i>
-                        </span>
-                        <span class="hide-menu">Data Kelas</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('data-user') ? 'active' : '' }}" href="data-user">
-                        <span>
-                            <i class="ti ti-user-check"></i>
-                        </span>
-                        <span class="hide-menu">Data User</span>
-                    </a>
-                </li>
-            @elseif (Auth::user()->role == 'Guru')
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('absensi') ? 'active' : '' }}" href="absensi">
-                        <span>
-                            <i class="ti ti-home"></i>
-                        </span>
-                        <span class="hide-menu">Beranda</span>
-                    </a>
-                </li>
-            @else
-                <li class="sidebar-item">
-                    <a class="sidebar-link{{ Request::is('beranda') ? 'active' : '' }}" href="beranda">
-                        <span>
-                            <i class="ti ti-home"></i>
-                        </span>
-                        <span class="hide-menu">Beranda</span>
-                    </a>
-                </li>
-            @endif
-            {{-- berlaku di semua role selama user telah login --}}
-            <li class="sidebar-item">
-                <a class="sidebar-link {{ Request::is('data-absensi') ? 'active' : '' }}" href="data-absensi">
-                    <span>
-                        <i class="ti ti-table"></i>
-                    </span>
-                    <span class="hide-menu">Data Absensi</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="javascript:void(0)" class="sidebar-link" onclick="modal_logout()">
-                    <span>
-                        <i class="ti ti-logout"></i>
-                    </span>
+@php
+    $userRole = Auth::user()->role;
 
-                    <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
-                        @csrf
-                    </form>
-                    <span class="hide-menu">Logout</span>
+    $menus = [
+        [
+            'label' => 'Beranda',
+            'route' => match ($userRole) {
+                'BK' => 'bk.beranda',
+                default => 'admin.beranda',
+            },
+            'pattern' => '*beranda*',
+            'icon' => 'ti-home',
+            'roles' => ['Admin', 'BK'],
+        ],
+        [
+            'label' => 'Presensi',
+            'route' => 'absensi.index',
+            'pattern' => 'absensi*',
+            'icon' => 'ti-clipboard-check',
+            'roles' => ['Guru'],
+        ],
+        [
+            'label' => 'Data Guru',
+            'route' => 'data-guru.index',
+            'pattern' => 'data-guru*',
+            'icon' => 'ti-chalkboard',
+            'roles' => ['Admin'],
+        ],
+        [
+            'label' => 'Data Siswa',
+            'route' => 'data-siswa.index',
+            'pattern' => 'data-siswa*',
+            'icon' => 'ti-school',
+            'roles' => ['Admin'],
+        ],
+        [
+            'label' => 'Data Kelas',
+            'route' => 'data-kelas.index',
+            'pattern' => 'data-kelas*',
+            'icon' => 'ti-building',
+            'roles' => ['Admin'],
+        ],
+        [
+            'label' => 'Data User',
+            'route' => 'data-user.index',
+            'pattern' => 'data-user*',
+            'icon' => 'ti-user-check',
+            'roles' => ['Admin'],
+        ],
+        [
+            'label' => 'Data Absensi',
+            'route' => match ($userRole) {
+                'Guru' => 'guru.data_absensi',
+                'BK' => 'bk.data_absensi',
+                default => 'admin.data_absensi',
+            },
+            'pattern' => '*data_absensi*',
+            'icon' => 'ti-table',
+            'roles' => ['Admin', 'Guru', 'BK'],
+        ],
+        [
+            'label' => 'Rekapitulasi Absensi',
+            'route' => match ($userRole) {
+                'Admin' => 'admin.rekapitulasi',
+                'BK' => 'bk.rekapitulasi',
+                default => '#',
+            },
+            'pattern' => '*rekapitulasi-absensi*',
+            'icon' => 'ti-clipboard-check',
+            'roles' => ['Admin', 'BK'],
+        ],
+    ];
+@endphp
+
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
+            <span class="brand-icon">
+                <i class="ti ti-clipboard-check" aria-hidden="true"></i>
+            </span>
+            <span class="brand-copy">
+                <span class="brand-title fs-4">PresensiSiswa</span>
+            </span>
+        </a>
+    </div>
+    <nav class="sidebar-nav">
+        @foreach ($menus as $menu)
+            @if (in_array($userRole, $menu['roles']))
+                @php
+                    $url = route($menu['route']);
+                    $isActive = request()->routeIs($menu['pattern']);
+                @endphp
+                <a class="nav-link {{ $isActive ? 'active' : '' }}" href="{{ $url }}" aria-current="page">
+                    <span class="nav-icon">
+                        <i class="ti {{ $menu['icon'] }}" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">{{ $menu['label'] }}</span>
                 </a>
-            </li>
-        </ul>
+            @endif
+        @endforeach
+        <a class="nav-link" href="javascript:void(0)" onclick="modal_logout()">
+            <span class="nav-icon">
+                <i class="ti ti-logout sidebar-icon" aria-hidden="true"></i>
+            </span>
+            <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
+                @csrf
+            </form>
+            <span class="nav-text">Keluar</span>
+        </a>
     </nav>
-    <!-- End Sidebar navigation -->
 </aside>

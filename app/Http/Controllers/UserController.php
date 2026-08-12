@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserFormRequest;
+use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,90 +15,115 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.data-user', [
-            'header' => 'Data User',
+        return view('admin.data-user.index', [
             'user' => User::orderBy('nama_lengkap', 'ASC')->get(),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('admin.data-user.create', [
+            'data_guru' => Guru::where('is_active', true)->get()
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserFormRequest $request)
     {
-        $validated_data = $request->validate([
-            'nama_lengkap' => 'required|max:100',
-            'username' => 'required|unique:user',
-            'password' => 'required',
-            'role' => 'required|in:admin,guru,bk'
-        ], [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
-            'nama_lengkap.max' => 'Nama lengkap yang anda masukkan terlalu panjang!',
+        if ($request->role === 'Guru') {
+            $guru = Guru::findOrFail($request->guru_id);
 
-            'username.required' => 'Username wajib diisi!',
-            'username.unique' => 'Username tidak boleh sama!',
-
-            'password.required' => 'Password wajib diisi!',
-
-            'role.required' => 'Role wajib diisi!',
-        ]);
-
-        // jika password terisi maka enkripsikan password itu
-        if ($request->password) {
-            $validated_data['password'] = bcrypt($request->password);
+            $payload = [
+                'role'         => 'Guru',
+                'guru_id'      => $guru->id,
+                'nama_lengkap' => $guru->nama_lengkap,
+                'username'     => $guru->nip, // Menggunakan NIP sebagai username bawaan
+                'password'     => Hash::make($request->password),
+            ];
+        } else {
+            $payload = [
+                'role'         => $request->role,
+                'guru_id'      => null,
+                'nama_lengkap' => $request->nama_lengkap,
+                'username'     => $request->username,
+                'password'     => Hash::make($request->password),
+            ];
         }
 
-        User::create($validated_data);
+        // dd($payload);
 
-        flash()->addSuccess('Tambah Data user berhasil');
+        User::create($payload);
 
-        return back();
+        flash()->addSuccess('Data User baru berhasil ditambahkan');
+
+        return redirect()->to(route('data-user.index'));
+    }
+
+    public function edit(User $user)
+    {
+        return view('admin.data-user.update', [
+            'data_user' => $user
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserFormRequest $request, User $user)
     {
-        $user = User::findOrfail($id);
-
-        $validated_data = $request->validate([
-            'nama_lengkap' => 'required|max:100',
-            'username' => 'required',
-            'password' => 'required',
-            'role' => 'required|in:admin,guru,bk'
-        ], [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi!',
-            'nama_lengkap.max' => 'Nama lengkap yang anda masukkan terlalu panjang!',
-
-            'username.required' => 'Username wajib diisi!',
-
-            'password.required' => 'Password wajib diisi!',
-            'role.required' => 'Role wajib diisi!',
-        ]);
-
-        if ($request->password) {
-            $validated_data['password'] = bcrypt($request->password);
+        // Preventing Admins from Changing Their Own Roles
+        if ($user->id === auth()->id() && $request->has('role') && $request->role !== $user->role) {
+            flash()->addError('Anda tidak dapat mengubah role akun Anda sendiri!');
+            return back();
         }
 
-        $user->update($validated_data);
+        $payload = [];
 
-        flash()->addSuccess('Edit Data User Berhasil!');
+        if ($user->role === 'Guru') {
+            if ($request->filled('password')) {
+                $payload['password'] = Hash::make($request->password);
+            }
+        } else {
+            $payload = [
+                'role'         => $request->role,
+                'nama_lengkap' => $request->nama_lengkap,
+                'username'     => $request->username,
+            ];
 
-        return back();
+            if ($request->filled('password')) {
+                $payload['password'] = Hash::make($request->password);
+            }
+        }
+
+        if (!empty($payload)) {
+            $user->update($payload);
+        }
+
+        flash()->addSuccess("Data {$user->nama_lengkap} Berhasil Diedit!");
+        return redirect()->to(route('data-user.index'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Toggle active status of the specified user.
      */
-    public function destroy(string $id)
+    public function update_status(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
+        $validated = $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
 
-        $user->delete();
+        // Preventing the Admin from deactivating themselves
+        if ($user->id === auth()->id() && !$request->is_active) {
+            flash()->addError('Anda tidak dapat menonaktifkan akun Anda sendiri!');
+            return back();
+        }
 
-        flash()->addSuccess('Hapus Data User Berhasil');
+        $user->update($validated);
+        $statusText = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
-        return back();
+        flash()->option('timeout', 3000)->addSuccess("Data user {$user->nama_lengkap} berhasil {$statusText}!");
+        return redirect()->route('data-user.index');
     }
 }
