@@ -5,6 +5,6 @@
          </span>
          <span>Versi
              <a target="_blank" class="fw-bold"
-                 href="https://github.com/andraadev/PresensiSiswa/blob/main/CHANGELOG.md">1.1.1</a></span>
+                 href="https://github.com/andraadev/PresensiSiswa/blob/main/CHANGELOG.md">1.2.0</a></span>
      </div>
  </footer>
