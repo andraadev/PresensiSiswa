@@ -36,7 +36,7 @@ class KelasController extends Controller
         $qr_code_kelas = QRCode::format('png')
             ->size(500)
             ->margin(2)
-            ->generate(route('absensi.index') . $slug_kelas);
+            ->generate(route('absensi.index') . '?kelas=' . $slug_kelas);
 
         $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
 
@@ -65,7 +65,7 @@ class KelasController extends Controller
             $qr_code_kelas = QRCode::format('png')
                 ->size(500)
                 ->margin(2)
-                ->generate(route('absensi.index') . $slug_kelas);
+                ->generate(route('absensi.index') . '?kelas=' . $slug_kelas);
 
             $output_file = 'qr_code_kelas/qr-' . $slug_kelas . '.png';
 
