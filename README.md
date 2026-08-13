@@ -83,7 +83,7 @@ The following demonstrations highlight the main workflows and business rules imp
 
 > Teachers access an authorized class through QR Code or the available class list, record student attendance, and manage the attendance session according to the attendance date.
 
-<video src="docs/demos/01-attendance-session.mp4" controls autoplay loop muted width="100%"></video>
+![Class-Based Attendance Workflow](docs/demos/01-attendance-session.gif)
 
 ---
 
@@ -91,7 +91,7 @@ The following demonstrations highlight the main workflows and business rules imp
 
 > Teacher and student data can be imported in bulk through Excel files. Invalid rows are detected and reported through validation feedback.
 
-<video src="docs/demos/02-excel-import-validation.mp4" controls autoplay loop muted width="100%"></video>
+![Class-Based Attendance Workflow](docs/demos/02-excel-import-validation.gif)
 
 ---
 
