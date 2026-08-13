@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📚 Student Attendance Management System
+# 📚 PresensiSiswa
 
 A Laravel-based school attendance management system with role-based access, class-based attendance sessions, QR-based class access, bulk data validation, attendance recaps, and Excel reporting.
 
@@ -79,29 +79,19 @@ The attendance workflow is designed around the assigned class and attendance dat
 
 The following demonstrations highlight the main workflows and business rules implemented in the application.
 
-### 1. Class-Based Attendance Workflow [soon...]
+### 1. Class-Based Attendance Workflow
 
 > Teachers access an authorized class through QR Code or the available class list, record student attendance, and manage the attendance session according to the attendance date.
 
-![Class-Based Attendance Workflow](docs/demos/01-attendance-session.gif)
+<video src="docs/demos/01-attendance-session.mp4" controls autoplay loop muted width="100%"></video>
 
 ---
 
-### 2. Excel Import & Row-Level Validation [soon...]
+### 2. Excel Import & Row-Level Validation
 
 > Teacher and student data can be imported in bulk through Excel files. Invalid rows are detected and reported through validation feedback.
 
-![Excel Import Validation](docs/demos/02-excel-import-validation.gif)
-
----
-
-### 3. Attendance Recap & Filtering [soon...]
-
-> Attendance recaps can be filtered by month, class, and student status to help users review attendance records for a specific period or group.
-
-![Attendance Recap and Filtering](docs/demos/03-attendance-recap-filter.gif)
-
----
+<video src="docs/demos/02-excel-import-validation.mp4" controls autoplay loop muted width="100%"></video>
 
 ---
 
@@ -123,6 +113,19 @@ The application uses a consistent management interface across its master data mo
 
 <p align="center">
   <i>Example of the teacher management interface.</i>
+</p>
+
+### Attendance Recap
+
+Attendance recaps provide a structured view of student attendance records with filtering options for month, class, and student status.
+
+<p align="center">
+  <img src="docs/screenshots/attendance-recap.png" alt="Attendance Recap and Filtering" width="90%">
+  <img src="docs/screenshots/attendance-recap-2.png" alt="Attendance Recap and Filtering" width="90%">
+</p>
+
+<p align="center">
+  <i>Example of the attendance recap and filtering interface.</i>
 </p>
 
 ---
@@ -219,11 +222,11 @@ The application uses a consistent management interface across its master data mo
 
 ## 📌 Project Status
 
-> **Maintained, but slowed**
+> **Maintained, but development is limited**
 
 This project was initially developed as part of an academic assessment.
 
-The application has reached a usable state for its intended scope and is still maintained for critical bug fixes, security improvements, and necessary adjustments. New feature development may occur in future versions, but development is currently limited.
+The application has reached a usable state for its intended scope and is maintained for critical bug fixes, security improvements, and necessary adjustments. Future feature development is not guaranteed and may depend on project needs.
 
 The project is primarily provided for educational, reference, and portfolio purposes and is **not recommended for production use without further security review, testing, and environment-specific configuration**.
 
@@ -239,9 +242,4 @@ For version history and detailed changes, see the [CHANGELOG.md](CHANGELOG.md).
 
 This software is provided "as is", without warranty of any kind, express or implied.
 
-The user assumes all responsibility and risk for the use of this software. No official support or maintenance is provided.
-
-## 📝 Usage & Attribution
-
-This project is developed for educational and portfolio presentation purposes.
-Feel free to reference the architecture and codebase for learning.
+The user assumes all responsibility and risk for the use of the software. No official support or maintenance is provided.
