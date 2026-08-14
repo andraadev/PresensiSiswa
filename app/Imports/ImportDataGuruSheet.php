@@ -59,6 +59,7 @@ class ImportDataGuruSheet implements ToCollection, WithHeadingRow, WithValidatio
             '*.no_telepon.digits_between' => 'Nomor telepon harus diantara 10-13 digit.',
             '*.no_telepon.distinct' => 'Nomor telepon ganda ditemukan di dalam file Excel ini.',
             '*.no_telepon.regex'  => 'Nomor telepon harus diawali 08 dan berjumlah 10-13 digit.',
+            '*.no_telepon.unique'      => 'Nomor telepon sudah terdaftar di sistem.',
         ];
     }
 
