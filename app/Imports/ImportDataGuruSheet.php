@@ -26,7 +26,7 @@ class ImportDataGuruSheet implements ToCollection, WithHeadingRow, WithValidatio
                 'nip'           => $row['nip'],
                 'nama_lengkap'  => $row['nama_lengkap'],
                 'jenis_kelamin' => $row['jenis_kelamin'],
-                'no_telepon'    => $row['nomor_telepon'],
+                'no_telepon'    => $row['no_telepon'],
             ]);
         }
     }
@@ -37,7 +37,7 @@ class ImportDataGuruSheet implements ToCollection, WithHeadingRow, WithValidatio
             '*.nip'           => 'required|digits:18|distinct|unique:guru,nip',
             '*.nama_lengkap'  => 'required|max:100',
             '*.jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            '*.nomor_telepon'    => 'required|regex:/^08[0-9]{10,11}$/|distinct|unique:guru,no_telepon',
+            '*.no_telepon'    => 'required|regex:/^08[0-9]{10,11}$/|distinct|unique:guru,no_telepon',
         ];
     }
 
@@ -55,9 +55,9 @@ class ImportDataGuruSheet implements ToCollection, WithHeadingRow, WithValidatio
             '*.jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong.',
             '*.jenis_kelamin.in'       => 'Jenis kelamin tidak valid ditemukan di dalam file excel ini.',
 
-            '*.nomor_telepon.required'    => 'Nomor telepon tidak boleh kosong.',
-            '*.nomor_telepon.digits_between' => 'Nomor telepon harus diantara 10-13 digit.',
-            '*.nomor_telepon.distinct' => 'Nomor telepon ganda ditemukan di dalam file Excel ini.',
+            '*.no_telepon.required'    => 'Nomor telepon tidak boleh kosong.',
+            '*.no_telepon.digits_between' => 'Nomor telepon harus diantara 10-13 digit.',
+            '*.no_telepon.distinct' => 'Nomor telepon ganda ditemukan di dalam file Excel ini.',
             '*.no_telepon.regex'  => 'Nomor telepon harus diawali 08 dan berjumlah 10-13 digit.',
         ];
     }
