@@ -1,5 +1,5 @@
 <?php
-// Controller untuk Fitur CRUD pada aplikasi
+
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
@@ -11,7 +11,6 @@ use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
 
-// Route khusus halaman login
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/auth', [LoginController::class, 'auth'])->name('auth')->middleware('throttle:5,1');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
