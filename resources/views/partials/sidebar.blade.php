@@ -65,7 +65,7 @@
                 'BK' => 'bk.rekapitulasi',
                 default => '#',
             },
-            'pattern' => '*rekapitulasi-absensi*',
+            'pattern' => '*.rekapitulasi',
             'icon' => 'ti-clipboard-check',
             'roles' => ['Admin', 'BK'],
         ],
