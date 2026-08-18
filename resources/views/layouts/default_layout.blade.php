@@ -10,7 +10,7 @@
     <link href="{{ asset('assets/vendors/DataTables/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendors/DataTables/responsive/css/responsive.bootstrap5.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/buttons/css/buttons.bootstrap5.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <style>
         .ti {
@@ -56,7 +56,7 @@
     <script src="{{ asset('assets/vendors/DataTables/buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/DataTables/buttons/js/buttons.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/DataTables/buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/logout-modal.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
