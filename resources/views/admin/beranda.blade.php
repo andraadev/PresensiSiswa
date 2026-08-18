@@ -50,114 +50,6 @@
             </article>
         </div>
     </section>
-    {{-- <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-6">
-            <div class="card">
-                <div class="p-2">
-                    <div class="row align-items-start">
-                        <div class="col-8">
-                            <h5 class="mb-8 fw-bolder">Selamat Datang, {{ Auth::user()->nama_lengkap }}</h5>
-                            <h6 id="jam" class="fw-semibold mb-2"></h6>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-end">
-                                <div
-                                    class="text-white bg-info rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-info-circle fs-6"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-6">
-            <div class="card">
-                <div class="p-2">
-                    <div class="row align-items-start">
-                        <div class="col-8">
-                            <h5 class="mb-8 fw-bolder">Jumlah Kelas</h5>
-                            <h6>{{ $kelas }} Kelas</h6>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-end">
-                                <div
-                                    class="text-white bg-danger rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-building fs-6"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- <div class="row">
-        <div class="col-lg-4 col-sm-12">
-            <!-- Monthly Earnings -->
-            <div class="card">
-                <div class="p-2">
-                    <div class="row align-items-start">
-                        <div class="col-9">
-                            <h5 class="card-title mb-8 fw-bolder">Jumlah Siswa</h5>
-                            <h6>{{ $siswa }} Orang</h6>
-                        </div>
-                        <div class="col-3">
-                            <div class="d-flex justify-content-end">
-                                <div
-                                    class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-users fs-6"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-12">
-            <!-- Monthly Earnings -->
-            <div class="card">
-                <div class="p-2">
-                    <div class="row align-items-start">
-                        <div class="col-8">
-                            <h5 class="card-title mb-8 fw-bolder">Jumlah Guru</h5>
-                            <h6>{{ $guru }} Orang</h6>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-end">
-                                <div
-                                    class="text-white bg-warning rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                    <i class="ti ti-user-cog fs-6"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-12">
-            <!-- Monthly Earnings -->
-            <div class="card">
-                <div class="p-2">
-                    <div class="row align-items-start">
-                        <div class="col-8">
-                            <h5 class="card-title mb-8 fw-bolder">Jumlah User</h5>
-                            <h6>{{ $user }} Orang</h6>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-end">
-                                <div class="text-white rounded-circle p-6 d-flex align-items-center justify-content-center"
-                                    style="background-color: #198754">
-                                    <i class="ti ti-user-check fs-6"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
 @section('charts-section')
     <section class="row g-3 mt-1">
@@ -211,13 +103,13 @@
 @endsection
 @section('additional_js')
     <script>
-        var labels = <?php echo json_encode($labels); ?>;
-        var data = <?php echo json_encode($data); ?>;
+        var labels = @json($labels);
+        var data = @json($data);
 
-        data = data.map(function(value) {
-            return Math.round(value);
-        });
         $(function() {
+            var bootstrapTextColor = window.getComputedStyle(document.body).getPropertyValue('--bs-body-color')
+                .trim();
+
             var options = {
                 chart: {
                     type: "bar",
@@ -229,22 +121,75 @@
                 series: [{
                     name: "Jumlah Siswa",
                     data: data,
-                }, ],
+                }],
                 xaxis: {
                     categories: labels,
-                    // type: 'numeric'
+                    labels: {
+                        style: {
+                            colors: bootstrapTextColor
+                        }
+                    }
                 },
                 yaxis: {
                     labels: {
-                        formatter: function(value) {
-                            return Math.round(value);
+                        style: {
+                            colors: [bootstrapTextColor]
+                        },
+                    }
+                },
+                states: {
+                    normal: {
+                        filter: {
+                            type: 'none',
+                            value: 0
+                        }
+                    },
+                    hover: {
+                        filter: {
+                            type: 'none',
+                            value: 0
+                        }
+                    },
+                    active: {
+                        allowMultipleDataPointsSelection: false,
+                        filter: {
+                            type: 'none',
+                            value: 0
                         }
                     }
+                },
+                tooltip: {
+                    enabled: false
                 }
             };
 
             var chart = new ApexCharts(document.querySelector("#statistik_siswa"), options);
             chart.render();
+
+            var observer = new MutationObserver(function() {
+                var updatedColor = window.getComputedStyle(document.body).getPropertyValue(
+                    '--bs-body-color').trim();
+                chart.updateOptions({
+                    xaxis: {
+                        labels: {
+                            style: {
+                                colors: updatedColor
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: [updatedColor]
+                            }
+                        }
+                    }
+                });
+            });
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-bs-theme']
+            });
         });
     </script>
 @endsection
