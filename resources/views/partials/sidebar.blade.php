@@ -75,7 +75,7 @@
 <div class="sidebar-backdrop" data-sidebar-close></div>
 <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
     <div class="sidebar-header">
-        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
+        <a class="brand-mark" href="javascript:void(0)" aria-label="Beranda PresensiSiswa">
             <span class="brand-icon">
                 <i class="ti ti-clipboard-check" aria-hidden="true"></i>
             </span>
