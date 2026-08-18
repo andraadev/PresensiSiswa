@@ -5,8 +5,8 @@ function modal_logout() {
         confirmButtonText: 'Iya',
         cancelButtonText: 'Tidak',
         customClass: {
-            confirmButton: 'btn btn-danger me-2',
-            cancelButton: 'btn btn-secondary'
+            confirmButton: 'btn btn-danger btn-lg me-2',
+            cancelButton: 'btn btn-secondary btn-lg'
         },
         buttonsStyling: false,
         showCancelButton: true
