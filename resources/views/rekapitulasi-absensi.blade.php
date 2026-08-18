@@ -54,7 +54,6 @@
                 <th scope="col">No</th>
                 <th scope="col">NISN</th>
                 <th scope="col">Nama Siswa</th>
-                <th scope="col">Status</th>
                 <th scope="col">Kelas</th>
                 <th scope="col">Hadir</th>
                 <th scope="col">Sakit</th>
@@ -65,22 +64,10 @@
         </thead>
         <tbody>
             @foreach ($siswa as $s)
-                @php
-                    $statusClasses = [
-                        'Aktif' => 'text-bg-success',
-                        'Lulus' => 'text-bg-primary',
-                        'Mutasi' => 'text-bg-info',
-                        'Keluar' => 'text-bg-danger',
-                    ];
-                    $class = $statusClasses[$s->status] ?? 'text-bg-secondary';
-                @endphp
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{ $s->nisn }}</td>
                     <td>{{ $s->nama_lengkap }}</td>
-                    <td>
-                        <span class="badge {{ $class }}">{{ $s->status }}</span>
-                    </td>
                     <td>{{ $s->kelas->nama_kelas }}</td>
                     <td>{{ $s->total_hadir }}</td>
                     <td>{{ $s->total_sakit }}</td>
