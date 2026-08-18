@@ -83,8 +83,11 @@
                 `User ini akan dinonaktifkan dari sistem.` : `User ini akan diaktifkan kembali.`,
             icon: isActive ? 'warning' : 'question',
             showCancelButton: true,
-            confirmButtonColor: isActive ? '#dc3545' : '#198754',
-            cancelButtonColor: '#6c757d',
+            customClass: {
+                confirmButton: `btn ${isActive ? 'btn-danger' : 'btn-success'} btn-lg`,
+                cancelButton: 'btn btn-secondary btn-lg me-2'
+            },
+            buttonsStyling: false,
             confirmButtonText: isActive ? 'Ya, Nonaktifkan!' : 'Ya, Aktifkan!',
             cancelButtonText: 'Batal',
             reverseButtons: true
