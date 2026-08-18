@@ -13,29 +13,6 @@
                   <i class="ti ti-moon-stars" data-theme-icon aria-hidden="true"></i>
               </button>
               <div class="dropdown">
-                  <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                      aria-label="Notifications">
-                      <span class="notification-dot"></span>
-                      <i class="ti ti-bell" aria-hidden="true"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-end notification-menu">
-                      <div class="dropdown-header fw-bold text-body">Panel Notifikasi</div>
-                      <a class="dropdown-item" href="users.html">
-                          <span class="notification-title">New user registered</span>
-                          <span class="notification-time">4 minutes ago</span>
-                      </a>
-                      <a class="dropdown-item" href="charts.html">
-                          <span class="notification-title">Revenue target reached</span>
-                          <span class="notification-time">32 minutes ago</span>
-                      </a>
-                      <a class="dropdown-item" href="settings.html">
-                          <span class="notification-title">Security review completed</span>
-                          <span class="notification-time">1 hour ago</span>
-                      </a>
-                  </div>
-              </div>
-
-              <div class="dropdown">
                   <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       <i class="ti ti-user-circle"></i>
@@ -43,16 +20,10 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                       <li>
-                          <a class="dropdown-item" href="#">Profile</a>
-                      </li>
-                      <li>
-                          <a class="dropdown-item" href="#">Account settings</a>
-                      </li>
-                      <li>
-                          <hr class="dropdown-divider">
-                      </li>
-                      <li>
-                          <a class="dropdown-item" href="javascript:void(0)" onclick="modal_logout()">Keluar</a>
+                          <a class="dropdown-item d-flex gap-2" href="javascript:void(0)" onclick="modal_logout()">
+                              <i class="ti ti-logout sidebar-icon" aria-hidden="true"></i>
+                              Keluar
+                          </a>
                           <form action="{{ route('logout') }}" method="POST" class="d-none" id="logout-form">
                               @csrf
                           </form>
