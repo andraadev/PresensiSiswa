@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/apexcharts/apexcharts.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/bootstrap-5.css') }}">
     <style>
         .ti {
             font-size: 22px;
