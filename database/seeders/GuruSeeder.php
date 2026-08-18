@@ -25,7 +25,8 @@ class GuruSeeder extends Seeder
                 'nama_lengkap' => $faker->name(),
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
                 // Generate 13 digits of random telephone number in indonesian
-                'no_telepon' => '08' . $faker->numerify('##########')
+                'no_telepon' => '08' . $faker->numerify('##########'),
+                'is_active' => 1
             ]);
         }
     }

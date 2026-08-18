@@ -28,6 +28,7 @@ class SiswaSeeder extends Seeder
                 'kelas_id' => $faker->randomElement($kelasIds),
                 // Generate 13 digits of random telephone number in indonesian
                 'no_telepon' => '08' . $faker->numerify('##########'),
+                'status' => 'Aktif'
             ]);
         }
     }
