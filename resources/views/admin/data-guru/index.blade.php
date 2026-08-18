@@ -162,6 +162,8 @@
                     `Guru ${nama} akan dinonaktifkan dari sistem.` : `Guru ${nama} akan diaktifkan kembali.`,
                 icon: isActive ? 'warning' : 'question',
                 showCancelButton: true,
+                background: window.getComputedStyle(document.body).getPropertyValue('--bs-body-bg'),
+                color: window.getComputedStyle(document.body).getPropertyValue('--bs-body-color'),
                 customClass: {
                     confirmButton: `btn ${isActive ? 'btn-danger' : 'btn-success'} btn-lg`,
                     cancelButton: 'btn btn-secondary btn-lg me-2'
