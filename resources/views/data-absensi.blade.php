@@ -2,7 +2,6 @@
 
 @php
     $prefix = request()->segment(1); // 'admin', 'guru', atau 'bk'
-    // dd($prefix);
 @endphp
 
 @section('title')
@@ -15,16 +14,16 @@
 
 @section('filter-form')
     <form action="{{ route($prefix . '.data_absensi') }}" method="get" id="filterForm"
-        class="d-flex gap-2 align-items-center mb-3">
-        <div class="">
+        class="d-flex flex-column flex-md-row gap-2 align-items-md-end mb-3">
+        <div class="flex-fill">
             <label class="form-label">Tanggal Mulai</label>
             <input type="date" name="tanggal_mulai" class="form-control" value="{{ request('tanggal_mulai') }}">
         </div>
-        <div class="">
+        <div class="flex-fill">
             <label class="form-label">Tanggal Selesai</label>
             <input type="date" name="tanggal_selesai" class="form-control" value="{{ request('tanggal_selesai') }}">
         </div>
-        <div class="">
+        <div class="flex-fill">
             <label class="form-label">Kelas</label>
             <select name="kelas_id" class="form-select">
                 <option value="">Pilih Kelas</option>
@@ -34,7 +33,7 @@
                 @endforeach
             </select>
         </div>
-        <div>
+        <div class="flex-fill">
             <label class="form-label">Status Siswa</label>
             <select name="status" id="status" class="form-select">
                 <option value="Semua" {{ request('status', 'Semua') == 'Semua' ? 'selected' : '' }}>Semua</option>
