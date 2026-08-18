@@ -11,12 +11,12 @@
 
 @section('filter-form')
     <form action="{{ route('data_absensi.detail', $siswa->id) }}" method="GET" id="filterForm"
-        class="d-flex gap-2 align-items-center mb-3">
-        <div>
+        class="d-flex flex-column flex-md-row gap-2 align-items-md-end mb-3">
+        <div class="flex-fill">
             <label class="form-label mb-0">Mulai:</label>
             <input type="date" name="tanggal_mulai" class="form-control" value="{{ request('tanggal_mulai') }}">
         </div>
-        <div>
+        <div class="flex-fill">
             <label class="form-label mb-0">Selesai:</label>
             <input type="date" name="tanggal_selesai" class="form-control" value="{{ request('tanggal_selesai') }}">
         </div>
