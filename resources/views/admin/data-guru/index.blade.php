@@ -10,7 +10,7 @@
             <i class="ti ti-table-import" aria-hidden="true"></i> Import Excel
         </button>
         <a class="btn btn-primary btn-sm" href="{{ route('data-guru.create') }}">
-            <i class="ti ti-plus" aria-hidden="true"></i> Tambah Guru
+            <i class="ti ti-plus" aria-hidden="true"></i> Tambah
         </a>
     </div>
     <div class="modal fade" id="import_excel" tabindex="-1">
@@ -122,7 +122,9 @@
                     </td>
                     <td>
                         <a href="{{ route('data-guru.edit', $data_guru->id) }}" type="button"
-                            class="btn btn-warning btn-edit">Edit</a>
+                            class="btn btn-warning btn-sm btn-edit">
+                            Edit
+                        </a>
                         <form action="{{ route('data_guru.update_status', $data_guru->id) }}" method="POST"
                             class="d-inline">
                             @csrf
@@ -130,14 +132,16 @@
 
                             @if ($data_guru->is_active)
                                 <input type="hidden" name="is_active" value="0">
-                                <button type="button" class="btn btn-danger" data-nama="{{ $data_guru->nama_lengkap }}"
-                                    data-active="true" onclick="confirmStatusChange(this)">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    data-nama="{{ $data_guru->nama_lengkap }}" data-active="true"
+                                    onclick="confirmStatusChange(this)">
                                     Nonaktifkan
                                 </button>
                             @else
                                 <input type="hidden" name="is_active" value="1">
-                                <button type="button" class="btn btn-success" data-nama="{{ $data_guru->nama_lengkap }}"
-                                    data-active="false" onclick="confirmStatusChange(this)">
+                                <button type="button" class="btn btn-success btn-sm"
+                                    data-nama="{{ $data_guru->nama_lengkap }}" data-active="false"
+                                    onclick="confirmStatusChange(this)">
                                     Aktifkan
                                 </button>
                             @endif

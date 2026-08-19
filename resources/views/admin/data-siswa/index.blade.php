@@ -135,7 +135,7 @@
                         <span class="badge {{ $class }}">{{ $datasiswa->status }}</span>
                     </td>
                     <td>
-                        <a href="{{ route('data-siswa.edit', $datasiswa->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('data-siswa.edit', $datasiswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     </td>
                 </tr>
             @endforeach

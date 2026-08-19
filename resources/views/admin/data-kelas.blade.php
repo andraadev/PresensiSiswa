@@ -95,10 +95,11 @@
                     <td>{{ $data_kelas->nama_kelas }}</td>
                     <td>{{ $data_kelas->guru->nama_lengkap }}</td>
                     <td>
-                        <a href="{{ route('admin.data_kelas.download_qr', $data_kelas->id) }}" class="btn btn-success">
+                        <a href="{{ route('admin.data_kelas.download_qr', $data_kelas->id) }}"
+                            class="btn btn-success btn-sm">
                             Simpan QR
                         </a>
-                        <button class="btn btn-warning btn-edit-kelas" data-bs-toggle="modal"
+                        <button class="btn btn-warning btn-sm btn-edit-kelas" data-bs-toggle="modal"
                             data-bs-target="#modalEditKelas" data-id="{{ $data_kelas->id }}"
                             data-nama="{{ $data_kelas->nama_kelas }}" data-guru="{{ $data_kelas->guru_id }}">
                             Edit

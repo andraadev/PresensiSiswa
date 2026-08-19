@@ -35,9 +35,9 @@
                     </span>
                 </td>
                 <td>
-                    <a href="{{ route('data-user.edit', $data_user->id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ route('data-user.edit', $data_user->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     @if ($data_user->id === auth()->id())
-                        <button type="button" class="btn btn-danger opacity-50" disabled>
+                        <button type="button" class="btn btn-danger btn-sm opacity-50" disabled>
                             Nonaktifkan
                         </button>
                     @else
@@ -48,13 +48,14 @@
 
                             @if ($data_user->is_active)
                                 <input type="hidden" name="is_active" value="0">
-                                <button type="button" class="btn btn-danger" data-nama="{{ $data_user->nama_lengkap }}"
-                                    data-active="true" onclick="confirmStatusChange(this)">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    data-nama="{{ $data_user->nama_lengkap }}" data-active="true"
+                                    onclick="confirmStatusChange(this)">
                                     Nonaktifkan
                                 </button>
                             @else
                                 <input type="hidden" name="is_active" value="1">
-                                <button type="button" class="btn btn-success"
+                                <button type="button" class="btn btn-success btn-sm"
                                     data-nama="{{ $data_user->nama_lengkap }}" data-active="false"
                                     onclick="confirmStatusChange(this)">
                                     Aktifkan
