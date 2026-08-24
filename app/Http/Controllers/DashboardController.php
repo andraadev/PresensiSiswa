@@ -47,12 +47,31 @@ class DashboardController extends Controller
 
     public function beranda_bk()
     {
-        $siswa = Siswa::count('nama_lengkap');
-        $siswaPerKelas = Kelas::withCount('siswa')->orderBy('nama_kelas', 'asc')->get();
-        $labels = $siswaPerKelas->pluck('nama_kelas')->toArray();
-        $data   = $siswaPerKelas->pluck('siswa_count')->toArray();
+        $hari_ini = date('Y-m-d');
+        $siswaAlpa = Siswa::where('status', 'Aktif')->withCount([
+            'absensi' => function ($query) {
+                $query->where('status', 'Alpa');
+            }
+        ])
+            ->having('absensi_count', '>=', 3)
+            ->get();
 
-        return view('bk.beranda', compact('labels', 'data', 'siswa'));
+        $totalAlpa = Absensi::where('status', 'Alpa')->where('tanggal_absensi', $hari_ini)->count();
+        return view('bk.beranda', compact('totalAlpa', 'siswaAlpa'));
+    }
+
+    public function histori_absensi(Siswa $siswa)
+    {
+        $riwayatAbsensi = Absensi::where('siswa_id', $siswa->id)->orderBy('tanggal_absensi', 'desc')->get();
+
+        $summary = (object) [
+            'hadir' => $riwayatAbsensi->where('status', 'Hadir')->count(),
+            'sakit' => $riwayatAbsensi->where('status', 'Sakit')->count(),
+            'izin'  => $riwayatAbsensi->where('status', 'Izin')->count(),
+            'alpa'  => $riwayatAbsensi->where('status', 'Alpa')->count(),
+            'alpa_terakhir' => $riwayatAbsensi->firstWhere('status', 'Alpa')?->tanggal_absensi,
+        ];
+        return view('bk.detail-absensi', compact('siswa', 'riwayatAbsensi', 'summary'));
     }
 
     public function data_absensi(Request $request)
