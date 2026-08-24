@@ -34,9 +34,11 @@
             <main class="dashboard-content">
                 <div class="container-fluid px-3 px-lg-4 py-4">
                     <div class="page-heading">
-                        <h1 class="h3 mb-1">@yield('title')</h1>
+                        <h1 class="h3 mb-1">@yield('heading', View::yieldContent('title', 'Presensi Siswa'))</h1>
                         @yield('action-buttons')
                     </div>
+
+                    @yield('stats-cards')
                     <section class="panel mt-3">
                         @yield('filter-form')
                         @yield('content')
