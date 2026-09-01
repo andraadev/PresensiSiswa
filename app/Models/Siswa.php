@@ -51,4 +51,9 @@ class Siswa extends Model
 
         return $query->withCount($withCountQuery);
     }
+
+    public function counseling()
+    {
+        return $this->hasMany(Counseling::class, 'siswa_id');
+    }
 }

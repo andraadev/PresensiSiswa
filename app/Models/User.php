@@ -22,4 +22,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Guru::class);
     }
+
+    public function counseling()
+    {
+        return $this->hasMany(Counseling::class, 'created_by');
+    }
 }
