@@ -33,7 +33,15 @@
                     <td>{{ $data->creator->nama_lengkap }}</td>
                     <td>{{ \Carbon\Carbon::parse($data->action_date)->translatedFormat('d F Y') }} </td>
                     <td>{{ $data->action_type }}</td>
-                    <td>{{ $data->status }}</td>
+                    @php
+                        $statusClasses = [
+                            'Belum Ditangani' => 'text-bg-warning',
+                            'Sedang Dipantau' => 'text-bg-info',
+                            'Selesai' => 'text-bg-success',
+                        ];
+                        $class = $statusClasses[$data->status] ?? 'text-bg-secondary';
+                    @endphp
+                    <td><span class="badge {{ $class }}">{{ $data->status }}</span></td>
                     <td>
                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                             data-bs-target="#detailModal" data-problem_notes="{{ $data->problem_notes }}"
