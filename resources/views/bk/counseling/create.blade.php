@@ -87,14 +87,14 @@
             <label class="form-label">Status</label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="status" id="status1" value="Belum Ditangani"
-                    @checked(old('status') == 'Belum Ditangani')>
+                    @checked(old('status', 'Belum Ditangani') == 'Belum Ditangani')>
                 <label class="form-check-label" for="status1">
                     Belum Ditangani
                 </label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="status" id="status2" value="Sedang Dipantau"
-                    @checked(old('status', 'Sedang Dipantau') == 'Sedang Dipantau')>
+                    @checked(old('status') == 'Sedang Dipantau')>
                 <label class="form-check-label" for="status2">
                     Sedang Dipantau
                 </label>
