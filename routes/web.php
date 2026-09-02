@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth', 'checkrole:Guru'], 'prefix' => 'guru'], f
 Route::group(['middleware' => ['auth', 'checkrole:BK'], 'prefix' => 'bk'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_bk'])->name('bk.beranda');
     Route::get('/histori-absensi/{siswa}', [DashboardController::class, 'histori_absensi'])->name('bk.histori_absensi');
-    Route::resource('/konseling', CounselingController::class);
+    Route::resource('/konseling', CounselingController::class)->parameters(['konseling' => 'counseling']);
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('bk.data_absensi');
     Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('bk.rekapitulasi');
 });
