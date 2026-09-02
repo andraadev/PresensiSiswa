@@ -10,11 +10,19 @@ class Counseling extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'student_id',
+        'created_by',
+        'action_date',
+        'action_type',
+        'problem_notes',
+        'agreement_result',
+        'status'
+    ];
 
     public function student()
     {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'student_id');
     }
 
     public function creator()
