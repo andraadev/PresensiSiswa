@@ -54,6 +54,6 @@ class Siswa extends Model
 
     public function counseling()
     {
-        return $this->hasMany(Counseling::class, 'siswa_id');
+        return $this->hasMany(Counseling::class, 'student_id');
     }
 }
