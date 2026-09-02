@@ -48,6 +48,13 @@
             'roles' => ['Admin'],
         ],
         [
+            'label' => 'Konseling',
+            'route' => 'konseling.index',
+            'pattern' => 'konseling*',
+            'icon' => 'ti-pencil',
+            'roles' => ['BK'],
+        ],
+        [
             'label' => 'Data Absensi',
             'route' => match ($userRole) {
                 'Guru' => 'guru.data_absensi',

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\CounselingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
@@ -43,6 +44,7 @@ Route::group(['middleware' => ['auth', 'checkrole:Guru'], 'prefix' => 'guru'], f
 Route::group(['middleware' => ['auth', 'checkrole:BK'], 'prefix' => 'bk'], function () {
     Route::get('/beranda', [DashboardController::class, 'beranda_bk'])->name('bk.beranda');
     Route::get('/histori-absensi/{siswa}', [DashboardController::class, 'histori_absensi'])->name('bk.histori_absensi');
+    Route::resource('/konseling', CounselingController::class);
     Route::get('/data-absensi', [DashboardController::class, 'data_absensi'])->name('bk.data_absensi');
     Route::get('/rekapitulasi-absensi', [DashboardController::class, 'rekapitulasi_absensi'])->name('bk.rekapitulasi');
 });
