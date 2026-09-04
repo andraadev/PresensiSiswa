@@ -20,7 +20,17 @@
                     <i class="ti ti-plus"></i>
                     Catat Penanganan BK
                 </a>
-                <a href="#" class="btn btn-success btn-sm">
+                @php
+                    $pesan =
+                        "Yth. Orang Tua/Wali dari {$siswa->nama_lengkap},\n\n" .
+                        "Kami dari pihak Bimbingan Konseling (BK) ingin
+                menginformasikan bahwa siswa yang bersangkutan telah tercatat memiliki {$siswa->total_alpa} hari Alpa pada
+                semester ini.\n\n" .
+                        "Mohon kesediaannya untuk berkoordinasi dengan pihak sekolah terkait hal ini. Terima
+                kasih.";
+                    $waUrl = "https://wa.me/{$siswa->formatted_no_hp_ortu}?text=" . rawurlencode($pesan);
+                @endphp
+                <a href="{{ $waUrl }}" class="btn btn-success btn-sm">
                     <i class="ti ti-brand-whatsapp"></i>
                     Chat Ortu via WA
                 </a>
