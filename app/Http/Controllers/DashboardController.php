@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Counseling;
 use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\Siswa;
@@ -56,8 +57,15 @@ class DashboardController extends Controller
             ->having('absensi_count', '>=', 3)
             ->get();
 
+        $latestCounselings = Counseling::with('student')
+            ->whereIn('status', ['Belum Ditangani', 'Sedang Dipantau'])
+            ->with('latestCounseling')
+            ->latest('action_date')
+            ->take(5)
+            ->get();
+
         $totalAlpa = Absensi::where('status', 'Alpa')->where('tanggal_absensi', $hari_ini)->count();
-        return view('bk.beranda', compact('totalAlpa', 'siswaAlpa'));
+        return view('bk.beranda', compact('totalAlpa', 'siswaAlpa', 'latestCounselings'));
     }
 
     public function histori_absensi(Siswa $siswa)

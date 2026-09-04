@@ -52,16 +52,31 @@
                         <th scope="col">Nama Siswa</th>
                         <th scope="col">Kelas</th>
                         <th scope="col">Total Alpa</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($siswaAlpa as $siswa)
+                        @php
+                            $status = $siswa->latestCounseling->status ?? 'Belum Ditangani';
+                            $statusClasses = [
+                                'Belum Ditangani' => 'text-bg-warning',
+                                'Sedang Dipantau' => 'text-bg-info',
+                                'Selesai' => 'text-bg-success',
+                            ];
+                            $class = $statusClasses[$status] ?? 'text-bg-secondary';
+                        @endphp
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $siswa->nama_lengkap }}</td>
                             <td>{{ $siswa->kelas->nama_kelas }}</td>
                             <td>{{ $siswa->absensi_count }} Hari</td>
+                            <td>
+                                <span class="badge {{ $class }}">
+                                    {{ $siswa->latestCounseling->status ?? 'Belum Ditangani' }}
+                                </span>
+                            </td>
                             <td>
                                 <a href="{{ route('bk.histori_absensi', $siswa->id) }}" class="btn btn-light btn-sm"
                                     type="button">Detail</a>
