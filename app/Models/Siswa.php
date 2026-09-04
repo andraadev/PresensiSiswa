@@ -56,4 +56,9 @@ class Siswa extends Model
     {
         return $this->hasMany(Counseling::class, 'student_id');
     }
+
+    public function latestCounseling()
+    {
+        return $this->hasOne(Counseling::class, 'student_id')->latestOfMany('action_date');
+    }
 }
